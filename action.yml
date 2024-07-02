@@ -1,12 +1,33 @@
 name: 'Publish to IPFS'
 description: 'Publish to IPFS and add dnslink record to Cloudflare.'
+branding:
+  icon: 'box'
+  color: 'white'
+author: hugomdias
 inputs:
   dir:
     description: 'Directory to publish'
     required: true
+  w3s-key:
+    description: 'W3S key'
+    required: true
+  w3s-proof:
+    description: 'W3S proof'
+    required: true
+  cf-token:
+    description: 'Cloudflare API token'
+    required: true
+  cf-zone-id:
+    description: 'Cloudflare zone ID'
+    required: true
+  cf-zone-name:
+    description: 'Cloudflare zone name'
+    required: true
 outputs:
   cid:
     description: 'CID of published directory'
+  url:
+    description: 'URL of published directory'
 runs:
   using: 'node20'
   main: 'build/index.js'

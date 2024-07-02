@@ -1,10 +1,17 @@
 name: test
+
 on:
-  push:
+  workflow_dispatch:
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: ./
         with:
-          dir: packages/package1
+          dir: example/build
+          w3s-key: ${{ secrets.W3S_KEY }}
+          w3s-proof: ${{ secrets.W3S_PROOF }}
+          cf-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          cf-zone-id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          cf-zone-name: ${{ secrets.CLOUDFLARE_ZONE_NAME }}
