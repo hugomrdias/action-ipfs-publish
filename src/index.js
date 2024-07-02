@@ -102,12 +102,12 @@ async function run() {
         )
         setOutput('cid', cid)
         summary.addHeading('CID', 3)
-        summary.addRaw(cid)
+        summary.addCodeBlock(cid)
 
         setOutput('url', `https://w3s.link/ipfs/${cid}`)
         summary.addHeading('URL', 3)
         summary.addLink(
-          `https://w3s.link/ipfs/${cid}`,
+          `🌐 https://w3s.link/ipfs/${cid}`,
           `https://w3s.link/ipfs/${cid}`
         )
       } else {
