@@ -1,0 +1,13 @@
+{
+  "extends": "@hugomrdias/configs/tsconfig",
+  "typedocOptions": {
+    "entryPointStrategy": "packages",
+    "entryPoints": ["packages/package1"],
+    "excludeExternals": true,
+    "sourceLinkExternal": true,
+    "darkHighlightTheme": "github-dark",
+    "navigationLinks": {
+      "Github": "https://github.com/hugomrdias/hd-template"
+    }
+  }
+}
