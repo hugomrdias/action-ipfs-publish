@@ -72477,15 +72477,18 @@ async function run() {
           CLOUDFLARE_ZONE_ID
         )
         ;(0,core.setOutput)('cid', cid)
-        core.summary.addHeading('CID', 3)
+        core.summary.addHeading('🌐 CID', 4)
         core.summary.addCodeBlock(cid)
 
         ;(0,core.setOutput)('url', `https://w3s.link/ipfs/${cid}`)
-        core.summary.addHeading('URL', 3)
+        core.summary.addHeading('🕸️ IPFS Link', 4)
         core.summary.addLink(
-          `🌐 https://w3s.link/ipfs/${cid}`,
+          `https://w3s.link/ipfs/${cid}`,
           `https://w3s.link/ipfs/${cid}`
         )
+        core.summary.addHeading('🔗 DNS Link', 4)
+        const appLink = CLOUDFLARE_ZONE_NAME.replace('_dnslink', '')
+        core.summary.addLink(appLink, appLink)
       } else {
         throw new Error(`Failed to upload: ${upload.stdout}`)
       }

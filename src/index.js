@@ -101,15 +101,18 @@ async function run() {
           CLOUDFLARE_ZONE_ID
         )
         setOutput('cid', cid)
-        summary.addHeading('CID', 3)
+        summary.addHeading('🌐 CID', 4)
         summary.addCodeBlock(cid)
 
         setOutput('url', `https://w3s.link/ipfs/${cid}`)
-        summary.addHeading('URL', 3)
+        summary.addHeading('🕸️ IPFS Link', 4)
         summary.addLink(
-          `🌐 https://w3s.link/ipfs/${cid}`,
+          `https://w3s.link/ipfs/${cid}`,
           `https://w3s.link/ipfs/${cid}`
         )
+        summary.addHeading('🔗 DNS Link', 4)
+        const appLink = CLOUDFLARE_ZONE_NAME.replace('_dnslink', '')
+        summary.addLink(appLink, appLink)
       } else {
         throw new Error(`Failed to upload: ${upload.stdout}`)
       }
