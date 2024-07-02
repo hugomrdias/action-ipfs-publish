@@ -53,10 +53,10 @@ async function upsertRecord(cf, name, cid, zoneId) {
         path_zone_id: zoneId,
       })
     } else {
-      await createRecord(cf, 'filsnap.dev', cid, zoneId)
+      await createRecord(cf, name, cid, zoneId)
     }
   } else {
-    await createRecord(cf, 'filsnap.dev', cid, zoneId)
+    await createRecord(cf, name, cid, zoneId)
   }
 }
 
