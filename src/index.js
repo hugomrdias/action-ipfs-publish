@@ -106,7 +106,7 @@ async function run() {
 
         setOutput('url', `https://w3s.link/ipfs/${cid}`)
         summary.addHeading(
-          '<img src="https://docs.ipfs.tech/images/ipfs-logo.svg" height="20px" width="20px" alt="IPFS logo" style="vertical-align: bottom;"/> IPFS Link',
+          '<img src="https://docs.ipfs.tech/images/ipfs-logo.svg" height="16px" width="16px" alt="IPFS logo" style="vertical-align: bottom;"/> IPFS Link',
           4
         )
         summary.addLink(
