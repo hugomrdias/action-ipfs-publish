@@ -1,0 +1,12 @@
+name: 'Publish to IPFS'
+description: 'Publish to IPFS and add dnslink record to Cloudflare.'
+inputs:
+  dir:
+    description: 'Directory to publish'
+    required: true
+outputs:
+  cid:
+    description: 'CID of published directory'
+runs:
+  using: 'node20'
+  main: 'build/index.js'

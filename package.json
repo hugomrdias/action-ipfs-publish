@@ -1,26 +1,27 @@
 {
-  "name": "hd-template",
+  "name": "action-ipfs-publish",
   "version": "0.0.0",
+  "description": "Github action to publish to IPFS and add dnslink record to Cloudflare.",
+  "author": "Hugo Dias <hugomrdias@gmail.com> (hugodias.me)",
+  "license": "MIT",
+  "homepage": "https://github.com/hugomrdias/action-ipfs-publish#readme",
+  "repository": {
+    "url": "hugomrdias/action-ipfs-publish"
+  },
   "private": true,
-  "workspaces": [
-    "packages/*",
-    "examples/*"
-  ],
   "engines": {
     "node": ">=20"
   },
   "scripts": {
     "format": "biome check --apply --no-errors-on-unmatched --files-ignore-unknown=true .",
     "clean": "rm -rf docs node_modules pnpm-lock.yaml packages/*/{pnpm-lock.yaml,coverage,.nyc_output,dist,node_modules} packages/*/{pnpm-lock.yaml,coverage,.nyc_output,dist,node_modules}",
-    "lint": "pnpm -r --if-present run lint",
-    "test": "pnpm -r --if-present run test",
-    "check": "pnpm -r --if-present run check",
-    "build": "pnpm -r --if-present run build",
-    "docs": "typedoc --out docs --plugin typedoc-plugin-missing-exports --plugin typedoc-plugin-zod"
+    "lint": "tsc --build && biome check --no-errors-on-unmatched --files-ignore-unknown=true .",
+    "build": "tsc --build && ncc build src/index.js -o build --source-map --license license"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.7.3",
     "@hugomrdias/configs": "^0.1.7",
+    "@vercel/ncc": "^0.38.1",
     "depcheck": "^1.4.7",
     "lint-staged": "^15.2.7",
     "simple-git-hooks": "^2.11.1",
@@ -34,5 +35,9 @@
   },
   "lint-staged": {
     "*": "biome check --no-errors-on-unmatched --files-ignore-unknown=true"
+  },
+  "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0"
   }
 }

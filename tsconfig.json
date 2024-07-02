@@ -1,13 +1,10 @@
 {
   "extends": "@hugomrdias/configs/tsconfig",
-  "typedocOptions": {
-    "entryPointStrategy": "packages",
-    "entryPoints": ["packages/package1"],
-    "excludeExternals": true,
-    "sourceLinkExternal": true,
-    "darkHighlightTheme": "github-dark",
-    "navigationLinks": {
-      "Github": "https://github.com/hugomrdias/hd-template"
-    }
-  }
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM"],
+    "emitDeclarationOnly": true,
+    "outDir": "dist"
+  },
+  "include": ["src", "test", "package.json"],
+  "exclude": ["node_modules", "dist", "out"]
 }
