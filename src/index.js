@@ -106,7 +106,7 @@ async function run() {
 
         setOutput('url', `https://w3s.link/ipfs/${cid}`)
         summary.addHeading(
-          '<img src="https://docs.ipfs.tech/images/ipfs-logo.svg" height="20px" width="20px" alt="IPFS logo"/> IPFS Link',
+          '<img src="https://docs.ipfs.tech/images/ipfs-logo.svg" height="20px" width="20px" alt="IPFS logo" style="max-width: 100%;vertical-align: bottom;"/> IPFS Link',
           4
         )
         summary.addLink(
@@ -115,7 +115,7 @@ async function run() {
         )
         summary.addHeading('🔗 DNS Link', 4)
         const appLink = CLOUDFLARE_ZONE_NAME.replace('_dnslink.', '')
-        summary.addLink(appLink, appLink)
+        summary.addLink(appLink, `https://${appLink}`)
       } else {
         throw new Error(`Failed to upload: ${upload.stdout}`)
       }
