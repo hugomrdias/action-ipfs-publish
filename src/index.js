@@ -115,7 +115,10 @@ async function run() {
         )
         summary.addHeading('🔗 DNS Link', 4)
         const appLink = CLOUDFLARE_ZONE_NAME.replace('_dnslink.', '')
-        summary.addLink(appLink, `https://${appLink}`)
+        summary.addLink(
+          `https://w3s.link/ipns/${appLink}`,
+          `https://w3s.link/ipns/${appLink}`
+        )
       } else {
         throw new Error(`Failed to upload: ${upload.stdout}`)
       }
