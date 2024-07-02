@@ -72476,25 +72476,28 @@ async function run() {
           cid,
           CLOUDFLARE_ZONE_ID
         )
-        ;(0,core.setOutput)('cid', cid)
-        core.summary.addHeading('✨ CID', 4)
-        core.summary.addCodeBlock(cid)
 
-        ;(0,core.setOutput)('url', `https://w3s.link/ipfs/${cid}`)
+        // ipfs link
+        const ipfsLink = `https://w3s.link/ipfs/${cid}`
+        ;(0,core.setOutput)('url', ipfsLink)
         core.summary.addHeading(
           '<img src="https://docs.ipfs.tech/images/ipfs-logo.svg" height="16px" width="16px" alt="IPFS logo" style="vertical-align: bottom;"/> IPFS Link',
           4
         )
-        core.summary.addLink(
-          `https://w3s.link/ipfs/${cid}`,
-          `https://w3s.link/ipfs/${cid}`
-        )
+        core.summary.addLink(ipfsLink, ipfsLink)
+
+        // dns link
         core.summary.addHeading('🔗 DNS Link', 4)
         const appLink = CLOUDFLARE_ZONE_NAME.replace('_dnslink.', '')
         core.summary.addLink(
           `https://w3s.link/ipns/${appLink}`,
           `https://w3s.link/ipns/${appLink}`
         )
+
+        // cid
+        ;(0,core.setOutput)('cid', cid)
+        core.summary.addHeading('✨ CID', 4)
+        core.summary.addCodeBlock(cid)
       } else {
         throw new Error(`Failed to upload: ${upload.stdout}`)
       }
