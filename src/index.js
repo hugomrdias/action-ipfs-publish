@@ -101,12 +101,15 @@ async function run() {
           CLOUDFLARE_ZONE_ID
         )
         setOutput('cid', cid)
-        summary.addHeading('CID', 2)
+        summary.addHeading('CID', 3)
         summary.addRaw(cid)
 
         setOutput('url', `https://w3s.link/ipfs/${cid}`)
-        summary.addHeading('URL', 2)
-        summary.addRaw(`https://w3s.link/ipfs/${cid}`)
+        summary.addHeading('URL', 3)
+        summary.addLink(
+          `https://w3s.link/ipfs/${cid}`,
+          `https://w3s.link/ipfs/${cid}`
+        )
       } else {
         throw new Error(`Failed to upload: ${upload.stdout}`)
       }
