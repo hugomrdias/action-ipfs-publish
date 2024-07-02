@@ -72481,7 +72481,10 @@ async function run() {
         core.summary.addCodeBlock(cid)
 
         ;(0,core.setOutput)('url', `https://w3s.link/ipfs/${cid}`)
-        core.summary.addHeading('🕸️ IPFS Link', 4)
+        core.summary.addHeading(
+          '<img src="https://docs.ipfs.tech/images/ipfs-logo.svg" height="20px" width="20px" alt="IPFS logo"/> IPFS Link',
+          4
+        )
         core.summary.addLink(
           `https://w3s.link/ipfs/${cid}`,
           `https://w3s.link/ipfs/${cid}`

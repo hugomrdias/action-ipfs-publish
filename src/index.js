@@ -105,7 +105,10 @@ async function run() {
         summary.addCodeBlock(cid)
 
         setOutput('url', `https://w3s.link/ipfs/${cid}`)
-        summary.addHeading('🕸️ IPFS Link', 4)
+        summary.addHeading(
+          '<img src="https://docs.ipfs.tech/images/ipfs-logo.svg" height="20px" width="20px" alt="IPFS logo"/> IPFS Link',
+          4
+        )
         summary.addLink(
           `https://w3s.link/ipfs/${cid}`,
           `https://w3s.link/ipfs/${cid}`
