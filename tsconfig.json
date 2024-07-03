@@ -5,6 +5,6 @@
     "emitDeclarationOnly": true,
     "outDir": "dist"
   },
-  "include": ["src", "test", "package.json", "example"],
-  "exclude": ["node_modules", "dist", "out"]
+  "include": ["src", "test", "package.json"],
+  "exclude": ["node_modules", "dist", "build", "example"]
 }
