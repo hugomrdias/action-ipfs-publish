@@ -41,7 +41,7 @@ async function upsertRecord(cf, name, cid, zoneId) {
     if (found?.id) {
       const content = `dnslink=/ipfs/${cid}`
 
-      // Skip if record already exists
+      // Skip if record content already exists
       if (found.content === content) {
         return
       }
