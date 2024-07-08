@@ -43,8 +43,8 @@ importers:
         specifier: ^0.26.3
         version: 0.26.3(typescript@5.5.3)
       typedoc-plugin-missing-exports:
-        specifier: ^2.2.0
-        version: 2.3.0(typedoc@0.26.3(typescript@5.5.3))
+        specifier: ^3.0.0
+        version: 3.0.0(typedoc@0.26.3(typescript@5.5.3))
       typedoc-plugin-zod:
         specifier: ^1.1.2
         version: 1.2.0(typedoc@0.26.3(typescript@5.5.3))
@@ -957,10 +957,10 @@ packages:
     resolution: {integrity: sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg==}
     engines: {node: '>=0.6.11 <=0.7.0 || >=0.7.3'}
 
-  typedoc-plugin-missing-exports@2.3.0:
-    resolution: {integrity: sha512-iI9ITNNLlbsLCBBeYDyu0Qqp3GN/9AGyWNKg8bctRXuZEPT7G1L+0+MNWG9MsHcf/BFmNbXL0nQ8mC/tXRicog==}
+  typedoc-plugin-missing-exports@3.0.0:
+    resolution: {integrity: sha512-R7D8fYrK34mBFZSlF1EqJxfqiUSlQSmyrCiQgTQD52nNm6+kUtqwiaqaNkuJ2rA2wBgWFecUA8JzHT7x2r7ePg==}
     peerDependencies:
-      typedoc: 0.24.x || 0.25.x
+      typedoc: 0.26.x
 
   typedoc-plugin-zod@1.2.0:
     resolution: {integrity: sha512-eFvPQ4iJsoru4HJP8z7F0NhRxPBjgVPoM0j/xipB7nkGLYhfUjEOlABayaTdBiMocPNCXOCBjFWBHEJGBiMRdw==}
@@ -1935,7 +1935,7 @@ snapshots:
 
   tunnel@0.0.6: {}
 
-  typedoc-plugin-missing-exports@2.3.0(typedoc@0.26.3(typescript@5.5.3)):
+  typedoc-plugin-missing-exports@3.0.0(typedoc@0.26.3(typescript@5.5.3)):
     dependencies:
       typedoc: 0.26.3(typescript@5.5.3)
 
