@@ -22,7 +22,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.7.3",
     "@hugomrdias/configs": "^0.1.7",
-    "@types/node": "^20.14.9",
+    "@types/node": "^20.14.11",
     "@vercel/ncc": "^0.38.1",
     "depcheck": "^1.4.7",
     "lint-staged": "^15.2.7",
