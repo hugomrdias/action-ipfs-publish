@@ -12,8 +12,8 @@ importers:
         specifier: ^1.10.1
         version: 1.10.1
       cloudflare:
-        specifier: ^3.4.0
-        version: 3.4.0
+        specifier: ^3.5.0
+        version: 3.5.0
       execa:
         specifier: ^9.3.0
         version: 9.3.0
@@ -340,8 +340,8 @@ packages:
   cliui@7.0.4:
     resolution: {integrity: sha512-OcRE68cOsVMXp1Yvonl/fzkQOyjLSu/8bhPDfQt0e0/Eb283TKP20Fs2MqoPsr9SwA595rRCA+QMzYc9nBP+JQ==}
 
-  cloudflare@3.4.0:
-    resolution: {integrity: sha512-jiPN5MqzaeZP4UKPgGTuR7/e6kvD+pdeTdJSfqoUHczcSTGIPuJhGj3XRjnqubskrQtWIYuRpiN8rEm5avDrAw==}
+  cloudflare@3.5.0:
+    resolution: {integrity: sha512-sIRZ4K2WQf8tZ74gZGan3u6+50VY1cB6uNc9XIGGLQa7Ti/nrvvadirm8EPVFlQMG11PUXPsX1Buheh4MPLiew==}
 
   color-convert@1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
@@ -1339,7 +1339,7 @@ snapshots:
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
 
-  cloudflare@3.4.0:
+  cloudflare@3.5.0:
     dependencies:
       '@types/node': 18.19.39
       '@types/node-fetch': 2.6.11
