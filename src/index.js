@@ -14,7 +14,7 @@ async function createRecord(cf, name, cid, zoneId) {
     content: `dnslink=/ipfs/${cid}`,
     type: 'TXT',
     name,
-    path_zone_id: zoneId,
+    zone_id: zoneId,
   })
 
   return result
@@ -50,7 +50,7 @@ async function upsertRecord(cf, name, cid, zoneId) {
         content,
         name,
         type: 'TXT',
-        path_zone_id: zoneId,
+        zone_id: zoneId,
       })
     } else {
       await createRecord(cf, name, cid, zoneId)
