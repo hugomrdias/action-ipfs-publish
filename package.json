@@ -20,7 +20,7 @@
     "test": "pnpm run build && act -W ./.github/workflows/test.yml --container-architecture linux/amd64"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.7.3",
+    "@biomejs/biome": "^1.9.4",
     "@hugomrdias/configs": "^0.1.7",
     "@types/node": "^22.5.5",
     "@vercel/ncc": "^0.38.2",
