@@ -89,10 +89,9 @@ async function run() {
         },
       }
     )
-    console.log(upload.stdout)
 
     try {
-      const jsonOut = {} //JSON.parse(upload.stdout)
+      const jsonOut = JSON.parse(upload.stdout)
       if (jsonOut.root?.['/']) {
         const cid = jsonOut.root['/']
         await upsertRecord(
@@ -127,7 +126,8 @@ async function run() {
         throw new Error(`Failed to upload: ${upload.stdout}`)
       }
     } catch (error) {
-      throw new Error('Failed to parse JSON', { cause: error })
+      // @ts-ignore
+      throw new Error(error.message)
     }
 
     await summary.write()
