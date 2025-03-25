@@ -92,7 +92,7 @@ async function run() {
     console.log(upload.stdout)
 
     try {
-      const jsonOut = JSON.parse(upload.stdout)
+      const jsonOut = {} //JSON.parse(upload.stdout)
       if (jsonOut.root?.['/']) {
         const cid = jsonOut.root['/']
         await upsertRecord(
