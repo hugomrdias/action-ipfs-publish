@@ -89,6 +89,7 @@ async function run() {
         },
       }
     )
+    console.log(upload.stdout)
 
     try {
       const jsonOut = JSON.parse(upload.stdout)
