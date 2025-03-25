@@ -4596,7 +4596,7 @@ module.exports = bind.call(call, $hasOwn);
  */
 
 var util = __nccwpck_require__(3837);
-var ms = __nccwpck_require__(5717);
+var ms = __nccwpck_require__(158);
 
 module.exports = function (t) {
   if (typeof t === 'number') return t;
@@ -4772,7 +4772,7 @@ function sync (path, options) {
 
 /***/ }),
 
-/***/ 5717:
+/***/ 158:
 /***/ ((module) => {
 
 /**
@@ -4800,7 +4800,7 @@ var y = d * 365.25;
  * @api public
  */
 
-module.exports = function(val, options) {
+module.exports = function (val, options) {
   options = options || {};
   var type = typeof val;
   if (type === 'string' && val.length > 0) {
@@ -7302,7 +7302,7 @@ module.exports["default"] = pathKey;
 
 /***/ }),
 
-/***/ 6388:
+/***/ 2953:
 /***/ ((module) => {
 
 "use strict";
@@ -7333,15 +7333,15 @@ module.exports = {
 
 /***/ }),
 
-/***/ 2292:
+/***/ 9769:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-var stringify = __nccwpck_require__(8717);
-var parse = __nccwpck_require__(1849);
-var formats = __nccwpck_require__(6388);
+var stringify = __nccwpck_require__(2667);
+var parse = __nccwpck_require__(121);
+var formats = __nccwpck_require__(2953);
 
 module.exports = {
     formats: formats,
@@ -7352,13 +7352,13 @@ module.exports = {
 
 /***/ }),
 
-/***/ 1849:
+/***/ 121:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-var utils = __nccwpck_require__(6722);
+var utils = __nccwpck_require__(1955);
 
 var has = Object.prototype.hasOwnProperty;
 var isArray = Array.isArray;
@@ -7382,6 +7382,7 @@ var defaults = {
     parameterLimit: 1000,
     parseArrays: true,
     plainObjects: false,
+    strictDepth: false,
     strictNullHandling: false
 };
 
@@ -7484,7 +7485,9 @@ var parseObject = function (chain, val, options, valuesParsed) {
         var root = chain[i];
 
         if (root === '[]' && options.parseArrays) {
-            obj = options.allowEmptyArrays && leaf === '' ? [] : [].concat(leaf);
+            obj = options.allowEmptyArrays && (leaf === '' || (options.strictNullHandling && leaf === null))
+                ? []
+                : [].concat(leaf);
         } else {
             obj = options.plainObjects ? Object.create(null) : {};
             var cleanRoot = root.charAt(0) === '[' && root.charAt(root.length - 1) === ']' ? root.slice(1, -1) : root;
@@ -7557,9 +7560,12 @@ var parseKeys = function parseQueryStringKeys(givenKey, val, options, valuesPars
         keys.push(segment[1]);
     }
 
-    // If there's a remainder, just add whatever is left
+    // If there's a remainder, check strictDepth option for throw, else just add whatever is left
 
     if (segment) {
+        if (options.strictDepth === true) {
+            throw new RangeError('Input depth exceeded depth option of ' + options.depth + ' and strictDepth is true');
+        }
         keys.push('[' + key.slice(segment.index) + ']');
     }
 
@@ -7616,6 +7622,7 @@ var normalizeParseOptions = function normalizeParseOptions(opts) {
         parameterLimit: typeof opts.parameterLimit === 'number' ? opts.parameterLimit : defaults.parameterLimit,
         parseArrays: opts.parseArrays !== false,
         plainObjects: typeof opts.plainObjects === 'boolean' ? opts.plainObjects : defaults.plainObjects,
+        strictDepth: typeof opts.strictDepth === 'boolean' ? !!opts.strictDepth : defaults.strictDepth,
         strictNullHandling: typeof opts.strictNullHandling === 'boolean' ? opts.strictNullHandling : defaults.strictNullHandling
     };
 };
@@ -7649,15 +7656,15 @@ module.exports = function (str, opts) {
 
 /***/ }),
 
-/***/ 8717:
+/***/ 2667:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
 var getSideChannel = __nccwpck_require__(4894);
-var utils = __nccwpck_require__(6722);
-var formats = __nccwpck_require__(6388);
+var utils = __nccwpck_require__(1955);
+var formats = __nccwpck_require__(2953);
 var has = Object.prototype.hasOwnProperty;
 
 var arrayPrefixGenerators = {
@@ -8008,13 +8015,13 @@ module.exports = function (object, opts) {
 
 /***/ }),
 
-/***/ 6722:
+/***/ 1955:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 "use strict";
 
 
-var formats = __nccwpck_require__(6388);
+var formats = __nccwpck_require__(2953);
 
 var has = Object.prototype.hasOwnProperty;
 var isArray = Array.isArray;
@@ -40957,7 +40964,7 @@ var __webpack_exports__ = {};
 // ESM COMPAT FLAG
 __nccwpck_require__.r(__webpack_exports__);
 
-// NAMESPACE OBJECT: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/error.mjs
+// NAMESPACE OBJECT: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/error.mjs
 var error_namespaceObject = {};
 __nccwpck_require__.r(error_namespaceObject);
 __nccwpck_require__.d(error_namespaceObject, {
@@ -40978,140 +40985,10 @@ __nccwpck_require__.d(error_namespaceObject, {
 
 // EXTERNAL MODULE: ./node_modules/.pnpm/@actions+core@1.10.1/node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(9093);
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/version.mjs
-const VERSION = '3.4.0'; // x-release-please-version
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/version.mjs
+const VERSION = '3.5.0'; // x-release-please-version
 //# sourceMappingURL=version.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/error.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class error_CloudflareError extends Error {
-}
-class APIError extends error_CloudflareError {
-    constructor(status, error, message, headers) {
-        super(`${APIError.makeMessage(status, error, message)}`);
-        this.status = status;
-        this.headers = headers;
-        const data = error;
-        this.error = data;
-        this.errors = data?.['errors'] ?? [];
-    }
-    static makeMessage(status, error, message) {
-        const msg = error?.message ?
-            typeof error.message === 'string' ?
-                error.message
-                : JSON.stringify(error.message)
-            : error ? JSON.stringify(error)
-                : message;
-        if (status && msg) {
-            return `${status} ${msg}`;
-        }
-        if (status) {
-            return `${status} status code (no body)`;
-        }
-        if (msg) {
-            return msg;
-        }
-        return '(no status code or body)';
-    }
-    static generate(status, errorResponse, message, headers) {
-        if (!status) {
-            return new APIConnectionError({ cause: castToError(errorResponse) });
-        }
-        const error = errorResponse;
-        if (status === 400) {
-            return new BadRequestError(status, error, message, headers);
-        }
-        if (status === 401) {
-            return new AuthenticationError(status, error, message, headers);
-        }
-        if (status === 403) {
-            return new PermissionDeniedError(status, error, message, headers);
-        }
-        if (status === 404) {
-            return new NotFoundError(status, error, message, headers);
-        }
-        if (status === 409) {
-            return new ConflictError(status, error, message, headers);
-        }
-        if (status === 422) {
-            return new UnprocessableEntityError(status, error, message, headers);
-        }
-        if (status === 429) {
-            return new RateLimitError(status, error, message, headers);
-        }
-        if (status >= 500) {
-            return new InternalServerError(status, error, message, headers);
-        }
-        return new APIError(status, error, message, headers);
-    }
-}
-class APIUserAbortError extends APIError {
-    constructor({ message } = {}) {
-        super(undefined, undefined, message || 'Request was aborted.', undefined);
-        this.status = undefined;
-    }
-}
-class APIConnectionError extends APIError {
-    constructor({ message, cause }) {
-        super(undefined, undefined, message || 'Connection error.', undefined);
-        this.status = undefined;
-        // in some environments the 'cause' property is already declared
-        // @ts-ignore
-        if (cause)
-            this.cause = cause;
-    }
-}
-class APIConnectionTimeoutError extends APIConnectionError {
-    constructor({ message } = {}) {
-        super({ message: message ?? 'Request timed out.' });
-    }
-}
-class BadRequestError extends APIError {
-    constructor() {
-        super(...arguments);
-        this.status = 400;
-    }
-}
-class AuthenticationError extends APIError {
-    constructor() {
-        super(...arguments);
-        this.status = 401;
-    }
-}
-class PermissionDeniedError extends APIError {
-    constructor() {
-        super(...arguments);
-        this.status = 403;
-    }
-}
-class NotFoundError extends APIError {
-    constructor() {
-        super(...arguments);
-        this.status = 404;
-    }
-}
-class ConflictError extends APIError {
-    constructor() {
-        super(...arguments);
-        this.status = 409;
-    }
-}
-class UnprocessableEntityError extends APIError {
-    constructor() {
-        super(...arguments);
-        this.status = 422;
-    }
-}
-class RateLimitError extends APIError {
-    constructor() {
-        super(...arguments);
-        this.status = 429;
-    }
-}
-class InternalServerError extends APIError {
-}
-//# sourceMappingURL=error.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/_shims/registry.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/_shims/registry.mjs
 let auto = false;
 let kind = undefined;
 let fetch = undefined;
@@ -41528,7 +41405,7 @@ const Encoder = (/* unused pure expression or super */ null && (FormDataEncoder)
 
 // EXTERNAL MODULE: external "node:stream"
 var external_node_stream_ = __nccwpck_require__(4492);
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/_shims/MultipartBody.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/_shims/MultipartBody.mjs
 /**
  * Disclaimer: modules in _shims aren't intended to be imported by SDK users.
  */
@@ -41543,7 +41420,7 @@ class MultipartBody {
 //# sourceMappingURL=MultipartBody.mjs.map
 // EXTERNAL MODULE: ./node_modules/.pnpm/web-streams-polyfill@3.3.3/node_modules/web-streams-polyfill/dist/ponyfill.es2018.js
 var ponyfill_es2018 = __nccwpck_require__(5304);
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/_shims/node-runtime.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/_shims/node-runtime.mjs
 
 
 
@@ -41600,7 +41477,7 @@ function getRuntime() {
     };
 }
 //# sourceMappingURL=node-runtime.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/_shims/index.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/_shims/index.mjs
 /**
  * Disclaimer: modules in _shims aren't intended to be imported by SDK users.
  */
@@ -41609,7 +41486,7 @@ function getRuntime() {
 if (!kind) setShims(getRuntime(), { auto: true });
 
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/uploads.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/uploads.mjs
 
 
 const isResponseLike = (value) => value != null &&
@@ -41762,7 +41639,7 @@ const addFormValue = async (form, key, value) => {
     }
 };
 //# sourceMappingURL=uploads.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/core.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/core.mjs
 var core_classPrivateFieldSet = (undefined && undefined.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -42613,9 +42490,139 @@ function isObj(obj) {
     return obj != null && typeof obj === 'object' && !Array.isArray(obj);
 }
 //# sourceMappingURL=core.mjs.map
-// EXTERNAL MODULE: ./node_modules/.pnpm/qs@6.12.2/node_modules/qs/lib/index.js
-var qs_lib = __nccwpck_require__(2292);
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/pagination.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/error.mjs
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+class error_CloudflareError extends Error {
+}
+class APIError extends error_CloudflareError {
+    constructor(status, error, message, headers) {
+        super(`${APIError.makeMessage(status, error, message)}`);
+        this.status = status;
+        this.headers = headers;
+        const data = error;
+        this.error = data;
+        this.errors = data?.['errors'] ?? [];
+    }
+    static makeMessage(status, error, message) {
+        const msg = error?.message ?
+            typeof error.message === 'string' ?
+                error.message
+                : JSON.stringify(error.message)
+            : error ? JSON.stringify(error)
+                : message;
+        if (status && msg) {
+            return `${status} ${msg}`;
+        }
+        if (status) {
+            return `${status} status code (no body)`;
+        }
+        if (msg) {
+            return msg;
+        }
+        return '(no status code or body)';
+    }
+    static generate(status, errorResponse, message, headers) {
+        if (!status) {
+            return new APIConnectionError({ cause: castToError(errorResponse) });
+        }
+        const error = errorResponse;
+        if (status === 400) {
+            return new BadRequestError(status, error, message, headers);
+        }
+        if (status === 401) {
+            return new AuthenticationError(status, error, message, headers);
+        }
+        if (status === 403) {
+            return new PermissionDeniedError(status, error, message, headers);
+        }
+        if (status === 404) {
+            return new NotFoundError(status, error, message, headers);
+        }
+        if (status === 409) {
+            return new ConflictError(status, error, message, headers);
+        }
+        if (status === 422) {
+            return new UnprocessableEntityError(status, error, message, headers);
+        }
+        if (status === 429) {
+            return new RateLimitError(status, error, message, headers);
+        }
+        if (status >= 500) {
+            return new InternalServerError(status, error, message, headers);
+        }
+        return new APIError(status, error, message, headers);
+    }
+}
+class APIUserAbortError extends APIError {
+    constructor({ message } = {}) {
+        super(undefined, undefined, message || 'Request was aborted.', undefined);
+        this.status = undefined;
+    }
+}
+class APIConnectionError extends APIError {
+    constructor({ message, cause }) {
+        super(undefined, undefined, message || 'Connection error.', undefined);
+        this.status = undefined;
+        // in some environments the 'cause' property is already declared
+        // @ts-ignore
+        if (cause)
+            this.cause = cause;
+    }
+}
+class APIConnectionTimeoutError extends APIConnectionError {
+    constructor({ message } = {}) {
+        super({ message: message ?? 'Request timed out.' });
+    }
+}
+class BadRequestError extends APIError {
+    constructor() {
+        super(...arguments);
+        this.status = 400;
+    }
+}
+class AuthenticationError extends APIError {
+    constructor() {
+        super(...arguments);
+        this.status = 401;
+    }
+}
+class PermissionDeniedError extends APIError {
+    constructor() {
+        super(...arguments);
+        this.status = 403;
+    }
+}
+class NotFoundError extends APIError {
+    constructor() {
+        super(...arguments);
+        this.status = 404;
+    }
+}
+class ConflictError extends APIError {
+    constructor() {
+        super(...arguments);
+        this.status = 409;
+    }
+}
+class UnprocessableEntityError extends APIError {
+    constructor() {
+        super(...arguments);
+        this.status = 422;
+    }
+}
+class RateLimitError extends APIError {
+    constructor() {
+        super(...arguments);
+        this.status = 429;
+    }
+}
+class InternalServerError extends APIError {
+}
+//# sourceMappingURL=error.mjs.map
+// EXTERNAL MODULE: ./node_modules/.pnpm/qs@6.13.0/node_modules/qs/lib/index.js
+var qs_lib = __nccwpck_require__(9769);
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/pagination.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class V4PagePagination extends AbstractPage {
@@ -42759,7 +42766,7 @@ class SinglePage extends AbstractPage {
     }
 }
 //# sourceMappingURL=pagination.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resource.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resource.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 class APIResource {
     constructor(client) {
@@ -42767,7 +42774,7 @@ class APIResource {
     }
 }
 //# sourceMappingURL=resource.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/accounts/members.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/accounts/members.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -42818,7 +42825,7 @@ class MemberListResponsesV4PagePaginationArray extends V4PagePaginationArray {
     Members.MemberListResponsesV4PagePaginationArray = MemberListResponsesV4PagePaginationArray;
 })(Members || (Members = {}));
 //# sourceMappingURL=members.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/shared.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/shared.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class RolesSinglePage extends SinglePage {
@@ -42826,7 +42833,7 @@ class RolesSinglePage extends SinglePage {
 class AuditLogsV4PagePaginationArray extends V4PagePaginationArray {
 }
 //# sourceMappingURL=shared.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/accounts/roles.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/accounts/roles.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -42850,7 +42857,7 @@ class Roles extends APIResource {
 })(Roles || (Roles = {}));
 
 //# sourceMappingURL=roles.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/accounts/accounts.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/accounts/accounts.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -42895,7 +42902,7 @@ class AccountListResponsesV4PagePaginationArray extends V4PagePaginationArray {
     Accounts.Roles = Roles;
 })(Accounts || (Accounts = {}));
 //# sourceMappingURL=accounts.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/origin-ca-certificates.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/origin-ca-certificates.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -42934,7 +42941,7 @@ class OriginCACertificates extends APIResource {
 class OriginCACertificatesSinglePage extends SinglePage {
 }
 //# sourceMappingURL=origin-ca-certificates.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/ips.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/ips.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -42947,7 +42954,7 @@ class IPs extends APIResource {
     }
 }
 //# sourceMappingURL=ips.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/memberships.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/memberships.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -42981,7 +42988,7 @@ class Memberships extends APIResource {
 class MembershipsV4PagePaginationArray extends V4PagePaginationArray {
 }
 //# sourceMappingURL=memberships.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/user/audit-logs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/user/audit-logs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -42998,7 +43005,7 @@ class AuditLogs extends APIResource {
 })(AuditLogs || (AuditLogs = {}));
 
 //# sourceMappingURL=audit-logs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/user/invites.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/user/invites.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -43029,7 +43036,7 @@ class InvitesSinglePage extends SinglePage {
     Invites.InvitesSinglePage = InvitesSinglePage;
 })(Invites || (Invites = {}));
 //# sourceMappingURL=invites.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/user/organizations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/user/organizations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -43064,7 +43071,7 @@ class OrganizationsV4PagePaginationArray extends V4PagePaginationArray {
     Organizations.OrganizationsV4PagePaginationArray = OrganizationsV4PagePaginationArray;
 })(Organizations || (Organizations = {}));
 //# sourceMappingURL=organizations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/user/subscriptions.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/user/subscriptions.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -43099,7 +43106,7 @@ class SubscriptionsSinglePage extends SinglePage {
 (function (Subscriptions) {
 })(Subscriptions || (Subscriptions = {}));
 //# sourceMappingURL=subscriptions.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/user/billing/history.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/user/billing/history.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -43122,7 +43129,7 @@ class BillingHistoriesV4PagePaginationArray extends V4PagePaginationArray {
     History.BillingHistoriesV4PagePaginationArray = BillingHistoriesV4PagePaginationArray;
 })(History || (History = {}));
 //# sourceMappingURL=history.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/user/billing/profile.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/user/billing/profile.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Profile extends APIResource {
@@ -43136,7 +43143,7 @@ class Profile extends APIResource {
 (function (Profile) {
 })(Profile || (Profile = {}));
 //# sourceMappingURL=profile.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/user/billing/billing.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/user/billing/billing.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -43154,7 +43161,7 @@ class Billing extends APIResource {
     Billing.Profile = Profile;
 })(Billing || (Billing = {}));
 //# sourceMappingURL=billing.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/user/tokens/permission-groups.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/user/tokens/permission-groups.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -43173,7 +43180,7 @@ class PermissionGroupListResponsesSinglePage extends SinglePage {
     PermissionGroups.PermissionGroupListResponsesSinglePage = PermissionGroupListResponsesSinglePage;
 })(PermissionGroups || (PermissionGroups = {}));
 //# sourceMappingURL=permission-groups.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/user/tokens/value.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/user/tokens/value.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class ValueResource extends APIResource {
@@ -43187,7 +43194,7 @@ class ValueResource extends APIResource {
 (function (ValueResource) {
 })(ValueResource || (ValueResource = {}));
 //# sourceMappingURL=value.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/user/tokens/tokens.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/user/tokens/tokens.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -43250,7 +43257,7 @@ class TokenListResponsesV4PagePaginationArray extends V4PagePaginationArray {
     Tokens.ValueResource = ValueResource;
 })(Tokens || (Tokens = {}));
 //# sourceMappingURL=tokens.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/user/user.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/user/user.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -43294,7 +43301,7 @@ class User extends APIResource {
     User.TokenListResponsesV4PagePaginationArray = TokenListResponsesV4PagePaginationArray;
 })(User || (User = {}));
 //# sourceMappingURL=user.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/activation-check.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zones/activation-check.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class ActivationCheck extends APIResource {
@@ -43310,7 +43317,7 @@ class ActivationCheck extends APIResource {
 (function (ActivationCheck) {
 })(ActivationCheck || (ActivationCheck = {}));
 //# sourceMappingURL=activation-check.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/custom-nameservers.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zones/custom-nameservers.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class CustomNameservers extends APIResource {
@@ -43336,7 +43343,7 @@ class CustomNameservers extends APIResource {
 (function (CustomNameservers) {
 })(CustomNameservers || (CustomNameservers = {}));
 //# sourceMappingURL=custom-nameservers.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/holds.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zones/holds.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Holds extends APIResource {
@@ -43374,7 +43381,29 @@ class Holds extends APIResource {
 (function (Holds) {
 })(Holds || (Holds = {}));
 //# sourceMappingURL=holds.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/subscriptions.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zones/settings.mjs
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+class Settings extends APIResource {
+    /**
+     * Updates a single zone setting by the identifier
+     */
+    edit(settingId, params, options) {
+        const { zone_id, ...body } = params;
+        return this._client.patch(`/zones/${zone_id}/settings/${settingId}`, { body, ...options })._thenUnwrap((obj) => obj.result);
+    }
+    /**
+     * Fetch a single zone setting by name
+     */
+    get(settingId, params, options) {
+        const { zone_id } = params;
+        return this._client.get(`/zones/${zone_id}/settings/${settingId}`, options)._thenUnwrap((obj) => obj.result);
+    }
+}
+(function (Settings) {
+})(Settings || (Settings = {}));
+//# sourceMappingURL=settings.mjs.map
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zones/subscriptions.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -43402,1650 +43431,7 @@ class subscriptions_Subscriptions extends APIResource {
 })(subscriptions_Subscriptions || (subscriptions_Subscriptions = {}));
 
 //# sourceMappingURL=subscriptions.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/advanced-ddos.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-
-class advanced_ddos_AdvancedDDoS extends APIResource {
-    /**
-     * Advanced protection from Distributed Denial of Service (DDoS) attacks on your
-     * website. This is an uneditable value that is 'on' in the case of Business and
-     * Enterprise zones.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/advanced_ddos`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (AdvancedDDoS) {
-    AdvancedDDoS.AdvancedDDoS = advanced_ddos_AdvancedDDoS;
-})(advanced_ddos_AdvancedDDoS || (advanced_ddos_AdvancedDDoS = {}));
-//# sourceMappingURL=advanced-ddos.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/always-online.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class AlwaysOnlineResource extends APIResource {
-    /**
-     * When enabled, Cloudflare serves limited copies of web pages available from the
-     * [Internet Archive's Wayback Machine](https://archive.org/web/) if your server is
-     * offline. Refer to
-     * [Always Online](https://developers.cloudflare.com/cache/about/always-online) for
-     * more information.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/always_online`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * When enabled, Cloudflare serves limited copies of web pages available from the
-     * [Internet Archive's Wayback Machine](https://archive.org/web/) if your server is
-     * offline. Refer to
-     * [Always Online](https://developers.cloudflare.com/cache/about/always-online) for
-     * more information.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/always_online`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (AlwaysOnlineResource) {
-})(AlwaysOnlineResource || (AlwaysOnlineResource = {}));
-//# sourceMappingURL=always-online.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/always-use-https.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-
-class always_use_https_AlwaysUseHTTPS extends APIResource {
-    /**
-     * Reply to all requests for URLs that use "http" with a 301 redirect to the
-     * equivalent "https" URL. If you only want to redirect for a subset of requests,
-     * consider creating an "Always use HTTPS" page rule.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/always_use_https`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Reply to all requests for URLs that use "http" with a 301 redirect to the
-     * equivalent "https" URL. If you only want to redirect for a subset of requests,
-     * consider creating an "Always use HTTPS" page rule.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/always_use_https`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (AlwaysUseHTTPS) {
-    AlwaysUseHTTPS.AlwaysUseHTTPS = always_use_https_AlwaysUseHTTPS;
-})(always_use_https_AlwaysUseHTTPS || (always_use_https_AlwaysUseHTTPS = {}));
-//# sourceMappingURL=always-use-https.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/automatic-https-rewrites.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-
-class automatic_https_rewrites_AutomaticHTTPSRewrites extends APIResource {
-    /**
-     * Enable the Automatic HTTPS Rewrites feature for this zone.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/automatic_https_rewrites`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Enable the Automatic HTTPS Rewrites feature for this zone.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/automatic_https_rewrites`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (AutomaticHTTPSRewrites) {
-    AutomaticHTTPSRewrites.AutomaticHTTPSRewrites = automatic_https_rewrites_AutomaticHTTPSRewrites;
-})(automatic_https_rewrites_AutomaticHTTPSRewrites || (automatic_https_rewrites_AutomaticHTTPSRewrites = {}));
-//# sourceMappingURL=automatic-https-rewrites.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/automatic-platform-optimization.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class AutomaticPlatformOptimizationResource extends APIResource {
-    /**
-     * [Automatic Platform Optimization for WordPress](https://developers.cloudflare.com/automatic-platform-optimization/)
-     * serves your WordPress site from Cloudflare's edge network and caches third-party
-     * fonts.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/automatic_platform_optimization`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * [Automatic Platform Optimization for WordPress](https://developers.cloudflare.com/automatic-platform-optimization/)
-     * serves your WordPress site from Cloudflare's edge network and caches third-party
-     * fonts.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/automatic_platform_optimization`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (AutomaticPlatformOptimizationResource) {
-})(AutomaticPlatformOptimizationResource || (AutomaticPlatformOptimizationResource = {}));
-//# sourceMappingURL=automatic-platform-optimization.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/brotli.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class BrotliResource extends APIResource {
-    /**
-     * When the client requesting an asset supports the Brotli compression algorithm,
-     * Cloudflare will serve a Brotli compressed version of the asset.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/brotli`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * When the client requesting an asset supports the Brotli compression algorithm,
-     * Cloudflare will serve a Brotli compressed version of the asset.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/brotli`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (BrotliResource) {
-})(BrotliResource || (BrotliResource = {}));
-//# sourceMappingURL=brotli.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/browser-cache-ttl.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class BrowserCacheTTLResource extends APIResource {
-    /**
-     * Browser Cache TTL (in seconds) specifies how long Cloudflare-cached resources
-     * will remain on your visitors' computers. Cloudflare will honor any larger times
-     * specified by your server.
-     * (https://support.cloudflare.com/hc/en-us/articles/200168276).
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/browser_cache_ttl`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Browser Cache TTL (in seconds) specifies how long Cloudflare-cached resources
-     * will remain on your visitors' computers. Cloudflare will honor any larger times
-     * specified by your server.
-     * (https://support.cloudflare.com/hc/en-us/articles/200168276).
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/browser_cache_ttl`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (BrowserCacheTTLResource) {
-})(BrowserCacheTTLResource || (BrowserCacheTTLResource = {}));
-//# sourceMappingURL=browser-cache-ttl.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/browser-check.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class BrowserCheckResource extends APIResource {
-    /**
-     * Browser Integrity Check is similar to Bad Behavior and looks for common HTTP
-     * headers abused most commonly by spammers and denies access to your page. It will
-     * also challenge visitors that do not have a user agent or a non standard user
-     * agent (also commonly used by abuse bots, crawlers or visitors).
-     * (https://support.cloudflare.com/hc/en-us/articles/200170086).
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/browser_check`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Browser Integrity Check is similar to Bad Behavior and looks for common HTTP
-     * headers abused most commonly by spammers and denies access to your page. It will
-     * also challenge visitors that do not have a user agent or a non standard user
-     * agent (also commonly used by abuse bots, crawlers or visitors).
-     * (https://support.cloudflare.com/hc/en-us/articles/200170086).
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/browser_check`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (BrowserCheckResource) {
-})(BrowserCheckResource || (BrowserCheckResource = {}));
-//# sourceMappingURL=browser-check.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/cache-level.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class CacheLevelResource extends APIResource {
-    /**
-     * Cache Level functions based off the setting level. The basic setting will cache
-     * most static resources (i.e., css, images, and JavaScript). The simplified
-     * setting will ignore the query string when delivering a cached resource. The
-     * aggressive setting will cache all static resources, including ones with a query
-     * string. (https://support.cloudflare.com/hc/en-us/articles/200168256).
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/cache_level`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Cache Level functions based off the setting level. The basic setting will cache
-     * most static resources (i.e., css, images, and JavaScript). The simplified
-     * setting will ignore the query string when delivering a cached resource. The
-     * aggressive setting will cache all static resources, including ones with a query
-     * string. (https://support.cloudflare.com/hc/en-us/articles/200168256).
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/cache_level`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (CacheLevelResource) {
-})(CacheLevelResource || (CacheLevelResource = {}));
-//# sourceMappingURL=cache-level.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/challenge-ttl.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class ChallengeTTLResource extends APIResource {
-    /**
-     * Specify how long a visitor is allowed access to your site after successfully
-     * completing a challenge (such as a CAPTCHA). After the TTL has expired the
-     * visitor will have to complete a new challenge. We recommend a 15 - 45 minute
-     * setting and will attempt to honor any setting above 45 minutes.
-     * (https://support.cloudflare.com/hc/en-us/articles/200170136).
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/challenge_ttl`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Specify how long a visitor is allowed access to your site after successfully
-     * completing a challenge (such as a CAPTCHA). After the TTL has expired the
-     * visitor will have to complete a new challenge. We recommend a 15 - 45 minute
-     * setting and will attempt to honor any setting above 45 minutes.
-     * (https://support.cloudflare.com/hc/en-us/articles/200170136).
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/challenge_ttl`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (ChallengeTTLResource) {
-})(ChallengeTTLResource || (ChallengeTTLResource = {}));
-//# sourceMappingURL=challenge-ttl.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/ciphers.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-
-class ciphers_Ciphers extends APIResource {
-    /**
-     * Changes ciphers setting.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/ciphers`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Gets ciphers setting.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/ciphers`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (Ciphers) {
-    Ciphers.Ciphers = ciphers_Ciphers;
-})(ciphers_Ciphers || (ciphers_Ciphers = {}));
-//# sourceMappingURL=ciphers.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/development-mode.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class DevelopmentModeResource extends APIResource {
-    /**
-     * Development Mode temporarily allows you to enter development mode for your
-     * websites if you need to make changes to your site. This will bypass Cloudflare's
-     * accelerated cache and slow down your site, but is useful if you are making
-     * changes to cacheable content (like images, css, or JavaScript) and would like to
-     * see those changes right away. Once entered, development mode will last for 3
-     * hours and then automatically toggle off.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/development_mode`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Development Mode temporarily allows you to enter development mode for your
-     * websites if you need to make changes to your site. This will bypass Cloudflare's
-     * accelerated cache and slow down your site, but is useful if you are making
-     * changes to cacheable content (like images, css, or JavaScript) and would like to
-     * see those changes right away. Once entered, development mode will last for 3
-     * hours and then automatically toggle off.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/development_mode`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (DevelopmentModeResource) {
-})(DevelopmentModeResource || (DevelopmentModeResource = {}));
-//# sourceMappingURL=development-mode.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/early-hints.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-
-class early_hints_EarlyHints extends APIResource {
-    /**
-     * When enabled, Cloudflare will attempt to speed up overall page loads by serving
-     * `103` responses with `Link` headers from the final response. Refer to
-     * [Early Hints](https://developers.cloudflare.com/cache/about/early-hints) for
-     * more information.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/early_hints`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * When enabled, Cloudflare will attempt to speed up overall page loads by serving
-     * `103` responses with `Link` headers from the final response. Refer to
-     * [Early Hints](https://developers.cloudflare.com/cache/about/early-hints) for
-     * more information.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/early_hints`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (EarlyHints) {
-    EarlyHints.EarlyHints = early_hints_EarlyHints;
-})(early_hints_EarlyHints || (early_hints_EarlyHints = {}));
-//# sourceMappingURL=early-hints.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/email-obfuscation.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class EmailObfuscationResource extends APIResource {
-    /**
-     * Encrypt email adresses on your web page from bots, while keeping them visible to
-     * humans. (https://support.cloudflare.com/hc/en-us/articles/200170016).
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/email_obfuscation`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Encrypt email adresses on your web page from bots, while keeping them visible to
-     * humans. (https://support.cloudflare.com/hc/en-us/articles/200170016).
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/email_obfuscation`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (EmailObfuscationResource) {
-})(EmailObfuscationResource || (EmailObfuscationResource = {}));
-//# sourceMappingURL=email-obfuscation.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/font-settings.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-
-class font_settings_FontSettings extends APIResource {
-    /**
-     * Enhance your website's font delivery with Cloudflare Fonts. Deliver Google
-     * Hosted fonts from your own domain, boost performance, and enhance user privacy.
-     * Refer to the Cloudflare Fonts documentation for more information.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/fonts`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Enhance your website's font delivery with Cloudflare Fonts. Deliver Google
-     * Hosted fonts from your own domain, boost performance, and enhance user privacy.
-     * Refer to the Cloudflare Fonts documentation for more information.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/fonts`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (FontSettings) {
-    FontSettings.FontSettings = font_settings_FontSettings;
-})(font_settings_FontSettings || (font_settings_FontSettings = {}));
-//# sourceMappingURL=font-settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/h2-prioritization.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class H2PrioritizationResource extends APIResource {
-    /**
-     * Gets HTTP/2 Edge Prioritization setting.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/h2_prioritization`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Gets HTTP/2 Edge Prioritization setting.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/h2_prioritization`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (H2PrioritizationResource) {
-})(H2PrioritizationResource || (H2PrioritizationResource = {}));
-//# sourceMappingURL=h2-prioritization.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/hotlink-protection.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class HotlinkProtectionResource extends APIResource {
-    /**
-     * When enabled, the Hotlink Protection option ensures that other sites cannot suck
-     * up your bandwidth by building pages that use images hosted on your site. Anytime
-     * a request for an image on your site hits Cloudflare, we check to ensure that
-     * it's not another site requesting them. People will still be able to download and
-     * view images from your page, but other sites won't be able to steal them for use
-     * on their own pages.
-     * (https://support.cloudflare.com/hc/en-us/articles/200170026).
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/hotlink_protection`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * When enabled, the Hotlink Protection option ensures that other sites cannot suck
-     * up your bandwidth by building pages that use images hosted on your site. Anytime
-     * a request for an image on your site hits Cloudflare, we check to ensure that
-     * it's not another site requesting them. People will still be able to download and
-     * view images from your page, but other sites won't be able to steal them for use
-     * on their own pages.
-     * (https://support.cloudflare.com/hc/en-us/articles/200170026).
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/hotlink_protection`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (HotlinkProtectionResource) {
-})(HotlinkProtectionResource || (HotlinkProtectionResource = {}));
-//# sourceMappingURL=hotlink-protection.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/http2.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class HTTP2Resource extends APIResource {
-    /**
-     * Value of the HTTP2 setting.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/http2`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Value of the HTTP2 setting.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/http2`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (HTTP2Resource) {
-})(HTTP2Resource || (HTTP2Resource = {}));
-//# sourceMappingURL=http2.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/http3.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class HTTP3Resource extends APIResource {
-    /**
-     * Value of the HTTP3 setting.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/http3`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Value of the HTTP3 setting.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/http3`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (HTTP3Resource) {
-})(HTTP3Resource || (HTTP3Resource = {}));
-//# sourceMappingURL=http3.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/image-resizing.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class ImageResizingResource extends APIResource {
-    /**
-     * Image Resizing provides on-demand resizing, conversion and optimisation for
-     * images served through Cloudflare's network. Refer to the
-     * [Image Resizing documentation](https://developers.cloudflare.com/images/) for
-     * more information.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/image_resizing`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Image Resizing provides on-demand resizing, conversion and optimisation for
-     * images served through Cloudflare's network. Refer to the
-     * [Image Resizing documentation](https://developers.cloudflare.com/images/) for
-     * more information.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/image_resizing`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (ImageResizingResource) {
-})(ImageResizingResource || (ImageResizingResource = {}));
-//# sourceMappingURL=image-resizing.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/ip-geolocation.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class IPGeolocationResource extends APIResource {
-    /**
-     * Enable IP Geolocation to have Cloudflare geolocate visitors to your website and
-     * pass the country code to you.
-     * (https://support.cloudflare.com/hc/en-us/articles/200168236).
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/ip_geolocation`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Enable IP Geolocation to have Cloudflare geolocate visitors to your website and
-     * pass the country code to you.
-     * (https://support.cloudflare.com/hc/en-us/articles/200168236).
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/ip_geolocation`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (IPGeolocationResource) {
-})(IPGeolocationResource || (IPGeolocationResource = {}));
-//# sourceMappingURL=ip-geolocation.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/ipv6.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class IPV6Resource extends APIResource {
-    /**
-     * Enable IPv6 on all subdomains that are Cloudflare enabled.
-     * (https://support.cloudflare.com/hc/en-us/articles/200168586).
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/ipv6`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Enable IPv6 on all subdomains that are Cloudflare enabled.
-     * (https://support.cloudflare.com/hc/en-us/articles/200168586).
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/ipv6`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (IPV6Resource) {
-})(IPV6Resource || (IPV6Resource = {}));
-//# sourceMappingURL=ipv6.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/min-tls-version.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class MinTLSVersionResource extends APIResource {
-    /**
-     * Changes Minimum TLS Version setting.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/min_tls_version`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Gets Minimum TLS Version setting.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/min_tls_version`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (MinTLSVersionResource) {
-})(MinTLSVersionResource || (MinTLSVersionResource = {}));
-//# sourceMappingURL=min-tls-version.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/minify.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class MinifyResource extends APIResource {
-    /**
-     * Automatically minify certain assets for your website. Refer to
-     * [Using Cloudflare Auto Minify](https://support.cloudflare.com/hc/en-us/articles/200168196)
-     * for more information.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/minify`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Automatically minify certain assets for your website. Refer to
-     * [Using Cloudflare Auto Minify](https://support.cloudflare.com/hc/en-us/articles/200168196)
-     * for more information.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/minify`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (MinifyResource) {
-})(MinifyResource || (MinifyResource = {}));
-//# sourceMappingURL=minify.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/mirage.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class MirageResource extends APIResource {
-    /**
-     * Automatically optimize image loading for website visitors on mobile devices.
-     * Refer to our
-     * [blog post](http://blog.cloudflare.com/mirage2-solving-mobile-speed) for more
-     * information.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/mirage`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Automatically optimize image loading for website visitors on mobile devices.
-     * Refer to our
-     * [blog post](http://blog.cloudflare.com/mirage2-solving-mobile-speed) for more
-     * information.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/mirage`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (MirageResource) {
-})(MirageResource || (MirageResource = {}));
-//# sourceMappingURL=mirage.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/mobile-redirect.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class MobileRedirectResource extends APIResource {
-    /**
-     * Automatically redirect visitors on mobile devices to a mobile-optimized
-     * subdomain. Refer to
-     * [Understanding Cloudflare Mobile Redirect](https://support.cloudflare.com/hc/articles/200168336)
-     * for more information.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/mobile_redirect`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Automatically redirect visitors on mobile devices to a mobile-optimized
-     * subdomain. Refer to
-     * [Understanding Cloudflare Mobile Redirect](https://support.cloudflare.com/hc/articles/200168336)
-     * for more information.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/mobile_redirect`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (MobileRedirectResource) {
-})(MobileRedirectResource || (MobileRedirectResource = {}));
-//# sourceMappingURL=mobile-redirect.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/nel.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class NELResource extends APIResource {
-    /**
-     * Automatically optimize image loading for website visitors on mobile devices.
-     * Refer to our [blog post](http://blog.cloudflare.com/nel-solving-mobile-speed)
-     * for more information.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/nel`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Enable Network Error Logging reporting on your zone. (Beta)
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/nel`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (NELResource) {
-})(NELResource || (NELResource = {}));
-//# sourceMappingURL=nel.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/opportunistic-encryption.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class OpportunisticEncryptionResource extends APIResource {
-    /**
-     * Changes Opportunistic Encryption setting.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/opportunistic_encryption`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Gets Opportunistic Encryption setting.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/opportunistic_encryption`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (OpportunisticEncryptionResource) {
-})(OpportunisticEncryptionResource || (OpportunisticEncryptionResource = {}));
-//# sourceMappingURL=opportunistic-encryption.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/opportunistic-onion.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class OpportunisticOnionResource extends APIResource {
-    /**
-     * Add an Alt-Svc header to all legitimate requests from Tor, allowing the
-     * connection to use our onion services instead of exit nodes.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/opportunistic_onion`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Add an Alt-Svc header to all legitimate requests from Tor, allowing the
-     * connection to use our onion services instead of exit nodes.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/opportunistic_onion`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (OpportunisticOnionResource) {
-})(OpportunisticOnionResource || (OpportunisticOnionResource = {}));
-//# sourceMappingURL=opportunistic-onion.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/orange-to-orange.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class OrangeToOrangeResource extends APIResource {
-    /**
-     * Orange to Orange (O2O) allows zones on Cloudflare to CNAME to other zones also
-     * on Cloudflare.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/orange_to_orange`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Orange to Orange (O2O) allows zones on Cloudflare to CNAME to other zones also
-     * on Cloudflare.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/orange_to_orange`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (OrangeToOrangeResource) {
-})(OrangeToOrangeResource || (OrangeToOrangeResource = {}));
-//# sourceMappingURL=orange-to-orange.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/origin-error-page-pass-thru.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class OriginErrorPagePassThruResource extends APIResource {
-    /**
-     * Cloudflare will proxy customer error pages on any 502,504 errors on origin
-     * server instead of showing a default Cloudflare error page. This does not apply
-     * to 522 errors and is limited to Enterprise Zones.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/origin_error_page_pass_thru`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Cloudflare will proxy customer error pages on any 502,504 errors on origin
-     * server instead of showing a default Cloudflare error page. This does not apply
-     * to 522 errors and is limited to Enterprise Zones.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/origin_error_page_pass_thru`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (OriginErrorPagePassThruResource) {
-})(OriginErrorPagePassThruResource || (OriginErrorPagePassThruResource = {}));
-//# sourceMappingURL=origin-error-page-pass-thru.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/origin-max-http-version.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class OriginMaxHTTPVersionResource extends APIResource {
-    /**
-     * Origin Max HTTP Setting Version sets the highest HTTP version Cloudflare will
-     * attempt to use with your origin. This setting allows Cloudflare to make HTTP/2
-     * requests to your origin. (Refer to
-     * [Enable HTTP/2 to Origin](https://developers.cloudflare.com/cache/how-to/enable-http2-to-origin/),
-     * for more information.). The default value is "2" for all plan types except ENT
-     * where it is "1"
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/origin_max_http_version`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Origin Max HTTP Setting Version sets the highest HTTP version Cloudflare will
-     * attempt to use with your origin. This setting allows Cloudflare to make HTTP/2
-     * requests to your origin. (Refer to
-     * [Enable HTTP/2 to Origin](https://developers.cloudflare.com/cache/how-to/enable-http2-to-origin/),
-     * for more information.). The default value is "2" for all plan types except ENT
-     * where it is "1"
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/origin_max_http_version`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (OriginMaxHTTPVersionResource) {
-})(OriginMaxHTTPVersionResource || (OriginMaxHTTPVersionResource = {}));
-//# sourceMappingURL=origin-max-http-version.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/polish.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class PolishResource extends APIResource {
-    /**
-     * Automatically optimize image loading for website visitors on mobile devices.
-     * Refer to our [blog post](http://blog.cloudflare.com/polish-solving-mobile-speed)
-     * for more information.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/polish`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Automatically optimize image loading for website visitors on mobile devices.
-     * Refer to our [blog post](http://blog.cloudflare.com/polish-solving-mobile-speed)
-     * for more information.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/polish`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (PolishResource) {
-})(PolishResource || (PolishResource = {}));
-//# sourceMappingURL=polish.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/prefetch-preload.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class PrefetchPreloadResource extends APIResource {
-    /**
-     * Cloudflare will prefetch any URLs that are included in the response headers.
-     * This is limited to Enterprise Zones.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/prefetch_preload`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Cloudflare will prefetch any URLs that are included in the response headers.
-     * This is limited to Enterprise Zones.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/prefetch_preload`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (PrefetchPreloadResource) {
-})(PrefetchPreloadResource || (PrefetchPreloadResource = {}));
-//# sourceMappingURL=prefetch-preload.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/proxy-read-timeout.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class ProxyReadTimeoutResource extends APIResource {
-    /**
-     * Maximum time between two read operations from origin.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/proxy_read_timeout`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Maximum time between two read operations from origin.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/proxy_read_timeout`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (ProxyReadTimeoutResource) {
-})(ProxyReadTimeoutResource || (ProxyReadTimeoutResource = {}));
-//# sourceMappingURL=proxy-read-timeout.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/pseudo-ipv4.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class PseudoIPV4Resource extends APIResource {
-    /**
-     * Value of the Pseudo IPv4 setting.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/pseudo_ipv4`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Value of the Pseudo IPv4 setting.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/pseudo_ipv4`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (PseudoIPV4Resource) {
-})(PseudoIPV4Resource || (PseudoIPV4Resource = {}));
-//# sourceMappingURL=pseudo-ipv4.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/response-buffering.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class ResponseBufferingResource extends APIResource {
-    /**
-     * Enables or disables buffering of responses from the proxied server. Cloudflare
-     * may buffer the whole payload to deliver it at once to the client versus allowing
-     * it to be delivered in chunks. By default, the proxied server streams directly
-     * and is not buffered by Cloudflare. This is limited to Enterprise Zones.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/response_buffering`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Enables or disables buffering of responses from the proxied server. Cloudflare
-     * may buffer the whole payload to deliver it at once to the client versus allowing
-     * it to be delivered in chunks. By default, the proxied server streams directly
-     * and is not buffered by Cloudflare. This is limited to Enterprise Zones.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/response_buffering`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (ResponseBufferingResource) {
-})(ResponseBufferingResource || (ResponseBufferingResource = {}));
-//# sourceMappingURL=response-buffering.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/rocket-loader.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class RocketLoaderResource extends APIResource {
-    /**
-     * Rocket Loader is a general-purpose asynchronous JavaScript optimisation that
-     * prioritises rendering your content while loading your site's Javascript
-     * asynchronously. Turning on Rocket Loader will immediately improve a web page's
-     * rendering time sometimes measured as Time to First Paint (TTFP), and also the
-     * `window.onload` time (assuming there is JavaScript on the page). This can have a
-     * positive impact on your Google search ranking. When turned on, Rocket Loader
-     * will automatically defer the loading of all Javascript referenced in your HTML,
-     * with no configuration required. Refer to
-     * [Understanding Rocket Loader](https://support.cloudflare.com/hc/articles/200168056)
-     * for more information.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/rocket_loader`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Rocket Loader is a general-purpose asynchronous JavaScript optimisation that
-     * prioritises rendering your content while loading your site's Javascript
-     * asynchronously. Turning on Rocket Loader will immediately improve a web page's
-     * rendering time sometimes measured as Time to First Paint (TTFP), and also the
-     * `window.onload` time (assuming there is JavaScript on the page). This can have a
-     * positive impact on your Google search ranking. When turned on, Rocket Loader
-     * will automatically defer the loading of all Javascript referenced in your HTML,
-     * with no configuration required. Refer to
-     * [Understanding Rocket Loader](https://support.cloudflare.com/hc/articles/200168056)
-     * for more information.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/rocket_loader`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (RocketLoaderResource) {
-})(RocketLoaderResource || (RocketLoaderResource = {}));
-//# sourceMappingURL=rocket-loader.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/security-headers.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-
-class security_headers_SecurityHeaders extends APIResource {
-    /**
-     * Cloudflare security header for a zone.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/security_header`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Cloudflare security header for a zone.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/security_header`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (SecurityHeaders) {
-    SecurityHeaders.SecurityHeaders = security_headers_SecurityHeaders;
-})(security_headers_SecurityHeaders || (security_headers_SecurityHeaders = {}));
-//# sourceMappingURL=security-headers.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/security-level.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class SecurityLevelResource extends APIResource {
-    /**
-     * Choose the appropriate security profile for your website, which will
-     * automatically adjust each of the security settings. If you choose to customize
-     * an individual security setting, the profile will become Custom.
-     * (https://support.cloudflare.com/hc/en-us/articles/200170056).
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/security_level`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Choose the appropriate security profile for your website, which will
-     * automatically adjust each of the security settings. If you choose to customize
-     * an individual security setting, the profile will become Custom.
-     * (https://support.cloudflare.com/hc/en-us/articles/200170056).
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/security_level`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (SecurityLevelResource) {
-})(SecurityLevelResource || (SecurityLevelResource = {}));
-//# sourceMappingURL=security-level.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/server-side-excludes.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-
-class server_side_excludes_ServerSideExcludes extends APIResource {
-    /**
-     * If there is sensitive content on your website that you want visible to real
-     * visitors, but that you want to hide from suspicious visitors, all you have to do
-     * is wrap the content with Cloudflare SSE tags. Wrap any content that you want to
-     * be excluded from suspicious visitors in the following SSE tags:
-     * <!--sse--><!--/sse-->. For example: <!--sse--> Bad visitors won't see my phone
-     * number, 555-555-5555 <!--/sse-->. Note: SSE only will work with HTML. If you
-     * have HTML minification enabled, you won't see the SSE tags in your HTML source
-     * when it's served through Cloudflare. SSE will still function in this case, as
-     * Cloudflare's HTML minification and SSE functionality occur on-the-fly as the
-     * resource moves through our network to the visitor's computer.
-     * (https://support.cloudflare.com/hc/en-us/articles/200170036).
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/server_side_exclude`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * If there is sensitive content on your website that you want visible to real
-     * visitors, but that you want to hide from suspicious visitors, all you have to do
-     * is wrap the content with Cloudflare SSE tags. Wrap any content that you want to
-     * be excluded from suspicious visitors in the following SSE tags:
-     * <!--sse--><!--/sse-->. For example: <!--sse--> Bad visitors won't see my phone
-     * number, 555-555-5555 <!--/sse-->. Note: SSE only will work with HTML. If you
-     * have HTML minification enabled, you won't see the SSE tags in your HTML source
-     * when it's served through Cloudflare. SSE will still function in this case, as
-     * Cloudflare's HTML minification and SSE functionality occur on-the-fly as the
-     * resource moves through our network to the visitor's computer.
-     * (https://support.cloudflare.com/hc/en-us/articles/200170036).
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/server_side_exclude`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (ServerSideExcludes) {
-    ServerSideExcludes.ServerSideExcludes = server_side_excludes_ServerSideExcludes;
-})(server_side_excludes_ServerSideExcludes || (server_side_excludes_ServerSideExcludes = {}));
-//# sourceMappingURL=server-side-excludes.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/sort-query-string-for-cache.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class SortQueryStringForCacheResource extends APIResource {
-    /**
-     * Cloudflare will treat files with the same query strings as the same file in
-     * cache, regardless of the order of the query strings. This is limited to
-     * Enterprise Zones.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/sort_query_string_for_cache`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Cloudflare will treat files with the same query strings as the same file in
-     * cache, regardless of the order of the query strings. This is limited to
-     * Enterprise Zones.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/sort_query_string_for_cache`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (SortQueryStringForCacheResource) {
-})(SortQueryStringForCacheResource || (SortQueryStringForCacheResource = {}));
-//# sourceMappingURL=sort-query-string-for-cache.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/ssl.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class SSLResource extends APIResource {
-    /**
-     * SSL encrypts your visitor's connection and safeguards credit card numbers and
-     * other personal data to and from your website. SSL can take up to 5 minutes to
-     * fully activate. Requires Cloudflare active on your root domain or www domain.
-     * Off: no SSL between the visitor and Cloudflare, and no SSL between Cloudflare
-     * and your web server (all HTTP traffic). Flexible: SSL between the visitor and
-     * Cloudflare -- visitor sees HTTPS on your site, but no SSL between Cloudflare and
-     * your web server. You don't need to have an SSL cert on your web server, but your
-     * vistors will still see the site as being HTTPS enabled. Full: SSL between the
-     * visitor and Cloudflare -- visitor sees HTTPS on your site, and SSL between
-     * Cloudflare and your web server. You'll need to have your own SSL cert or
-     * self-signed cert at the very least. Full (Strict): SSL between the visitor and
-     * Cloudflare -- visitor sees HTTPS on your site, and SSL between Cloudflare and
-     * your web server. You'll need to have a valid SSL certificate installed on your
-     * web server. This certificate must be signed by a certificate authority, have an
-     * expiration date in the future, and respond for the request domain name
-     * (hostname). (https://support.cloudflare.com/hc/en-us/articles/200170416).
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/ssl`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * SSL encrypts your visitor's connection and safeguards credit card numbers and
-     * other personal data to and from your website. SSL can take up to 5 minutes to
-     * fully activate. Requires Cloudflare active on your root domain or www domain.
-     * Off: no SSL between the visitor and Cloudflare, and no SSL between Cloudflare
-     * and your web server (all HTTP traffic). Flexible: SSL between the visitor and
-     * Cloudflare -- visitor sees HTTPS on your site, but no SSL between Cloudflare and
-     * your web server. You don't need to have an SSL cert on your web server, but your
-     * vistors will still see the site as being HTTPS enabled. Full: SSL between the
-     * visitor and Cloudflare -- visitor sees HTTPS on your site, and SSL between
-     * Cloudflare and your web server. You'll need to have your own SSL cert or
-     * self-signed cert at the very least. Full (Strict): SSL between the visitor and
-     * Cloudflare -- visitor sees HTTPS on your site, and SSL between Cloudflare and
-     * your web server. You'll need to have a valid SSL certificate installed on your
-     * web server. This certificate must be signed by a certificate authority, have an
-     * expiration date in the future, and respond for the request domain name
-     * (hostname). (https://support.cloudflare.com/hc/en-us/articles/200170416).
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/ssl`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (SSLResource) {
-})(SSLResource || (SSLResource = {}));
-//# sourceMappingURL=ssl.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/ssl-recommender.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class SSLRecommenderResource extends APIResource {
-    /**
-     * Enrollment in the SSL/TLS Recommender service which tries to detect and
-     * recommend (by sending periodic emails) the most secure SSL/TLS setting your
-     * origin servers support.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/ssl_recommender`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Enrollment in the SSL/TLS Recommender service which tries to detect and
-     * recommend (by sending periodic emails) the most secure SSL/TLS setting your
-     * origin servers support.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/ssl_recommender`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (SSLRecommenderResource) {
-})(SSLRecommenderResource || (SSLRecommenderResource = {}));
-//# sourceMappingURL=ssl-recommender.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/tls-1-3.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class TLS1_3Resource extends APIResource {
-    /**
-     * Changes TLS 1.3 setting.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/tls_1_3`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Gets TLS 1.3 setting enabled for a zone.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/tls_1_3`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (TLS1_3Resource) {
-})(TLS1_3Resource || (TLS1_3Resource = {}));
-//# sourceMappingURL=tls-1-3.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/tls-client-auth.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class TLSClientAuthResource extends APIResource {
-    /**
-     * TLS Client Auth requires Cloudflare to connect to your origin server using a
-     * client certificate (Enterprise Only).
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/tls_client_auth`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * TLS Client Auth requires Cloudflare to connect to your origin server using a
-     * client certificate (Enterprise Only).
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/tls_client_auth`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (TLSClientAuthResource) {
-})(TLSClientAuthResource || (TLSClientAuthResource = {}));
-//# sourceMappingURL=tls-client-auth.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/true-client-ip-header.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class TrueClientIPHeaderResource extends APIResource {
-    /**
-     * Allows customer to continue to use True Client IP (Akamai feature) in the
-     * headers we send to the origin. This is limited to Enterprise Zones.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/true_client_ip_header`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Allows customer to continue to use True Client IP (Akamai feature) in the
-     * headers we send to the origin. This is limited to Enterprise Zones.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/true_client_ip_header`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (TrueClientIPHeaderResource) {
-})(TrueClientIPHeaderResource || (TrueClientIPHeaderResource = {}));
-//# sourceMappingURL=true-client-ip-header.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/waf.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class WAFResource extends APIResource {
-    /**
-     * The WAF examines HTTP requests to your website. It inspects both GET and POST
-     * requests and applies rules to help filter out illegitimate traffic from
-     * legitimate website visitors. The Cloudflare WAF inspects website addresses or
-     * URLs to detect anything out of the ordinary. If the Cloudflare WAF determines
-     * suspicious user behavior, then the WAF will 'challenge' the web visitor with a
-     * page that asks them to submit a CAPTCHA successfully to continue their action.
-     * If the challenge is failed, the action will be stopped. What this means is that
-     * Cloudflare's WAF will block any traffic identified as illegitimate before it
-     * reaches your origin web server.
-     * (https://support.cloudflare.com/hc/en-us/articles/200172016).
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/waf`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * The WAF examines HTTP requests to your website. It inspects both GET and POST
-     * requests and applies rules to help filter out illegitimate traffic from
-     * legitimate website visitors. The Cloudflare WAF inspects website addresses or
-     * URLs to detect anything out of the ordinary. If the Cloudflare WAF determines
-     * suspicious user behavior, then the WAF will 'challenge' the web visitor with a
-     * page that asks them to submit a CAPTCHA successfully to continue their action.
-     * If the challenge is failed, the action will be stopped. What this means is that
-     * Cloudflare's WAF will block any traffic identified as illegitimate before it
-     * reaches your origin web server.
-     * (https://support.cloudflare.com/hc/en-us/articles/200172016).
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/waf`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (WAFResource) {
-})(WAFResource || (WAFResource = {}));
-//# sourceMappingURL=waf.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/webp.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class WebPResource extends APIResource {
-    /**
-     * When the client requesting the image supports the WebP image codec, and WebP
-     * offers a performance advantage over the original image format, Cloudflare will
-     * serve a WebP version of the original image.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/webp`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * When the client requesting the image supports the WebP image codec, and WebP
-     * offers a performance advantage over the original image format, Cloudflare will
-     * serve a WebP version of the original image.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/webp`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (WebPResource) {
-})(WebPResource || (WebPResource = {}));
-//# sourceMappingURL=webp.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/websocket.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class WebsocketResource extends APIResource {
-    /**
-     * Changes Websockets setting. For more information about Websockets, please refer
-     * to
-     * [Using Cloudflare with WebSockets](https://support.cloudflare.com/hc/en-us/articles/200169466-Using-Cloudflare-with-WebSockets).
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/websockets`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Gets Websockets setting. For more information about Websockets, please refer to
-     * [Using Cloudflare with WebSockets](https://support.cloudflare.com/hc/en-us/articles/200169466-Using-Cloudflare-with-WebSockets).
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/websockets`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (WebsocketResource) {
-})(WebsocketResource || (WebsocketResource = {}));
-//# sourceMappingURL=websocket.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/zero-rtt.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-class ZeroRTTResource extends APIResource {
-    /**
-     * Changes the 0-RTT session resumption setting.
-     */
-    edit(params, options) {
-        const { zone_id, ...body } = params;
-        return this._client.patch(`/zones/${zone_id}/settings/0rtt`, { body, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    /**
-     * Gets 0-RTT session resumption setting.
-     */
-    get(params, options) {
-        const { zone_id } = params;
-        return this._client.get(`/zones/${zone_id}/settings/0rtt`, options)._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (ZeroRTTResource) {
-})(ZeroRTTResource || (ZeroRTTResource = {}));
-//# sourceMappingURL=zero-rtt.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/settings/settings.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class Settings extends APIResource {
-    constructor() {
-        super(...arguments);
-        this.zeroRTT = new ZeroRTTResource(this._client);
-        this.advancedDDoS = new advanced_ddos_AdvancedDDoS(this._client);
-        this.alwaysOnline = new AlwaysOnlineResource(this._client);
-        this.alwaysUseHTTPS = new always_use_https_AlwaysUseHTTPS(this._client);
-        this.automaticHTTPSRewrites = new automatic_https_rewrites_AutomaticHTTPSRewrites(this._client);
-        this.automaticPlatformOptimization = new AutomaticPlatformOptimizationResource(this._client);
-        this.brotli = new BrotliResource(this._client);
-        this.browserCacheTTL = new BrowserCacheTTLResource(this._client);
-        this.browserCheck = new BrowserCheckResource(this._client);
-        this.cacheLevel = new CacheLevelResource(this._client);
-        this.challengeTTL = new ChallengeTTLResource(this._client);
-        this.ciphers = new ciphers_Ciphers(this._client);
-        this.developmentMode = new DevelopmentModeResource(this._client);
-        this.earlyHints = new early_hints_EarlyHints(this._client);
-        this.emailObfuscation = new EmailObfuscationResource(this._client);
-        this.h2Prioritization = new H2PrioritizationResource(this._client);
-        this.hotlinkProtection = new HotlinkProtectionResource(this._client);
-        this.http2 = new HTTP2Resource(this._client);
-        this.http3 = new HTTP3Resource(this._client);
-        this.imageResizing = new ImageResizingResource(this._client);
-        this.ipGeolocation = new IPGeolocationResource(this._client);
-        this.ipv6 = new IPV6Resource(this._client);
-        this.minTLSVersion = new MinTLSVersionResource(this._client);
-        this.minify = new MinifyResource(this._client);
-        this.mirage = new MirageResource(this._client);
-        this.mobileRedirect = new MobileRedirectResource(this._client);
-        this.nel = new NELResource(this._client);
-        this.opportunisticEncryption = new OpportunisticEncryptionResource(this._client);
-        this.opportunisticOnion = new OpportunisticOnionResource(this._client);
-        this.orangeToOrange = new OrangeToOrangeResource(this._client);
-        this.originErrorPagePassThru = new OriginErrorPagePassThruResource(this._client);
-        this.originMaxHTTPVersion = new OriginMaxHTTPVersionResource(this._client);
-        this.polish = new PolishResource(this._client);
-        this.prefetchPreload = new PrefetchPreloadResource(this._client);
-        this.proxyReadTimeout = new ProxyReadTimeoutResource(this._client);
-        this.pseudoIPV4 = new PseudoIPV4Resource(this._client);
-        this.responseBuffering = new ResponseBufferingResource(this._client);
-        this.rocketLoader = new RocketLoaderResource(this._client);
-        this.securityHeaders = new security_headers_SecurityHeaders(this._client);
-        this.securityLevel = new SecurityLevelResource(this._client);
-        this.serverSideExcludes = new server_side_excludes_ServerSideExcludes(this._client);
-        this.sortQueryStringForCache = new SortQueryStringForCacheResource(this._client);
-        this.ssl = new SSLResource(this._client);
-        this.sslRecommender = new SSLRecommenderResource(this._client);
-        this.tls1_3 = new TLS1_3Resource(this._client);
-        this.tlsClientAuth = new TLSClientAuthResource(this._client);
-        this.trueClientIPHeader = new TrueClientIPHeaderResource(this._client);
-        this.waf = new WAFResource(this._client);
-        this.WebP = new WebPResource(this._client);
-        this.websocket = new WebsocketResource(this._client);
-        this.fontSettings = new font_settings_FontSettings(this._client);
-    }
-}
-(function (Settings) {
-    Settings.ZeroRTTResource = ZeroRTTResource;
-    Settings.AdvancedDDoS = advanced_ddos_AdvancedDDoS;
-    Settings.AlwaysOnlineResource = AlwaysOnlineResource;
-    Settings.AlwaysUseHTTPS = always_use_https_AlwaysUseHTTPS;
-    Settings.AutomaticHTTPSRewrites = automatic_https_rewrites_AutomaticHTTPSRewrites;
-    Settings.AutomaticPlatformOptimizationResource = AutomaticPlatformOptimizationResource;
-    Settings.BrotliResource = BrotliResource;
-    Settings.BrowserCacheTTLResource = BrowserCacheTTLResource;
-    Settings.BrowserCheckResource = BrowserCheckResource;
-    Settings.CacheLevelResource = CacheLevelResource;
-    Settings.ChallengeTTLResource = ChallengeTTLResource;
-    Settings.Ciphers = ciphers_Ciphers;
-    Settings.DevelopmentModeResource = DevelopmentModeResource;
-    Settings.EarlyHints = early_hints_EarlyHints;
-    Settings.EmailObfuscationResource = EmailObfuscationResource;
-    Settings.H2PrioritizationResource = H2PrioritizationResource;
-    Settings.HotlinkProtectionResource = HotlinkProtectionResource;
-    Settings.HTTP2Resource = HTTP2Resource;
-    Settings.HTTP3Resource = HTTP3Resource;
-    Settings.ImageResizingResource = ImageResizingResource;
-    Settings.IPGeolocationResource = IPGeolocationResource;
-    Settings.IPV6Resource = IPV6Resource;
-    Settings.MinTLSVersionResource = MinTLSVersionResource;
-    Settings.MinifyResource = MinifyResource;
-    Settings.MirageResource = MirageResource;
-    Settings.MobileRedirectResource = MobileRedirectResource;
-    Settings.NELResource = NELResource;
-    Settings.OpportunisticEncryptionResource = OpportunisticEncryptionResource;
-    Settings.OpportunisticOnionResource = OpportunisticOnionResource;
-    Settings.OrangeToOrangeResource = OrangeToOrangeResource;
-    Settings.OriginErrorPagePassThruResource = OriginErrorPagePassThruResource;
-    Settings.OriginMaxHTTPVersionResource = OriginMaxHTTPVersionResource;
-    Settings.PolishResource = PolishResource;
-    Settings.PrefetchPreloadResource = PrefetchPreloadResource;
-    Settings.ProxyReadTimeoutResource = ProxyReadTimeoutResource;
-    Settings.PseudoIPV4Resource = PseudoIPV4Resource;
-    Settings.ResponseBufferingResource = ResponseBufferingResource;
-    Settings.RocketLoaderResource = RocketLoaderResource;
-    Settings.SecurityHeaders = security_headers_SecurityHeaders;
-    Settings.SecurityLevelResource = SecurityLevelResource;
-    Settings.ServerSideExcludes = server_side_excludes_ServerSideExcludes;
-    Settings.SortQueryStringForCacheResource = SortQueryStringForCacheResource;
-    Settings.SSLResource = SSLResource;
-    Settings.SSLRecommenderResource = SSLRecommenderResource;
-    Settings.TLS1_3Resource = TLS1_3Resource;
-    Settings.TLSClientAuthResource = TLSClientAuthResource;
-    Settings.TrueClientIPHeaderResource = TrueClientIPHeaderResource;
-    Settings.WAFResource = WAFResource;
-    Settings.WebPResource = WebPResource;
-    Settings.WebsocketResource = WebsocketResource;
-    Settings.FontSettings = font_settings_FontSettings;
-})(Settings || (Settings = {}));
-//# sourceMappingURL=settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zones/zones.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zones/zones.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -45108,7 +43494,7 @@ class ZonesV4PagePaginationArray extends V4PagePaginationArray {
     Zones.Subscriptions = subscriptions_Subscriptions;
 })(Zones || (Zones = {}));
 //# sourceMappingURL=zones.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/load-balancers/previews.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/load-balancers/previews.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Previews extends APIResource {
@@ -45123,7 +43509,7 @@ class Previews extends APIResource {
 (function (Previews) {
 })(Previews || (Previews = {}));
 //# sourceMappingURL=previews.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/load-balancers/regions.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/load-balancers/regions.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Regions extends APIResource {
@@ -45148,7 +43534,7 @@ class Regions extends APIResource {
 (function (Regions) {
 })(Regions || (Regions = {}));
 //# sourceMappingURL=regions.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/load-balancers/searches.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/load-balancers/searches.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Searches extends APIResource {
@@ -45166,7 +43552,7 @@ class Searches extends APIResource {
 (function (Searches) {
 })(Searches || (Searches = {}));
 //# sourceMappingURL=searches.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/load-balancers/monitors/previews.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/load-balancers/monitors/previews.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class previews_Previews extends APIResource {
@@ -45185,7 +43571,7 @@ class previews_Previews extends APIResource {
 (function (Previews) {
 })(previews_Previews || (previews_Previews = {}));
 //# sourceMappingURL=previews.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/load-balancers/monitors/references.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/load-balancers/monitors/references.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class References extends APIResource {
@@ -45200,7 +43586,7 @@ class References extends APIResource {
 (function (References) {
 })(References || (References = {}));
 //# sourceMappingURL=references.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/load-balancers/monitors/monitors.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/load-balancers/monitors/monitors.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -45273,7 +43659,7 @@ class MonitorsSinglePage extends SinglePage {
     Monitors.References = References;
 })(Monitors || (Monitors = {}));
 //# sourceMappingURL=monitors.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/load-balancers/pools/health.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/load-balancers/pools/health.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Health extends APIResource {
@@ -45299,7 +43685,7 @@ class Health extends APIResource {
 (function (Health) {
 })(Health || (Health = {}));
 //# sourceMappingURL=health.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/load-balancers/pools/references.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/load-balancers/pools/references.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class references_References extends APIResource {
@@ -45314,7 +43700,7 @@ class references_References extends APIResource {
 (function (References) {
 })(references_References || (references_References = {}));
 //# sourceMappingURL=references.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/load-balancers/pools/pools.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/load-balancers/pools/pools.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -45390,7 +43776,7 @@ class PoolsSinglePage extends SinglePage {
     Pools.References = references_References;
 })(Pools || (Pools = {}));
 //# sourceMappingURL=pools.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/load-balancers/load-balancers.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/load-balancers/load-balancers.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -45469,7 +43855,7 @@ class LoadBalancersSinglePage extends SinglePage {
     LoadBalancers.Searches = Searches;
 })(LoadBalancers || (LoadBalancers = {}));
 //# sourceMappingURL=load-balancers.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/cache/cache-reserve.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/cache/cache-reserve.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class CacheReserveResource extends APIResource {
@@ -45524,7 +43910,7 @@ class CacheReserveResource extends APIResource {
 (function (CacheReserveResource) {
 })(CacheReserveResource || (CacheReserveResource = {}));
 //# sourceMappingURL=cache-reserve.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/cache/regional-tiered-cache.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/cache/regional-tiered-cache.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class RegionalTieredCacheResource extends APIResource {
@@ -45553,7 +43939,7 @@ class RegionalTieredCacheResource extends APIResource {
 (function (RegionalTieredCacheResource) {
 })(RegionalTieredCacheResource || (RegionalTieredCacheResource = {}));
 //# sourceMappingURL=regional-tiered-cache.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/cache/smart-tiered-cache.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/cache/smart-tiered-cache.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class SmartTieredCache extends APIResource {
@@ -45585,7 +43971,7 @@ class SmartTieredCache extends APIResource {
 (function (SmartTieredCache) {
 })(SmartTieredCache || (SmartTieredCache = {}));
 //# sourceMappingURL=smart-tiered-cache.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/cache/variants.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/cache/variants.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Variants extends APIResource {
@@ -45626,7 +44012,7 @@ class Variants extends APIResource {
 (function (Variants) {
 })(Variants || (Variants = {}));
 //# sourceMappingURL=variants.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/cache/cache.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/cache/cache.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -45721,7 +44107,7 @@ class Cache extends APIResource {
     Cache.RegionalTieredCacheResource = RegionalTieredCacheResource;
 })(Cache || (Cache = {}));
 //# sourceMappingURL=cache.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/ssl/analyze.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/ssl/analyze.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Analyze extends APIResource {
@@ -45737,7 +44123,7 @@ class Analyze extends APIResource {
 (function (Analyze) {
 })(Analyze || (Analyze = {}));
 //# sourceMappingURL=analyze.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/ssl/recommendations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/ssl/recommendations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Recommendations extends APIResource {
@@ -45751,7 +44137,7 @@ class Recommendations extends APIResource {
 (function (Recommendations) {
 })(Recommendations || (Recommendations = {}));
 //# sourceMappingURL=recommendations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/ssl/verification.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/ssl/verification.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class VerificationResource extends APIResource {
@@ -45779,7 +44165,7 @@ class VerificationResource extends APIResource {
 (function (VerificationResource) {
 })(VerificationResource || (VerificationResource = {}));
 //# sourceMappingURL=verification.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/ssl/certificate-packs/order.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/ssl/certificate-packs/order.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Order extends APIResource {
@@ -45797,7 +44183,7 @@ class Order extends APIResource {
 (function (Order) {
 })(Order || (Order = {}));
 //# sourceMappingURL=order.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/ssl/certificate-packs/quota.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/ssl/certificate-packs/quota.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Quota extends APIResource {
@@ -45812,7 +44198,7 @@ class Quota extends APIResource {
 (function (Quota) {
 })(Quota || (Quota = {}));
 //# sourceMappingURL=quota.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/ssl/certificate-packs/certificate-packs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/ssl/certificate-packs/certificate-packs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -45867,7 +44253,7 @@ class CertificatePackListResponsesSinglePage extends SinglePage {
     CertificatePacks.Quota = Quota;
 })(CertificatePacks || (CertificatePacks = {}));
 //# sourceMappingURL=certificate-packs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/ssl/universal/settings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/ssl/universal/settings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class settings_Settings extends APIResource {
@@ -45892,7 +44278,7 @@ class settings_Settings extends APIResource {
 (function (Settings) {
 })(settings_Settings || (settings_Settings = {}));
 //# sourceMappingURL=settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/ssl/universal/universal.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/ssl/universal/universal.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -45906,7 +44292,7 @@ class Universal extends APIResource {
     Universal.Settings = settings_Settings;
 })(Universal || (Universal = {}));
 //# sourceMappingURL=universal.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/ssl/ssl.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/ssl/ssl.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -45933,7 +44319,7 @@ class SSL extends APIResource {
     SSL.VerificationResource = VerificationResource;
 })(SSL || (SSL = {}));
 //# sourceMappingURL=ssl.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/subscriptions.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/subscriptions.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -45974,7 +44360,7 @@ class resources_subscriptions_Subscriptions extends APIResource {
 }
 
 //# sourceMappingURL=subscriptions.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/acm/total-tls.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/acm/total-tls.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class TotalTLS extends APIResource {
@@ -45996,7 +44382,7 @@ class TotalTLS extends APIResource {
 (function (TotalTLS) {
 })(TotalTLS || (TotalTLS = {}));
 //# sourceMappingURL=total-tls.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/acm/acm.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/acm/acm.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46010,7 +44396,7 @@ class ACM extends APIResource {
     ACM.TotalTLS = TotalTLS;
 })(ACM || (ACM = {}));
 //# sourceMappingURL=acm.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/argo/smart-routing.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/argo/smart-routing.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class SmartRouting extends APIResource {
@@ -46032,7 +44418,7 @@ class SmartRouting extends APIResource {
 (function (SmartRouting) {
 })(SmartRouting || (SmartRouting = {}));
 //# sourceMappingURL=smart-routing.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/argo/tiered-caching.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/argo/tiered-caching.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class TieredCaching extends APIResource {
@@ -46054,7 +44440,7 @@ class TieredCaching extends APIResource {
 (function (TieredCaching) {
 })(TieredCaching || (TieredCaching = {}));
 //# sourceMappingURL=tiered-caching.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/argo/argo.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/argo/argo.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46071,7 +44457,7 @@ class Argo extends APIResource {
     Argo.TieredCaching = TieredCaching;
 })(Argo || (Argo = {}));
 //# sourceMappingURL=argo.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/plans.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/plans.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46092,7 +44478,7 @@ class Plans extends APIResource {
 class AvailableRatePlansSinglePage extends SinglePage {
 }
 //# sourceMappingURL=plans.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/rate-plans.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/rate-plans.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class RatePlans extends APIResource {
@@ -46104,7 +44490,7 @@ class RatePlans extends APIResource {
     }
 }
 //# sourceMappingURL=rate-plans.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/certificate-authorities/hostname-associations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/certificate-authorities/hostname-associations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class HostnameAssociations extends APIResource {
@@ -46132,7 +44518,7 @@ class HostnameAssociations extends APIResource {
 (function (HostnameAssociations) {
 })(HostnameAssociations || (HostnameAssociations = {}));
 //# sourceMappingURL=hostname-associations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/certificate-authorities/certificate-authorities.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/certificate-authorities/certificate-authorities.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46146,7 +44532,7 @@ class CertificateAuthorities extends APIResource {
     CertificateAuthorities.HostnameAssociations = HostnameAssociations;
 })(CertificateAuthorities || (CertificateAuthorities = {}));
 //# sourceMappingURL=certificate-authorities.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/client-certificates.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/client-certificates.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46193,7 +44579,7 @@ class ClientCertificates extends APIResource {
 class ClientCertificatesV4PagePaginationArray extends V4PagePaginationArray {
 }
 //# sourceMappingURL=client-certificates.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/custom-certificates/prioritize.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/custom-certificates/prioritize.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Prioritize extends APIResource {
@@ -46213,7 +44599,7 @@ class Prioritize extends APIResource {
 (function (Prioritize) {
 })(Prioritize || (Prioritize = {}));
 //# sourceMappingURL=prioritize.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/custom-certificates/custom-certificates.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/custom-certificates/custom-certificates.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46272,7 +44658,7 @@ class CustomCertificatesV4PagePaginationArray extends V4PagePaginationArray {
     CustomCertificates.Prioritize = Prioritize;
 })(CustomCertificates || (CustomCertificates = {}));
 //# sourceMappingURL=custom-certificates.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/custom-hostnames/fallback-origin.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/custom-hostnames/fallback-origin.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class FallbackOrigin extends APIResource {
@@ -46304,7 +44690,7 @@ class FallbackOrigin extends APIResource {
 (function (FallbackOrigin) {
 })(FallbackOrigin || (FallbackOrigin = {}));
 //# sourceMappingURL=fallback-origin.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/custom-hostnames/custom-hostnames.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/custom-hostnames/custom-hostnames.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46368,7 +44754,7 @@ class CustomHostnameListResponsesV4PagePaginationArray extends V4PagePaginationA
     CustomHostnames.FallbackOrigin = FallbackOrigin;
 })(CustomHostnames || (CustomHostnames = {}));
 //# sourceMappingURL=custom-hostnames.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/custom-nameservers.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/custom-nameservers.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class custom_nameservers_CustomNameservers extends APIResource {
@@ -46402,7 +44788,7 @@ class custom_nameservers_CustomNameservers extends APIResource {
     }
 }
 //# sourceMappingURL=custom-nameservers.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/dns/records.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/dns/records.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46420,11 +44806,8 @@ class Records extends APIResource {
      *   were used when creating the record.
      */
     create(params, options) {
-        const { path_zone_id, body_zone_id, ...body } = params;
-        return this._client.post(`/zones/${path_zone_id}/dns_records`, {
-            body: { zone_id: body_zone_id, ...body },
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
+        const { zone_id, ...body } = params;
+        return this._client.post(`/zones/${zone_id}/dns_records`, { body, ...options })._thenUnwrap((obj) => obj.result);
     }
     /**
      * Overwrite an existing DNS record. Notes:
@@ -46435,9 +44818,9 @@ class Records extends APIResource {
      *   were used when creating the record.
      */
     update(dnsRecordId, params, options) {
-        const { path_zone_id, body_zone_id, ...body } = params;
-        return this._client.put(`/zones/${path_zone_id}/dns_records/${dnsRecordId}`, {
-            body: { zone_id: body_zone_id, ...body },
+        const { zone_id, ...body } = params;
+        return this._client.put(`/zones/${zone_id}/dns_records/${dnsRecordId}`, {
+            body,
             ...options,
         })._thenUnwrap((obj) => obj.result);
     }
@@ -46467,9 +44850,9 @@ class Records extends APIResource {
      *   were used when creating the record.
      */
     edit(dnsRecordId, params, options) {
-        const { path_zone_id, body_zone_id, ...body } = params;
-        return this._client.patch(`/zones/${path_zone_id}/dns_records/${dnsRecordId}`, {
-            body: { zone_id: body_zone_id, ...body },
+        const { zone_id, ...body } = params;
+        return this._client.patch(`/zones/${zone_id}/dns_records/${dnsRecordId}`, {
+            body,
             ...options,
         })._thenUnwrap((obj) => obj.result);
     }
@@ -46525,7 +44908,7 @@ class RecordsV4PagePaginationArray extends V4PagePaginationArray {
     Records.RecordsV4PagePaginationArray = RecordsV4PagePaginationArray;
 })(Records || (Records = {}));
 //# sourceMappingURL=records.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/dns/settings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/dns/settings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46582,7 +44965,7 @@ class dns_settings_Settings extends APIResource {
 (function (Settings) {
 })(dns_settings_Settings || (dns_settings_Settings = {}));
 //# sourceMappingURL=settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/dns/analytics/reports/bytimes.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/dns/analytics/reports/bytimes.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Bytimes extends APIResource {
@@ -46604,7 +44987,7 @@ class Bytimes extends APIResource {
 (function (Bytimes) {
 })(Bytimes || (Bytimes = {}));
 //# sourceMappingURL=bytimes.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/dns/analytics/reports/reports.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/dns/analytics/reports/reports.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46629,7 +45012,7 @@ class Reports extends APIResource {
     Reports.Bytimes = Bytimes;
 })(Reports || (Reports = {}));
 //# sourceMappingURL=reports.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/dns/analytics/analytics.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/dns/analytics/analytics.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46643,7 +45026,7 @@ class Analytics extends APIResource {
     Analytics.Reports = Reports;
 })(Analytics || (Analytics = {}));
 //# sourceMappingURL=analytics.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/dns/firewall/analytics/reports/bytimes.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/dns/firewall/analytics/reports/bytimes.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class bytimes_Bytimes extends APIResource {
@@ -46665,7 +45048,7 @@ class bytimes_Bytimes extends APIResource {
 (function (Bytimes) {
 })(bytimes_Bytimes || (bytimes_Bytimes = {}));
 //# sourceMappingURL=bytimes.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/dns/firewall/analytics/reports/reports.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/dns/firewall/analytics/reports/reports.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46693,7 +45076,7 @@ class reports_Reports extends APIResource {
     Reports.Bytimes = bytimes_Bytimes;
 })(reports_Reports || (reports_Reports = {}));
 //# sourceMappingURL=reports.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/dns/firewall/analytics/analytics.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/dns/firewall/analytics/analytics.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46707,7 +45090,7 @@ class analytics_Analytics extends APIResource {
     Analytics.Reports = reports_Reports;
 })(analytics_Analytics || (analytics_Analytics = {}));
 //# sourceMappingURL=analytics.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/dns/firewall/firewall.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/dns/firewall/firewall.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46767,7 +45150,7 @@ class FirewallsV4PagePaginationArray extends V4PagePaginationArray {
     FirewallResource.Analytics = analytics_Analytics;
 })(FirewallResource || (FirewallResource = {}));
 //# sourceMappingURL=firewall.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/dns/dns.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/dns/dns.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46792,7 +45175,7 @@ class DNS extends APIResource {
     DNS.FirewallsV4PagePaginationArray = FirewallsV4PagePaginationArray;
 })(DNS || (DNS = {}));
 //# sourceMappingURL=dns.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/dnssec.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/dnssec.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class DNSSECResource extends APIResource {
@@ -46819,7 +45202,7 @@ class DNSSECResource extends APIResource {
     }
 }
 //# sourceMappingURL=dnssec.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/email-routing/addresses.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/email-routing/addresses.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46861,7 +45244,7 @@ class AddressesV4PagePaginationArray extends V4PagePaginationArray {
     Addresses.AddressesV4PagePaginationArray = AddressesV4PagePaginationArray;
 })(Addresses || (Addresses = {}));
 //# sourceMappingURL=addresses.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/email-routing/dns.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/email-routing/dns.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class dns_DNS extends APIResource {
@@ -46875,7 +45258,7 @@ class dns_DNS extends APIResource {
 (function (DNS) {
 })(dns_DNS || (dns_DNS = {}));
 //# sourceMappingURL=dns.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/email-routing/rules/catch-alls.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/email-routing/rules/catch-alls.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class CatchAlls extends APIResource {
@@ -46899,7 +45282,7 @@ class CatchAlls extends APIResource {
 (function (CatchAlls) {
 })(CatchAlls || (CatchAlls = {}));
 //# sourceMappingURL=catch-alls.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/email-routing/rules/rules.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/email-routing/rules/rules.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -46957,7 +45340,7 @@ class EmailRoutingRulesV4PagePaginationArray extends V4PagePaginationArray {
     Rules.CatchAlls = CatchAlls;
 })(Rules || (Rules = {}));
 //# sourceMappingURL=rules.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/email-routing/email-routing.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/email-routing/email-routing.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47004,7 +45387,7 @@ class EmailRouting extends APIResource {
     EmailRouting.AddressesV4PagePaginationArray = AddressesV4PagePaginationArray;
 })(EmailRouting || (EmailRouting = {}));
 //# sourceMappingURL=email-routing.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/filters.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/filters.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47055,7 +45438,7 @@ class Filters extends APIResource {
 class FirewallFiltersV4PagePaginationArray extends V4PagePaginationArray {
 }
 //# sourceMappingURL=filters.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/firewall/access-rules.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/firewall/access-rules.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47192,7 +45575,7 @@ class AccessRuleListResponsesV4PagePaginationArray extends V4PagePaginationArray
     AccessRules.AccessRuleListResponsesV4PagePaginationArray = AccessRuleListResponsesV4PagePaginationArray;
 })(AccessRules || (AccessRules = {}));
 //# sourceMappingURL=access-rules.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/firewall/lockdowns.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/firewall/lockdowns.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47242,7 +45625,7 @@ class LockdownsV4PagePaginationArray extends V4PagePaginationArray {
     Lockdowns.LockdownsV4PagePaginationArray = LockdownsV4PagePaginationArray;
 })(Lockdowns || (Lockdowns = {}));
 //# sourceMappingURL=lockdowns.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/firewall/rules.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/firewall/rules.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47312,7 +45695,7 @@ class FirewallRulesV4PagePaginationArray extends V4PagePaginationArray {
     Rules.FirewallRulesV4PagePaginationArray = FirewallRulesV4PagePaginationArray;
 })(rules_Rules || (rules_Rules = {}));
 //# sourceMappingURL=rules.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/firewall/ua-rules.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/firewall/ua-rules.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47362,7 +45745,7 @@ class UARuleListResponsesV4PagePaginationArray extends V4PagePaginationArray {
     UARules.UARuleListResponsesV4PagePaginationArray = UARuleListResponsesV4PagePaginationArray;
 })(UARules || (UARules = {}));
 //# sourceMappingURL=ua-rules.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/firewall/waf/overrides.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/firewall/waf/overrides.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47424,7 +45807,7 @@ class OverridesV4PagePaginationArray extends V4PagePaginationArray {
     Overrides.OverridesV4PagePaginationArray = OverridesV4PagePaginationArray;
 })(Overrides || (Overrides = {}));
 //# sourceMappingURL=overrides.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/firewall/waf/packages/groups.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/firewall/waf/packages/groups.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47471,7 +45854,7 @@ class GroupsV4PagePaginationArray extends V4PagePaginationArray {
     Groups.GroupsV4PagePaginationArray = GroupsV4PagePaginationArray;
 })(Groups || (Groups = {}));
 //# sourceMappingURL=groups.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/firewall/waf/packages/rules.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/firewall/waf/packages/rules.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47517,7 +45900,7 @@ class RuleListResponsesV4PagePaginationArray extends V4PagePaginationArray {
     Rules.RuleListResponsesV4PagePaginationArray = RuleListResponsesV4PagePaginationArray;
 })(packages_rules_Rules || (packages_rules_Rules = {}));
 //# sourceMappingURL=rules.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/firewall/waf/packages/packages.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/firewall/waf/packages/packages.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47557,7 +45940,7 @@ class PackageListResponsesV4PagePaginationArray extends V4PagePaginationArray {
     Packages.RuleListResponsesV4PagePaginationArray = RuleListResponsesV4PagePaginationArray;
 })(Packages || (Packages = {}));
 //# sourceMappingURL=packages.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/firewall/waf/waf.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/firewall/waf/waf.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47576,7 +45959,7 @@ class WAF extends APIResource {
     WAF.PackageListResponsesV4PagePaginationArray = PackageListResponsesV4PagePaginationArray;
 })(WAF || (WAF = {}));
 //# sourceMappingURL=waf.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/firewall/firewall.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/firewall/firewall.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47606,7 +45989,7 @@ class Firewall extends APIResource {
     Firewall.WAF = WAF;
 })(Firewall || (Firewall = {}));
 //# sourceMappingURL=firewall.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/healthchecks/previews.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/healthchecks/previews.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class healthchecks_previews_Previews extends APIResource {
@@ -47635,7 +46018,7 @@ class healthchecks_previews_Previews extends APIResource {
 (function (Previews) {
 })(healthchecks_previews_Previews || (healthchecks_previews_Previews = {}));
 //# sourceMappingURL=previews.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/healthchecks/healthchecks.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/healthchecks/healthchecks.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47703,7 +46086,7 @@ class HealthchecksSinglePage extends SinglePage {
     Healthchecks.Previews = healthchecks_previews_Previews;
 })(Healthchecks || (Healthchecks = {}));
 //# sourceMappingURL=healthchecks.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/keyless-certificates.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/keyless-certificates.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47751,7 +46134,7 @@ class KeylessCertificates extends APIResource {
 class KeylessCertificatesSinglePage extends SinglePage {
 }
 //# sourceMappingURL=keyless-certificates.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logpush/edge.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logpush/edge.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Edge extends APIResource {
@@ -47773,7 +46156,7 @@ class Edge extends APIResource {
 (function (Edge) {
 })(Edge || (Edge = {}));
 //# sourceMappingURL=edge.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logpush/jobs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logpush/jobs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47904,7 +46287,7 @@ class LogpushJobsSinglePage extends SinglePage {
     Jobs.LogpushJobsSinglePage = LogpushJobsSinglePage;
 })(Jobs || (Jobs = {}));
 //# sourceMappingURL=jobs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logpush/ownership.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logpush/ownership.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -47963,7 +46346,7 @@ class Ownership extends APIResource {
 (function (Ownership) {
 })(Ownership || (Ownership = {}));
 //# sourceMappingURL=ownership.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logpush/validate.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logpush/validate.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48022,7 +46405,7 @@ class Validate extends APIResource {
 (function (Validate) {
 })(Validate || (Validate = {}));
 //# sourceMappingURL=validate.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logpush/datasets/fields.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logpush/datasets/fields.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48054,7 +46437,7 @@ class Fields extends APIResource {
 (function (Fields) {
 })(Fields || (Fields = {}));
 //# sourceMappingURL=fields.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logpush/datasets/jobs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logpush/datasets/jobs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48086,7 +46469,7 @@ class jobs_Jobs extends APIResource {
 (function (Jobs) {
 })(jobs_Jobs || (jobs_Jobs = {}));
 //# sourceMappingURL=jobs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logpush/datasets/datasets.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logpush/datasets/datasets.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48103,7 +46486,7 @@ class Datasets extends APIResource {
     Datasets.Jobs = jobs_Jobs;
 })(Datasets || (Datasets = {}));
 //# sourceMappingURL=datasets.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logpush/logpush.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logpush/logpush.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48130,7 +46513,7 @@ class Logpush extends APIResource {
     Logpush.Validate = Validate;
 })(Logpush || (Logpush = {}));
 //# sourceMappingURL=logpush.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logs/rayid.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logs/rayid.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48145,7 +46528,7 @@ class RayID extends APIResource {
 (function (RayID) {
 })(RayID || (RayID = {}));
 //# sourceMappingURL=rayid.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logs/control/retention.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logs/control/retention.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Retention extends APIResource {
@@ -48168,7 +46551,7 @@ class Retention extends APIResource {
 (function (Retention) {
 })(Retention || (Retention = {}));
 //# sourceMappingURL=retention.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logs/control/cmb/config.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logs/control/cmb/config.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Config extends APIResource {
@@ -48200,7 +46583,7 @@ class Config extends APIResource {
 (function (Config) {
 })(Config || (Config = {}));
 //# sourceMappingURL=config.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logs/control/cmb/cmb.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logs/control/cmb/cmb.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48214,7 +46597,7 @@ class Cmb extends APIResource {
     Cmb.Config = Config;
 })(Cmb || (Cmb = {}));
 //# sourceMappingURL=cmb.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logs/control/control.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logs/control/control.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48231,7 +46614,7 @@ class Control extends APIResource {
     Control.Cmb = Cmb;
 })(Control || (Control = {}));
 //# sourceMappingURL=control.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logs/received/fields.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logs/received/fields.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class fields_Fields extends APIResource {
@@ -48246,7 +46629,7 @@ class fields_Fields extends APIResource {
 (function (Fields) {
 })(fields_Fields || (fields_Fields = {}));
 //# sourceMappingURL=fields.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logs/received/received.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logs/received/received.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48273,7 +46656,7 @@ class Received extends APIResource {
     Received.Fields = fields_Fields;
 })(Received || (Received = {}));
 //# sourceMappingURL=received.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/logs/logs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/logs/logs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48293,7 +46676,7 @@ class Logs extends APIResource {
     Logs.Received = Received;
 })(Logs || (Logs = {}));
 //# sourceMappingURL=logs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/origin-tls-client-auth/settings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/origin-tls-client-auth/settings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class origin_tls_client_auth_settings_Settings extends APIResource {
@@ -48321,7 +46704,7 @@ class origin_tls_client_auth_settings_Settings extends APIResource {
 (function (Settings) {
 })(origin_tls_client_auth_settings_Settings || (origin_tls_client_auth_settings_Settings = {}));
 //# sourceMappingURL=settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/origin-tls-client-auth/hostnames/certificates.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/origin-tls-client-auth/hostnames/certificates.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48363,7 +46746,7 @@ class Certificates extends APIResource {
 })(Certificates || (Certificates = {}));
 
 //# sourceMappingURL=certificates.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/origin-tls-client-auth/hostnames/hostnames.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/origin-tls-client-auth/hostnames/hostnames.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48401,7 +46784,7 @@ class AuthenticatedOriginPullsSinglePage extends SinglePage {
     Hostnames.Certificates = Certificates;
 })(Hostnames || (Hostnames = {}));
 //# sourceMappingURL=hostnames.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/origin-tls-client-auth/origin-tls-client-auth.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/origin-tls-client-auth/origin-tls-client-auth.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48453,7 +46836,7 @@ class ZoneAuthenticatedOriginPullsSinglePage extends SinglePage {
     OriginTLSClientAuth.Settings = origin_tls_client_auth_settings_Settings;
 })(OriginTLSClientAuth || (OriginTLSClientAuth = {}));
 //# sourceMappingURL=origin-tls-client-auth.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/pagerules/settings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/pagerules/settings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class pagerules_settings_Settings extends APIResource {
@@ -48469,7 +46852,7 @@ class pagerules_settings_Settings extends APIResource {
 (function (Settings) {
 })(pagerules_settings_Settings || (pagerules_settings_Settings = {}));
 //# sourceMappingURL=settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/pagerules/pagerules.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/pagerules/pagerules.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48541,7 +46924,7 @@ class Pagerules extends APIResource {
     Pagerules.Settings = pagerules_settings_Settings;
 })(Pagerules || (Pagerules = {}));
 //# sourceMappingURL=pagerules.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/rate-limits.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/rate-limits.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48596,7 +46979,7 @@ class RateLimits extends APIResource {
 class RateLimitsV4PagePaginationArray extends V4PagePaginationArray {
 }
 //# sourceMappingURL=rate-limits.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/secondary-dns/acls.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/secondary-dns/acls.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48650,7 +47033,7 @@ class ACLsSinglePage extends SinglePage {
     ACLs.ACLsSinglePage = ACLsSinglePage;
 })(ACLs || (ACLs = {}));
 //# sourceMappingURL=acls.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/secondary-dns/force-axfr.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/secondary-dns/force-axfr.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class ForceAXFRResource extends APIResource {
@@ -48668,7 +47051,7 @@ class ForceAXFRResource extends APIResource {
 (function (ForceAXFRResource) {
 })(ForceAXFRResource || (ForceAXFRResource = {}));
 //# sourceMappingURL=force-axfr.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/secondary-dns/incoming.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/secondary-dns/incoming.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class IncomingResource extends APIResource {
@@ -48704,7 +47087,7 @@ class IncomingResource extends APIResource {
 (function (IncomingResource) {
 })(IncomingResource || (IncomingResource = {}));
 //# sourceMappingURL=incoming.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/secondary-dns/peers.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/secondary-dns/peers.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48758,7 +47141,7 @@ class PeersSinglePage extends SinglePage {
     Peers.PeersSinglePage = PeersSinglePage;
 })(Peers || (Peers = {}));
 //# sourceMappingURL=peers.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/secondary-dns/tsigs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/secondary-dns/tsigs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48812,7 +47195,7 @@ class TSIGsSinglePage extends SinglePage {
     TSIGs.TSIGsSinglePage = TSIGsSinglePage;
 })(TSIGs || (TSIGs = {}));
 //# sourceMappingURL=tsigs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/secondary-dns/outgoing/status.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/secondary-dns/outgoing/status.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Status extends APIResource {
@@ -48827,7 +47210,7 @@ class Status extends APIResource {
 (function (Status) {
 })(Status || (Status = {}));
 //# sourceMappingURL=status.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/secondary-dns/outgoing/outgoing.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/secondary-dns/outgoing/outgoing.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48900,7 +47283,7 @@ class OutgoingResource extends APIResource {
     OutgoingResource.Status = Status;
 })(OutgoingResource || (OutgoingResource = {}));
 //# sourceMappingURL=outgoing.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/secondary-dns/secondary-dns.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/secondary-dns/secondary-dns.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -48932,7 +47315,7 @@ class SecondaryDNS extends APIResource {
     SecondaryDNS.TSIGsSinglePage = TSIGsSinglePage;
 })(SecondaryDNS || (SecondaryDNS = {}));
 //# sourceMappingURL=secondary-dns.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/waiting-rooms/page.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/waiting-rooms/page.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Page extends APIResource {
@@ -48982,7 +47365,7 @@ class Page extends APIResource {
 (function (Page) {
 })(Page || (Page = {}));
 //# sourceMappingURL=page.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/waiting-rooms/rules.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/waiting-rooms/rules.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49041,7 +47424,7 @@ class WaitingRoomRulesSinglePage extends SinglePage {
     Rules.WaitingRoomRulesSinglePage = WaitingRoomRulesSinglePage;
 })(waiting_rooms_rules_Rules || (waiting_rooms_rules_Rules = {}));
 //# sourceMappingURL=rules.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/waiting-rooms/settings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/waiting-rooms/settings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class waiting_rooms_settings_Settings extends APIResource {
@@ -49073,7 +47456,7 @@ class waiting_rooms_settings_Settings extends APIResource {
 (function (Settings) {
 })(waiting_rooms_settings_Settings || (waiting_rooms_settings_Settings = {}));
 //# sourceMappingURL=settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/waiting-rooms/statuses.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/waiting-rooms/statuses.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Statuses extends APIResource {
@@ -49105,7 +47488,7 @@ class Statuses extends APIResource {
 (function (Statuses) {
 })(Statuses || (Statuses = {}));
 //# sourceMappingURL=statuses.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/waiting-rooms/events/details.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/waiting-rooms/events/details.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Details extends APIResource {
@@ -49121,7 +47504,7 @@ class Details extends APIResource {
 (function (Details) {
 })(Details || (Details = {}));
 //# sourceMappingURL=details.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/waiting-rooms/events/events.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/waiting-rooms/events/events.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49196,7 +47579,7 @@ class EventsSinglePage extends SinglePage {
     Events.Details = Details;
 })(Events || (Events = {}));
 //# sourceMappingURL=events.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/waiting-rooms/waiting-rooms.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/waiting-rooms/waiting-rooms.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49278,7 +47661,7 @@ class WaitingRoomsSinglePage extends SinglePage {
     WaitingRooms.Settings = waiting_rooms_settings_Settings;
 })(WaitingRooms || (WaitingRooms = {}));
 //# sourceMappingURL=waiting-rooms.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/web3/hostnames/ipfs-universal-paths/content-lists/entries.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/web3/hostnames/ipfs-universal-paths/content-lists/entries.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Entries extends APIResource {
@@ -49316,7 +47699,7 @@ class Entries extends APIResource {
 (function (Entries) {
 })(Entries || (Entries = {}));
 //# sourceMappingURL=entries.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/web3/hostnames/ipfs-universal-paths/content-lists/content-lists.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/web3/hostnames/ipfs-universal-paths/content-lists/content-lists.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49342,7 +47725,7 @@ class ContentLists extends APIResource {
     ContentLists.Entries = Entries;
 })(ContentLists || (ContentLists = {}));
 //# sourceMappingURL=content-lists.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/web3/hostnames/ipfs-universal-paths/ipfs-universal-paths.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/web3/hostnames/ipfs-universal-paths/ipfs-universal-paths.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49356,7 +47739,7 @@ class IPFSUniversalPaths extends APIResource {
     IPFSUniversalPaths.ContentLists = ContentLists;
 })(IPFSUniversalPaths || (IPFSUniversalPaths = {}));
 //# sourceMappingURL=ipfs-universal-paths.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/web3/hostnames/hostnames.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/web3/hostnames/hostnames.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49408,7 +47791,7 @@ class HostnamesSinglePage extends SinglePage {
     Hostnames.IPFSUniversalPaths = IPFSUniversalPaths;
 })(hostnames_Hostnames || (hostnames_Hostnames = {}));
 //# sourceMappingURL=hostnames.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/web3/web3.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/web3/web3.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49423,7 +47806,7 @@ class Web3 extends APIResource {
     Web3.HostnamesSinglePage = HostnamesSinglePage;
 })(Web3 || (Web3 = {}));
 //# sourceMappingURL=web3.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers/account-settings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers/account-settings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class AccountSettings extends APIResource {
@@ -49448,7 +47831,7 @@ class AccountSettings extends APIResource {
 (function (AccountSettings) {
 })(AccountSettings || (AccountSettings = {}));
 //# sourceMappingURL=account-settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers/domains.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers/domains.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49495,7 +47878,7 @@ class DomainsSinglePage extends SinglePage {
     Domains.DomainsSinglePage = DomainsSinglePage;
 })(Domains || (Domains = {}));
 //# sourceMappingURL=domains.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers/subdomains.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers/subdomains.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Subdomains extends APIResource {
@@ -49520,7 +47903,7 @@ class Subdomains extends APIResource {
 (function (Subdomains) {
 })(Subdomains || (Subdomains = {}));
 //# sourceMappingURL=subdomains.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers/ai/models/schema.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers/ai/models/schema.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Schema extends APIResource {
@@ -49535,7 +47918,7 @@ class Schema extends APIResource {
 (function (Schema) {
 })(Schema || (Schema = {}));
 //# sourceMappingURL=schema.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers/ai/models/models.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers/ai/models/models.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49549,7 +47932,7 @@ class Models extends APIResource {
     Models.Schema = Schema;
 })(Models || (Models = {}));
 //# sourceMappingURL=models.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers/ai/ai.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers/ai/ai.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49581,7 +47964,7 @@ class AI extends APIResource {
     AI.Models = Models;
 })(AI || (AI = {}));
 //# sourceMappingURL=ai.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers/scripts/content.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers/scripts/content.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49617,7 +48000,7 @@ class Content extends APIResource {
 (function (Content) {
 })(Content || (Content = {}));
 //# sourceMappingURL=content.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers/scripts/deployments.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers/scripts/deployments.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Deployments extends APIResource {
@@ -49646,7 +48029,7 @@ class Deployments extends APIResource {
 (function (Deployments) {
 })(Deployments || (Deployments = {}));
 //# sourceMappingURL=deployments.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers/scripts/schedules.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers/scripts/schedules.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Schedules extends APIResource {
@@ -49671,7 +48054,7 @@ class Schedules extends APIResource {
 (function (Schedules) {
 })(Schedules || (Schedules = {}));
 //# sourceMappingURL=schedules.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers/scripts/settings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers/scripts/settings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class scripts_settings_Settings extends APIResource {
@@ -49700,7 +48083,7 @@ class scripts_settings_Settings extends APIResource {
 (function (Settings) {
 })(scripts_settings_Settings || (scripts_settings_Settings = {}));
 //# sourceMappingURL=settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers/scripts/tail.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers/scripts/tail.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Tail extends APIResource {
@@ -49732,7 +48115,7 @@ class Tail extends APIResource {
 (function (Tail) {
 })(Tail || (Tail = {}));
 //# sourceMappingURL=tail.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers/scripts/versions.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers/scripts/versions.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49767,7 +48150,7 @@ class VersionListResponsesV4PagePagination extends V4PagePagination {
     Versions.VersionListResponsesV4PagePagination = VersionListResponsesV4PagePagination;
 })(Versions || (Versions = {}));
 //# sourceMappingURL=versions.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers/scripts/scripts.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers/scripts/scripts.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49844,7 +48227,7 @@ class ScriptsSinglePage extends SinglePage {
     Scripts.VersionListResponsesV4PagePagination = VersionListResponsesV4PagePagination;
 })(Scripts || (Scripts = {}));
 //# sourceMappingURL=scripts.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers/workers.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers/workers.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49872,7 +48255,7 @@ class Workers extends APIResource {
     Workers.Subdomains = Subdomains;
 })(Workers || (Workers = {}));
 //# sourceMappingURL=workers.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/kv/namespaces/bulk.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/kv/namespaces/bulk.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Bulk extends APIResource {
@@ -49903,7 +48286,7 @@ class Bulk extends APIResource {
 (function (Bulk) {
 })(Bulk || (Bulk = {}));
 //# sourceMappingURL=bulk.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/kv/namespaces/keys.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/kv/namespaces/keys.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49923,7 +48306,7 @@ class KeysCursorLimitPagination extends CursorLimitPagination {
     Keys.KeysCursorLimitPagination = KeysCursorLimitPagination;
 })(Keys || (Keys = {}));
 //# sourceMappingURL=keys.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/kv/namespaces/metadata.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/kv/namespaces/metadata.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Metadata extends APIResource {
@@ -49940,7 +48323,7 @@ class Metadata extends APIResource {
 (function (Metadata) {
 })(Metadata || (Metadata = {}));
 //# sourceMappingURL=metadata.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/kv/namespaces/values.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/kv/namespaces/values.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -49980,7 +48363,7 @@ class Values extends APIResource {
 (function (Values) {
 })(Values || (Values = {}));
 //# sourceMappingURL=values.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/kv/namespaces/namespaces.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/kv/namespaces/namespaces.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50052,7 +48435,7 @@ class NamespacesV4PagePaginationArray extends V4PagePaginationArray {
     Namespaces.Values = Values;
 })(Namespaces || (Namespaces = {}));
 //# sourceMappingURL=namespaces.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/kv/kv.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/kv/kv.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50067,7 +48450,7 @@ class KV extends APIResource {
     KV.NamespacesV4PagePaginationArray = NamespacesV4PagePaginationArray;
 })(KV || (KV = {}));
 //# sourceMappingURL=kv.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/durable-objects/namespaces/objects.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/durable-objects/namespaces/objects.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50087,7 +48470,7 @@ class DurableObjectsCursorLimitPagination extends CursorLimitPagination {
     Objects.DurableObjectsCursorLimitPagination = DurableObjectsCursorLimitPagination;
 })(Objects || (Objects = {}));
 //# sourceMappingURL=objects.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/durable-objects/namespaces/namespaces.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/durable-objects/namespaces/namespaces.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50114,7 +48497,7 @@ class NamespacesSinglePage extends SinglePage {
     Namespaces.DurableObjectsCursorLimitPagination = DurableObjectsCursorLimitPagination;
 })(namespaces_Namespaces || (namespaces_Namespaces = {}));
 //# sourceMappingURL=namespaces.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/durable-objects/durable-objects.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/durable-objects/durable-objects.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50129,7 +48512,7 @@ class DurableObjects extends APIResource {
     DurableObjects.NamespacesSinglePage = NamespacesSinglePage;
 })(DurableObjects || (DurableObjects = {}));
 //# sourceMappingURL=durable-objects.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/queues/consumers.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/queues/consumers.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Consumers extends APIResource {
@@ -50171,7 +48554,7 @@ class Consumers extends APIResource {
 (function (Consumers) {
 })(Consumers || (Consumers = {}));
 //# sourceMappingURL=consumers.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/queues/messages.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/queues/messages.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Messages extends APIResource {
@@ -50199,7 +48582,7 @@ class Messages extends APIResource {
 (function (Messages) {
 })(Messages || (Messages = {}));
 //# sourceMappingURL=messages.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/queues/queues.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/queues/queues.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50257,7 +48640,7 @@ class QueuesSinglePage extends SinglePage {
     Queues.Messages = Messages;
 })(Queues || (Queues = {}));
 //# sourceMappingURL=queues.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/api-gateway/configurations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/api-gateway/configurations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Configurations extends APIResource {
@@ -50266,10 +48649,7 @@ class Configurations extends APIResource {
      */
     update(params, options) {
         const { zone_id, ...body } = params;
-        return this._client.put(`/zones/${zone_id}/api_gateway/configuration`, {
-            body,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
+        return this._client.put(`/zones/${zone_id}/api_gateway/configuration`, { body, ...options });
     }
     /**
      * Retrieve information about specific configuration properties
@@ -50285,7 +48665,7 @@ class Configurations extends APIResource {
 (function (Configurations) {
 })(Configurations || (Configurations = {}));
 //# sourceMappingURL=configurations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/api-gateway/schemas.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/api-gateway/schemas.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Schemas extends APIResource {
@@ -50300,7 +48680,7 @@ class Schemas extends APIResource {
 (function (Schemas) {
 })(Schemas || (Schemas = {}));
 //# sourceMappingURL=schemas.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/api-gateway/discovery/operations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/api-gateway/discovery/operations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50310,7 +48690,7 @@ class Operations extends APIResource {
      */
     list(params, options) {
         const { zone_id, ...query } = params;
-        return this._client.getAPIList(`/zones/${zone_id}/api_gateway/discovery/operations`, DiscoveryOperationsSinglePage, { query, ...options });
+        return this._client.getAPIList(`/zones/${zone_id}/api_gateway/discovery/operations`, DiscoveryOperationsV4PagePaginationArray, { query, ...options });
     }
     /**
      * Update the `state` on a discovered operation
@@ -50327,7 +48707,7 @@ class Operations extends APIResource {
 })(Operations || (Operations = {}));
 
 //# sourceMappingURL=operations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/api-gateway/discovery/discovery.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/api-gateway/discovery/discovery.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50346,13 +48726,13 @@ class Discovery extends APIResource {
         return this._client.get(`/zones/${zone_id}/api_gateway/discovery`, options)._thenUnwrap((obj) => obj.result);
     }
 }
-class DiscoveryOperationsSinglePage extends SinglePage {
+class DiscoveryOperationsV4PagePaginationArray extends V4PagePaginationArray {
 }
 (function (Discovery) {
     Discovery.Operations = Operations;
 })(Discovery || (Discovery = {}));
 //# sourceMappingURL=discovery.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/api-gateway/operations/schema-validation.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/api-gateway/operations/schema-validation.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class SchemaValidation extends APIResource {
@@ -50387,7 +48767,7 @@ class SchemaValidation extends APIResource {
 (function (SchemaValidation) {
 })(SchemaValidation || (SchemaValidation = {}));
 //# sourceMappingURL=schema-validation.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/api-gateway/operations/operations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/api-gateway/operations/operations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50417,17 +48797,14 @@ class operations_Operations extends APIResource {
      */
     list(params, options) {
         const { zone_id, ...query } = params;
-        return this._client.getAPIList(`/zones/${zone_id}/api_gateway/operations`, APIShieldsSinglePage, {
-            query,
-            ...options,
-        });
+        return this._client.getAPIList(`/zones/${zone_id}/api_gateway/operations`, OperationListResponsesV4PagePaginationArray, { query, ...options });
     }
     /**
      * Delete an operation
      */
     delete(operationId, params, options) {
         const { zone_id } = params;
-        return this._client.delete(`/zones/${zone_id}/api_gateway/operations/${operationId}`, options)._thenUnwrap((obj) => obj.result);
+        return this._client.delete(`/zones/${zone_id}/api_gateway/operations/${operationId}`, options);
     }
     /**
      * Retrieve information about an operation
@@ -50440,14 +48817,14 @@ class operations_Operations extends APIResource {
         })._thenUnwrap((obj) => obj.result);
     }
 }
-class APIShieldsSinglePage extends SinglePage {
+class OperationListResponsesV4PagePaginationArray extends V4PagePaginationArray {
 }
 (function (Operations) {
-    Operations.APIShieldsSinglePage = APIShieldsSinglePage;
+    Operations.OperationListResponsesV4PagePaginationArray = OperationListResponsesV4PagePaginationArray;
     Operations.SchemaValidation = SchemaValidation;
 })(operations_Operations || (operations_Operations = {}));
 //# sourceMappingURL=operations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/api-gateway/settings/schema-validation.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/api-gateway/settings/schema-validation.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class schema_validation_SchemaValidation extends APIResource {
@@ -50479,7 +48856,7 @@ class schema_validation_SchemaValidation extends APIResource {
 (function (SchemaValidation) {
 })(schema_validation_SchemaValidation || (schema_validation_SchemaValidation = {}));
 //# sourceMappingURL=schema-validation.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/api-gateway/settings/settings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/api-gateway/settings/settings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50495,7 +48872,7 @@ class settings_settings_Settings extends APIResource {
     Settings.SchemaValidation = schema_validation_SchemaValidation;
 })(settings_settings_Settings || (settings_settings_Settings = {}));
 //# sourceMappingURL=settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/api-gateway/user-schemas/operations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/api-gateway/user-schemas/operations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50507,16 +48884,16 @@ class user_schemas_operations_Operations extends APIResource {
      */
     list(schemaId, params, options) {
         const { zone_id, ...query } = params;
-        return this._client.getAPIList(`/zones/${zone_id}/api_gateway/user_schemas/${schemaId}/operations`, OperationListResponsesSinglePage, { query, ...options });
+        return this._client.getAPIList(`/zones/${zone_id}/api_gateway/user_schemas/${schemaId}/operations`, operations_OperationListResponsesV4PagePaginationArray, { query, ...options });
     }
 }
-class OperationListResponsesSinglePage extends SinglePage {
+class operations_OperationListResponsesV4PagePaginationArray extends V4PagePaginationArray {
 }
 (function (Operations) {
-    Operations.OperationListResponsesSinglePage = OperationListResponsesSinglePage;
+    Operations.OperationListResponsesV4PagePaginationArray = operations_OperationListResponsesV4PagePaginationArray;
 })(user_schemas_operations_Operations || (user_schemas_operations_Operations = {}));
 //# sourceMappingURL=operations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/api-gateway/user-schemas/user-schemas.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/api-gateway/user-schemas/user-schemas.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50540,10 +48917,7 @@ class UserSchemas extends APIResource {
      */
     list(params, options) {
         const { zone_id, ...query } = params;
-        return this._client.getAPIList(`/zones/${zone_id}/api_gateway/user_schemas`, PublicSchemasSinglePage, {
-            query,
-            ...options,
-        });
+        return this._client.getAPIList(`/zones/${zone_id}/api_gateway/user_schemas`, PublicSchemasV4PagePaginationArray, { query, ...options });
     }
     /**
      * Delete a schema
@@ -50573,15 +48947,15 @@ class UserSchemas extends APIResource {
         })._thenUnwrap((obj) => obj.result);
     }
 }
-class PublicSchemasSinglePage extends SinglePage {
+class PublicSchemasV4PagePaginationArray extends V4PagePaginationArray {
 }
 (function (UserSchemas) {
-    UserSchemas.PublicSchemasSinglePage = PublicSchemasSinglePage;
+    UserSchemas.PublicSchemasV4PagePaginationArray = PublicSchemasV4PagePaginationArray;
     UserSchemas.Operations = user_schemas_operations_Operations;
-    UserSchemas.OperationListResponsesSinglePage = OperationListResponsesSinglePage;
+    UserSchemas.OperationListResponsesV4PagePaginationArray = operations_OperationListResponsesV4PagePaginationArray;
 })(UserSchemas || (UserSchemas = {}));
 //# sourceMappingURL=user-schemas.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/api-gateway/api-gateway.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/api-gateway/api-gateway.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50605,14 +48979,14 @@ class APIGateway extends APIResource {
     APIGateway.Configurations = Configurations;
     APIGateway.Discovery = Discovery;
     APIGateway.Operations = operations_Operations;
-    APIGateway.APIShieldsSinglePage = APIShieldsSinglePage;
+    APIGateway.OperationListResponsesV4PagePaginationArray = OperationListResponsesV4PagePaginationArray;
     APIGateway.Schemas = Schemas;
     APIGateway.Settings = settings_settings_Settings;
     APIGateway.UserSchemas = UserSchemas;
-    APIGateway.PublicSchemasSinglePage = PublicSchemasSinglePage;
+    APIGateway.PublicSchemasV4PagePaginationArray = PublicSchemasV4PagePaginationArray;
 })(APIGateway || (APIGateway = {}));
 //# sourceMappingURL=api-gateway.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/managed-headers.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/managed-headers.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class ManagedHeaders extends APIResource {
@@ -50632,7 +49006,7 @@ class ManagedHeaders extends APIResource {
     }
 }
 //# sourceMappingURL=managed-headers.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/page-shield/connections.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/page-shield/connections.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50662,7 +49036,7 @@ class ConnectionsSinglePage extends SinglePage {
     Connections.ConnectionsSinglePage = ConnectionsSinglePage;
 })(Connections || (Connections = {}));
 //# sourceMappingURL=connections.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/page-shield/cookies.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/page-shield/cookies.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50692,7 +49066,7 @@ class CookieListResponsesSinglePage extends SinglePage {
     Cookies.CookieListResponsesSinglePage = CookieListResponsesSinglePage;
 })(Cookies || (Cookies = {}));
 //# sourceMappingURL=cookies.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/page-shield/policies.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/page-shield/policies.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50746,7 +49120,7 @@ class PolicyListResponsesSinglePage extends SinglePage {
     Policies.PolicyListResponsesSinglePage = PolicyListResponsesSinglePage;
 })(Policies || (Policies = {}));
 //# sourceMappingURL=policies.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/page-shield/scripts.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/page-shield/scripts.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50776,7 +49150,7 @@ class scripts_ScriptsSinglePage extends SinglePage {
     Scripts.ScriptsSinglePage = scripts_ScriptsSinglePage;
 })(scripts_Scripts || (scripts_Scripts = {}));
 //# sourceMappingURL=scripts.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/page-shield/page-shield.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/page-shield/page-shield.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50817,7 +49191,7 @@ class PageShield extends APIResource {
     PageShield.CookieListResponsesSinglePage = CookieListResponsesSinglePage;
 })(PageShield || (PageShield = {}));
 //# sourceMappingURL=page-shield.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/rulesets/rules.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/rulesets/rules.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50900,7 +49274,7 @@ class rulesets_rules_Rules extends APIResource {
 (function (Rules) {
 })(rulesets_rules_Rules || (rulesets_rules_Rules = {}));
 //# sourceMappingURL=rules.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/rulesets/phases/versions.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/rulesets/phases/versions.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -50959,7 +49333,7 @@ class VersionListResponsesSinglePage extends SinglePage {
     Versions.VersionListResponsesSinglePage = VersionListResponsesSinglePage;
 })(versions_Versions || (versions_Versions = {}));
 //# sourceMappingURL=versions.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/rulesets/phases/phases.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/rulesets/phases/phases.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51023,7 +49397,7 @@ class Phases extends APIResource {
     Phases.VersionListResponsesSinglePage = VersionListResponsesSinglePage;
 })(Phases || (Phases = {}));
 //# sourceMappingURL=phases.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/rulesets/versions/by-tag.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/rulesets/versions/by-tag.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class ByTag extends APIResource {
@@ -51038,7 +49412,7 @@ class ByTag extends APIResource {
 (function (ByTag) {
 })(ByTag || (ByTag = {}));
 //# sourceMappingURL=by-tag.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/rulesets/versions/versions.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/rulesets/versions/versions.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51125,7 +49499,7 @@ class versions_VersionListResponsesSinglePage extends SinglePage {
     Versions.ByTag = ByTag;
 })(versions_versions_Versions || (versions_versions_Versions = {}));
 //# sourceMappingURL=versions.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/rulesets/rulesets.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/rulesets/rulesets.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51270,7 +49644,7 @@ class RulesetListResponsesSinglePage extends SinglePage {
     Rulesets.VersionListResponsesSinglePage = versions_VersionListResponsesSinglePage;
 })(Rulesets || (Rulesets = {}));
 //# sourceMappingURL=rulesets.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/url-normalization.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/url-normalization.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class URLNormalization extends APIResource {
@@ -51290,7 +49664,7 @@ class URLNormalization extends APIResource {
     }
 }
 //# sourceMappingURL=url-normalization.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/spectrum/apps.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/spectrum/apps.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51339,7 +49713,7 @@ class AppListResponsesV4PagePaginationArray extends V4PagePaginationArray {
     Apps.AppListResponsesV4PagePaginationArray = AppListResponsesV4PagePaginationArray;
 })(Apps || (Apps = {}));
 //# sourceMappingURL=apps.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/spectrum/analytics/aggregates/currents.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/spectrum/analytics/aggregates/currents.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51357,7 +49731,7 @@ class Currents extends APIResource {
 (function (Currents) {
 })(Currents || (Currents = {}));
 //# sourceMappingURL=currents.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/spectrum/analytics/aggregates/aggregates.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/spectrum/analytics/aggregates/aggregates.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51371,7 +49745,7 @@ class Aggregates extends APIResource {
     Aggregates.Currents = Currents;
 })(Aggregates || (Aggregates = {}));
 //# sourceMappingURL=aggregates.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/spectrum/analytics/events/bytimes.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/spectrum/analytics/events/bytimes.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51389,7 +49763,7 @@ class events_bytimes_Bytimes extends APIResource {
 (function (Bytimes) {
 })(events_bytimes_Bytimes || (events_bytimes_Bytimes = {}));
 //# sourceMappingURL=bytimes.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/spectrum/analytics/events/summaries.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/spectrum/analytics/events/summaries.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51407,7 +49781,7 @@ class Summaries extends APIResource {
 (function (Summaries) {
 })(Summaries || (Summaries = {}));
 //# sourceMappingURL=summaries.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/spectrum/analytics/events/events.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/spectrum/analytics/events/events.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51424,7 +49798,7 @@ class events_Events extends APIResource {
     Events.Summaries = Summaries;
 })(events_Events || (events_Events = {}));
 //# sourceMappingURL=events.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/spectrum/analytics/analytics.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/spectrum/analytics/analytics.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51441,7 +49815,7 @@ class analytics_analytics_Analytics extends APIResource {
     Analytics.Events = events_Events;
 })(analytics_analytics_Analytics || (analytics_analytics_Analytics = {}));
 //# sourceMappingURL=analytics.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/spectrum/spectrum.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/spectrum/spectrum.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51459,7 +49833,7 @@ class Spectrum extends APIResource {
     Spectrum.AppListResponsesV4PagePaginationArray = AppListResponsesV4PagePaginationArray;
 })(Spectrum || (Spectrum = {}));
 //# sourceMappingURL=spectrum.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/services.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/services.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51482,7 +49856,7 @@ class ServiceListResponsesSinglePage extends SinglePage {
     Services.ServiceListResponsesSinglePage = ServiceListResponsesSinglePage;
 })(Services || (Services = {}));
 //# sourceMappingURL=services.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/address-maps/accounts.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/address-maps/accounts.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class accounts_Accounts extends APIResource {
@@ -51504,7 +49878,7 @@ class accounts_Accounts extends APIResource {
 (function (Accounts) {
 })(accounts_Accounts || (accounts_Accounts = {}));
 //# sourceMappingURL=accounts.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/address-maps/ips.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/address-maps/ips.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class ips_IPs extends APIResource {
@@ -51529,7 +49903,7 @@ class ips_IPs extends APIResource {
 (function (IPs) {
 })(ips_IPs || (ips_IPs = {}));
 //# sourceMappingURL=ips.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/address-maps/zones.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/address-maps/zones.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class zones_Zones extends APIResource {
@@ -51554,7 +49928,7 @@ class zones_Zones extends APIResource {
 (function (Zones) {
 })(zones_Zones || (zones_Zones = {}));
 //# sourceMappingURL=zones.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/address-maps/address-maps.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/address-maps/address-maps.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51621,7 +49995,7 @@ class AddressMapsSinglePage extends SinglePage {
     AddressMaps.Zones = zones_Zones;
 })(AddressMaps || (AddressMaps = {}));
 //# sourceMappingURL=address-maps.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/loa-documents/downloads.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/loa-documents/downloads.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Downloads extends APIResource {
@@ -51639,7 +50013,7 @@ class Downloads extends APIResource {
 (function (Downloads) {
 })(Downloads || (Downloads = {}));
 //# sourceMappingURL=downloads.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/loa-documents/loa-documents.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/loa-documents/loa-documents.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51661,7 +50035,7 @@ class LOADocuments extends APIResource {
     LOADocuments.Downloads = Downloads;
 })(LOADocuments || (LOADocuments = {}));
 //# sourceMappingURL=loa-documents.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/prefixes/delegations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/prefixes/delegations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51699,7 +50073,7 @@ class DelegationsSinglePage extends SinglePage {
     Delegations.DelegationsSinglePage = DelegationsSinglePage;
 })(delegations_Delegations || (delegations_Delegations = {}));
 //# sourceMappingURL=delegations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/prefixes/bgp/bindings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/prefixes/bgp/bindings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51751,7 +50125,7 @@ class ServiceBindingsSinglePage extends SinglePage {
     Bindings.ServiceBindingsSinglePage = ServiceBindingsSinglePage;
 })(Bindings || (Bindings = {}));
 //# sourceMappingURL=bindings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/prefixes/bgp/prefixes.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/prefixes/bgp/prefixes.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51789,7 +50163,7 @@ class BGPPrefixesSinglePage extends SinglePage {
     Prefixes.BGPPrefixesSinglePage = BGPPrefixesSinglePage;
 })(Prefixes || (Prefixes = {}));
 //# sourceMappingURL=prefixes.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/prefixes/bgp/statuses.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/prefixes/bgp/statuses.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class statuses_Statuses extends APIResource {
@@ -51814,7 +50188,7 @@ class statuses_Statuses extends APIResource {
 (function (Statuses) {
 })(statuses_Statuses || (statuses_Statuses = {}));
 //# sourceMappingURL=statuses.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/prefixes/bgp/bgp.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/prefixes/bgp/bgp.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51836,7 +50210,7 @@ class BGP extends APIResource {
     BGP.Statuses = statuses_Statuses;
 })(BGP || (BGP = {}));
 //# sourceMappingURL=bgp.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/prefixes/prefixes.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/prefixes/prefixes.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51900,7 +50274,7 @@ class PrefixesSinglePage extends SinglePage {
     Prefixes.DelegationsSinglePage = DelegationsSinglePage;
 })(prefixes_Prefixes || (prefixes_Prefixes = {}));
 //# sourceMappingURL=prefixes.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/regional-hostnames/regions.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/regional-hostnames/regions.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51920,7 +50294,7 @@ class RegionListResponsesSinglePage extends SinglePage {
     Regions.RegionListResponsesSinglePage = RegionListResponsesSinglePage;
 })(regions_Regions || (regions_Regions = {}));
 //# sourceMappingURL=regions.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/regional-hostnames/regional-hostnames.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/regional-hostnames/regional-hostnames.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -51985,7 +50359,7 @@ class RegionalHostnameListResponsesSinglePage extends SinglePage {
     RegionalHostnames.RegionListResponsesSinglePage = RegionListResponsesSinglePage;
 })(RegionalHostnames || (RegionalHostnames = {}));
 //# sourceMappingURL=regional-hostnames.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/addressing/addressing.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/addressing/addressing.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52015,7 +50389,7 @@ class Addressing extends APIResource {
     Addressing.PrefixesSinglePage = PrefixesSinglePage;
 })(Addressing || (Addressing = {}));
 //# sourceMappingURL=addressing.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/audit-logs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/audit-logs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52034,7 +50408,7 @@ class audit_logs_AuditLogs extends APIResource {
 }
 
 //# sourceMappingURL=audit-logs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/billing/profiles.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/billing/profiles.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Profiles extends APIResource {
@@ -52048,7 +50422,7 @@ class Profiles extends APIResource {
 (function (Profiles) {
 })(Profiles || (Profiles = {}));
 //# sourceMappingURL=profiles.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/billing/billing.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/billing/billing.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52062,7 +50436,7 @@ class billing_Billing extends APIResource {
     Billing.Profiles = Profiles;
 })(billing_Billing || (billing_Billing = {}));
 //# sourceMappingURL=billing.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/brand-protection.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/brand-protection.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class BrandProtection extends APIResource {
@@ -52088,7 +50462,7 @@ class BrandProtection extends APIResource {
     }
 }
 //# sourceMappingURL=brand-protection.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/diagnostics/traceroutes.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/diagnostics/traceroutes.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Traceroutes extends APIResource {
@@ -52106,7 +50480,7 @@ class Traceroutes extends APIResource {
 (function (Traceroutes) {
 })(Traceroutes || (Traceroutes = {}));
 //# sourceMappingURL=traceroutes.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/diagnostics/diagnostics.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/diagnostics/diagnostics.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52120,7 +50494,7 @@ class Diagnostics extends APIResource {
     Diagnostics.Traceroutes = Traceroutes;
 })(Diagnostics || (Diagnostics = {}));
 //# sourceMappingURL=diagnostics.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/images/v1/blobs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/images/v1/blobs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Blobs extends APIResource {
@@ -52139,7 +50513,7 @@ class Blobs extends APIResource {
 (function (Blobs) {
 })(Blobs || (Blobs = {}));
 //# sourceMappingURL=blobs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/images/v1/keys.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/images/v1/keys.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class keys_Keys extends APIResource {
@@ -52169,7 +50543,7 @@ class keys_Keys extends APIResource {
 (function (Keys) {
 })(keys_Keys || (keys_Keys = {}));
 //# sourceMappingURL=keys.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/images/v1/stats.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/images/v1/stats.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Stats extends APIResource {
@@ -52184,7 +50558,7 @@ class Stats extends APIResource {
 (function (Stats) {
 })(Stats || (Stats = {}));
 //# sourceMappingURL=stats.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/images/v1/variants.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/images/v1/variants.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class variants_Variants extends APIResource {
@@ -52233,7 +50607,7 @@ class variants_Variants extends APIResource {
 (function (Variants) {
 })(variants_Variants || (variants_Variants = {}));
 //# sourceMappingURL=variants.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/images/v1/v1.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/images/v1/v1.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52308,7 +50682,7 @@ class V1ListResponsesV4PagePagination extends V4PagePagination {
     V1.Blobs = Blobs;
 })(V1 || (V1 = {}));
 //# sourceMappingURL=v1.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/images/v2/direct-uploads.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/images/v2/direct-uploads.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52330,7 +50704,7 @@ class DirectUploads extends APIResource {
 (function (DirectUploads) {
 })(DirectUploads || (DirectUploads = {}));
 //# sourceMappingURL=direct-uploads.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/images/v2/v2.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/images/v2/v2.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52353,7 +50727,7 @@ class V2 extends APIResource {
     V2.DirectUploads = DirectUploads;
 })(V2 || (V2 = {}));
 //# sourceMappingURL=v2.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/images/images.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/images/images.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52371,7 +50745,7 @@ class Images extends APIResource {
     Images.V2 = V2;
 })(Images || (Images = {}));
 //# sourceMappingURL=images.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/dns.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/dns.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52395,7 +50769,7 @@ class DNSListResponsesV4PagePagination extends V4PagePagination {
     DNS.DNSListResponsesV4PagePagination = DNSListResponsesV4PagePagination;
 })(intel_dns_DNS || (intel_dns_DNS = {}));
 //# sourceMappingURL=dns.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/domain-history.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/domain-history.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class DomainHistoryResource extends APIResource {
@@ -52413,7 +50787,7 @@ class DomainHistoryResource extends APIResource {
 (function (DomainHistoryResource) {
 })(DomainHistoryResource || (DomainHistoryResource = {}));
 //# sourceMappingURL=domain-history.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/ip-lists.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/ip-lists.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class IPLists extends APIResource {
@@ -52428,7 +50802,7 @@ class IPLists extends APIResource {
 (function (IPLists) {
 })(IPLists || (IPLists = {}));
 //# sourceMappingURL=ip-lists.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/ips.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/ips.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class intel_ips_IPs extends APIResource {
@@ -52443,7 +50817,7 @@ class intel_ips_IPs extends APIResource {
 (function (IPs) {
 })(intel_ips_IPs || (intel_ips_IPs = {}));
 //# sourceMappingURL=ips.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/miscategorizations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/miscategorizations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Miscategorizations extends APIResource {
@@ -52461,7 +50835,7 @@ class Miscategorizations extends APIResource {
 (function (Miscategorizations) {
 })(Miscategorizations || (Miscategorizations = {}));
 //# sourceMappingURL=miscategorizations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/sinkholes.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/sinkholes.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52481,7 +50855,7 @@ class SinkholesSinglePage extends SinglePage {
     Sinkholes.SinkholesSinglePage = SinkholesSinglePage;
 })(Sinkholes || (Sinkholes = {}));
 //# sourceMappingURL=sinkholes.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/whois.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/whois.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52498,7 +50872,7 @@ class whois_Whois extends APIResource {
     Whois.Whois = whois_Whois;
 })(whois_Whois || (whois_Whois = {}));
 //# sourceMappingURL=whois.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/asn/subnets.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/asn/subnets.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Subnets extends APIResource {
@@ -52513,7 +50887,7 @@ class Subnets extends APIResource {
 (function (Subnets) {
 })(Subnets || (Subnets = {}));
 //# sourceMappingURL=subnets.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/asn/asn.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/asn/asn.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52534,7 +50908,7 @@ class ASN extends APIResource {
     ASN.Subnets = Subnets;
 })(ASN || (ASN = {}));
 //# sourceMappingURL=asn.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/attack-surface-report/issue-types.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/attack-surface-report/issue-types.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class IssueTypes extends APIResource {
@@ -52549,7 +50923,7 @@ class IssueTypes extends APIResource {
 (function (IssueTypes) {
 })(IssueTypes || (IssueTypes = {}));
 //# sourceMappingURL=issue-types.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/attack-surface-report/issues.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/attack-surface-report/issues.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52609,7 +50983,7 @@ class IssueListResponsesV4PagePagination extends V4PagePagination {
     Issues.IssueListResponsesV4PagePagination = IssueListResponsesV4PagePagination;
 })(Issues || (Issues = {}));
 //# sourceMappingURL=issues.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/attack-surface-report/attack-surface-report.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/attack-surface-report/attack-surface-report.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52627,7 +51001,7 @@ class AttackSurfaceReport extends APIResource {
     AttackSurfaceReport.IssueListResponsesV4PagePagination = IssueListResponsesV4PagePagination;
 })(AttackSurfaceReport || (AttackSurfaceReport = {}));
 //# sourceMappingURL=attack-surface-report.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/domains/bulks.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/domains/bulks.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Bulks extends APIResource {
@@ -52645,7 +51019,7 @@ class Bulks extends APIResource {
 (function (Bulks) {
 })(Bulks || (Bulks = {}));
 //# sourceMappingURL=bulks.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/domains/domains.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/domains/domains.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52666,7 +51040,7 @@ class domains_Domains extends APIResource {
     Domains.Bulks = Bulks;
 })(domains_Domains || (domains_Domains = {}));
 //# sourceMappingURL=domains.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/indicator-feeds/permissions.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/indicator-feeds/permissions.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Permissions extends APIResource {
@@ -52701,7 +51075,7 @@ class Permissions extends APIResource {
 (function (Permissions) {
 })(Permissions || (Permissions = {}));
 //# sourceMappingURL=permissions.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/indicator-feeds/snapshots.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/indicator-feeds/snapshots.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52717,7 +51091,7 @@ class Snapshots extends APIResource {
 (function (Snapshots) {
 })(Snapshots || (Snapshots = {}));
 //# sourceMappingURL=snapshots.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/indicator-feeds/indicator-feeds.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/indicator-feeds/indicator-feeds.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52783,7 +51157,7 @@ class IndicatorFeedListResponsesSinglePage extends SinglePage {
     IndicatorFeeds.Permissions = Permissions;
 })(IndicatorFeeds || (IndicatorFeeds = {}));
 //# sourceMappingURL=indicator-feeds.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/intel/intel.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/intel/intel.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52830,7 +51204,7 @@ class Intel extends APIResource {
     Intel.AttackSurfaceReport = AttackSurfaceReport;
 })(Intel || (Intel = {}));
 //# sourceMappingURL=intel.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-transit/apps.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-transit/apps.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52874,7 +51248,7 @@ class AppListResponsesSinglePage extends SinglePage {
     Apps.AppListResponsesSinglePage = AppListResponsesSinglePage;
 })(apps_Apps || (apps_Apps = {}));
 //# sourceMappingURL=apps.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-transit/cf-interconnects.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-transit/cf-interconnects.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class CfInterconnects extends APIResource {
@@ -52883,9 +51257,9 @@ class CfInterconnects extends APIResource {
      * `?validate_only=true` as an optional query parameter to only run validation
      * without persisting changes.
      */
-    update(tunnelIdentifier, params, options) {
+    update(cfInterconnectId, params, options) {
         const { account_id, ...body } = params;
-        return this._client.put(`/accounts/${account_id}/magic/cf_interconnects/${tunnelIdentifier}`, {
+        return this._client.put(`/accounts/${account_id}/magic/cf_interconnects/${cfInterconnectId}`, {
             body,
             ...options,
         })._thenUnwrap((obj) => obj.result);
@@ -52900,15 +51274,15 @@ class CfInterconnects extends APIResource {
     /**
      * Lists details for a specific interconnect.
      */
-    get(tunnelIdentifier, params, options) {
+    get(cfInterconnectId, params, options) {
         const { account_id } = params;
-        return this._client.get(`/accounts/${account_id}/magic/cf_interconnects/${tunnelIdentifier}`, options)._thenUnwrap((obj) => obj.result);
+        return this._client.get(`/accounts/${account_id}/magic/cf_interconnects/${cfInterconnectId}`, options)._thenUnwrap((obj) => obj.result);
     }
 }
 (function (CfInterconnects) {
 })(CfInterconnects || (CfInterconnects = {}));
 //# sourceMappingURL=cf-interconnects.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-transit/connectors.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-transit/connectors.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -52955,7 +51329,7 @@ class ConnectorListResponsesSinglePage extends SinglePage {
     Connectors.ConnectorListResponsesSinglePage = ConnectorListResponsesSinglePage;
 })(Connectors || (Connectors = {}));
 //# sourceMappingURL=connectors.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-transit/gre-tunnels.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-transit/gre-tunnels.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class GRETunnels extends APIResource {
@@ -52974,9 +51348,9 @@ class GRETunnels extends APIResource {
      * Updates a specific GRE tunnel. Use `?validate_only=true` as an optional query
      * parameter to only run validation without persisting changes.
      */
-    update(tunnelIdentifier, params, options) {
+    update(greTunnelId, params, options) {
         const { account_id, ...body } = params;
-        return this._client.put(`/accounts/${account_id}/magic/gre_tunnels/${tunnelIdentifier}`, {
+        return this._client.put(`/accounts/${account_id}/magic/gre_tunnels/${greTunnelId}`, {
             body,
             ...options,
         })._thenUnwrap((obj) => obj.result);
@@ -52992,22 +51366,22 @@ class GRETunnels extends APIResource {
      * Disables and removes a specific static GRE tunnel. Use `?validate_only=true` as
      * an optional query parameter to only run validation without persisting changes.
      */
-    delete(tunnelIdentifier, params, options) {
+    delete(greTunnelId, params, options) {
         const { account_id } = params;
-        return this._client.delete(`/accounts/${account_id}/magic/gre_tunnels/${tunnelIdentifier}`, options)._thenUnwrap((obj) => obj.result);
+        return this._client.delete(`/accounts/${account_id}/magic/gre_tunnels/${greTunnelId}`, options)._thenUnwrap((obj) => obj.result);
     }
     /**
      * Lists informtion for a specific GRE tunnel.
      */
-    get(tunnelIdentifier, params, options) {
+    get(greTunnelId, params, options) {
         const { account_id } = params;
-        return this._client.get(`/accounts/${account_id}/magic/gre_tunnels/${tunnelIdentifier}`, options)._thenUnwrap((obj) => obj.result);
+        return this._client.get(`/accounts/${account_id}/magic/gre_tunnels/${greTunnelId}`, options)._thenUnwrap((obj) => obj.result);
     }
 }
 (function (GRETunnels) {
 })(GRETunnels || (GRETunnels = {}));
 //# sourceMappingURL=gre-tunnels.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-transit/ipsec-tunnels.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-transit/ipsec-tunnels.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class IPSECTunnels extends APIResource {
@@ -53028,9 +51402,9 @@ class IPSECTunnels extends APIResource {
      * `?validate_only=true` as an optional query parameter to only run validation
      * without persisting changes.
      */
-    update(tunnelIdentifier, params, options) {
+    update(ipsecTunnelId, params, options) {
         const { account_id, ...body } = params;
-        return this._client.put(`/accounts/${account_id}/magic/ipsec_tunnels/${tunnelIdentifier}`, {
+        return this._client.put(`/accounts/${account_id}/magic/ipsec_tunnels/${ipsecTunnelId}`, {
             body,
             ...options,
         })._thenUnwrap((obj) => obj.result);
@@ -53047,16 +51421,16 @@ class IPSECTunnels extends APIResource {
      * Use `?validate_only=true` as an optional query parameter to only run validation
      * without persisting changes.
      */
-    delete(tunnelIdentifier, params, options) {
+    delete(ipsecTunnelId, params, options) {
         const { account_id } = params;
-        return this._client.delete(`/accounts/${account_id}/magic/ipsec_tunnels/${tunnelIdentifier}`, options)._thenUnwrap((obj) => obj.result);
+        return this._client.delete(`/accounts/${account_id}/magic/ipsec_tunnels/${ipsecTunnelId}`, options)._thenUnwrap((obj) => obj.result);
     }
     /**
      * Lists details for a specific IPsec tunnel.
      */
-    get(tunnelIdentifier, params, options) {
+    get(ipsecTunnelId, params, options) {
         const { account_id } = params;
-        return this._client.get(`/accounts/${account_id}/magic/ipsec_tunnels/${tunnelIdentifier}`, options)._thenUnwrap((obj) => obj.result);
+        return this._client.get(`/accounts/${account_id}/magic/ipsec_tunnels/${ipsecTunnelId}`, options)._thenUnwrap((obj) => obj.result);
     }
     /**
      * Generates a Pre Shared Key for a specific IPsec tunnel used in the IKE session.
@@ -53065,9 +51439,9 @@ class IPSECTunnels extends APIResource {
      * persisted to Cloudflare's edge and cannot be retrieved later. Note the PSK in a
      * safe place.
      */
-    pskGenerate(tunnelIdentifier, params, options) {
+    pskGenerate(ipsecTunnelId, params, options) {
         const { account_id, body } = params;
-        return this._client.post(`/accounts/${account_id}/magic/ipsec_tunnels/${tunnelIdentifier}/psk_generate`, {
+        return this._client.post(`/accounts/${account_id}/magic/ipsec_tunnels/${ipsecTunnelId}/psk_generate`, {
             body: body,
             ...options,
         })._thenUnwrap((obj) => obj.result);
@@ -53076,7 +51450,7 @@ class IPSECTunnels extends APIResource {
 (function (IPSECTunnels) {
 })(IPSECTunnels || (IPSECTunnels = {}));
 //# sourceMappingURL=ipsec-tunnels.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-transit/routes.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-transit/routes.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Routes extends APIResource {
@@ -53095,9 +51469,9 @@ class Routes extends APIResource {
      * Update a specific Magic static route. Use `?validate_only=true` as an optional
      * query parameter to run validation only without persisting changes.
      */
-    update(routeIdentifier, params, options) {
+    update(routeId, params, options) {
         const { account_id, ...body } = params;
-        return this._client.put(`/accounts/${account_id}/magic/routes/${routeIdentifier}`, {
+        return this._client.put(`/accounts/${account_id}/magic/routes/${routeId}`, {
             body,
             ...options,
         })._thenUnwrap((obj) => obj.result);
@@ -53112,9 +51486,9 @@ class Routes extends APIResource {
     /**
      * Disable and remove a specific Magic static route.
      */
-    delete(routeIdentifier, params, options) {
+    delete(routeId, params, options) {
         const { account_id } = params;
-        return this._client.delete(`/accounts/${account_id}/magic/routes/${routeIdentifier}`, options)._thenUnwrap((obj) => obj.result);
+        return this._client.delete(`/accounts/${account_id}/magic/routes/${routeId}`, options)._thenUnwrap((obj) => obj.result);
     }
     /**
      * Delete multiple Magic static routes.
@@ -53126,15 +51500,15 @@ class Routes extends APIResource {
     /**
      * Get a specific Magic static route.
      */
-    get(routeIdentifier, params, options) {
+    get(routeId, params, options) {
         const { account_id } = params;
-        return this._client.get(`/accounts/${account_id}/magic/routes/${routeIdentifier}`, options)._thenUnwrap((obj) => obj.result);
+        return this._client.get(`/accounts/${account_id}/magic/routes/${routeId}`, options)._thenUnwrap((obj) => obj.result);
     }
 }
 (function (Routes) {
 })(Routes || (Routes = {}));
 //# sourceMappingURL=routes.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-transit/sites/acls.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-transit/sites/acls.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -53153,9 +51527,9 @@ class acls_ACLs extends APIResource {
     /**
      * Update a specific Site ACL.
      */
-    update(siteId, aclIdentifier, params, options) {
+    update(siteId, aclId, params, options) {
         const { account_id, ...body } = params;
-        return this._client.put(`/accounts/${account_id}/magic/sites/${siteId}/acls/${aclIdentifier}`, {
+        return this._client.put(`/accounts/${account_id}/magic/sites/${siteId}/acls/${aclId}`, {
             body,
             ...options,
         })._thenUnwrap((obj) => obj.result);
@@ -53170,16 +51544,16 @@ class acls_ACLs extends APIResource {
     /**
      * Remove a specific Site ACL.
      */
-    delete(siteId, aclIdentifier, params, options) {
+    delete(siteId, aclId, params, options) {
         const { account_id } = params;
-        return this._client.delete(`/accounts/${account_id}/magic/sites/${siteId}/acls/${aclIdentifier}`, options)._thenUnwrap((obj) => obj.result);
+        return this._client.delete(`/accounts/${account_id}/magic/sites/${siteId}/acls/${aclId}`, options)._thenUnwrap((obj) => obj.result);
     }
     /**
      * Patch a specific Site ACL.
      */
-    edit(siteId, aclIdentifier, params, options) {
+    edit(siteId, aclId, params, options) {
         const { account_id, ...body } = params;
-        return this._client.patch(`/accounts/${account_id}/magic/sites/${siteId}/acls/${aclIdentifier}`, {
+        return this._client.patch(`/accounts/${account_id}/magic/sites/${siteId}/acls/${aclId}`, {
             body,
             ...options,
         })._thenUnwrap((obj) => obj.result);
@@ -53187,9 +51561,9 @@ class acls_ACLs extends APIResource {
     /**
      * Get a specific Site ACL.
      */
-    get(siteId, aclIdentifier, params, options) {
+    get(siteId, aclId, params, options) {
         const { account_id } = params;
-        return this._client.get(`/accounts/${account_id}/magic/sites/${siteId}/acls/${aclIdentifier}`, options)._thenUnwrap((obj) => obj.result);
+        return this._client.get(`/accounts/${account_id}/magic/sites/${siteId}/acls/${aclId}`, options)._thenUnwrap((obj) => obj.result);
     }
 }
 class acls_ACLsSinglePage extends SinglePage {
@@ -53198,7 +51572,7 @@ class acls_ACLsSinglePage extends SinglePage {
     ACLs.ACLsSinglePage = acls_ACLsSinglePage;
 })(acls_ACLs || (acls_ACLs = {}));
 //# sourceMappingURL=acls.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-transit/sites/lans.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-transit/sites/lans.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -53263,7 +51637,7 @@ class LANsSinglePage extends SinglePage {
     LANs.LANsSinglePage = LANsSinglePage;
 })(LANs || (LANs = {}));
 //# sourceMappingURL=lans.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-transit/sites/wans.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-transit/sites/wans.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -53327,7 +51701,7 @@ class WANsSinglePage extends SinglePage {
     WANs.WANsSinglePage = WANsSinglePage;
 })(WANs || (WANs = {}));
 //# sourceMappingURL=wans.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-transit/sites/sites.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-transit/sites/sites.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -53408,7 +51782,7 @@ class SitesSinglePage extends SinglePage {
     Sites.WANsSinglePage = WANsSinglePage;
 })(Sites || (Sites = {}));
 //# sourceMappingURL=sites.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-transit/magic-transit.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-transit/magic-transit.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -53443,7 +51817,7 @@ class MagicTransit extends APIResource {
     MagicTransit.ConnectorListResponsesSinglePage = ConnectorListResponsesSinglePage;
 })(MagicTransit || (MagicTransit = {}));
 //# sourceMappingURL=magic-transit.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-network-monitoring/configs/full.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-network-monitoring/configs/full.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Full extends APIResource {
@@ -53458,7 +51832,7 @@ class Full extends APIResource {
 (function (Full) {
 })(Full || (Full = {}));
 //# sourceMappingURL=full.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-network-monitoring/configs/configs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-network-monitoring/configs/configs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -53511,7 +51885,7 @@ class Configs extends APIResource {
     Configs.Full = Full;
 })(Configs || (Configs = {}));
 //# sourceMappingURL=configs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-network-monitoring/rules/advertisements.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-network-monitoring/rules/advertisements.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Advertisements extends APIResource {
@@ -53529,7 +51903,7 @@ class Advertisements extends APIResource {
 (function (Advertisements) {
 })(Advertisements || (Advertisements = {}));
 //# sourceMappingURL=advertisements.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-network-monitoring/rules/rules.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-network-monitoring/rules/rules.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -53594,7 +51968,7 @@ class MagicNetworkMonitoringRulesSinglePage extends SinglePage {
     Rules.Advertisements = Advertisements;
 })(rules_rules_Rules || (rules_rules_Rules = {}));
 //# sourceMappingURL=rules.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/magic-network-monitoring/magic-network-monitoring.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/magic-network-monitoring/magic-network-monitoring.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -53612,7 +51986,7 @@ class MagicNetworkMonitoring extends APIResource {
     MagicNetworkMonitoring.MagicNetworkMonitoringRulesSinglePage = MagicNetworkMonitoringRulesSinglePage;
 })(MagicNetworkMonitoring || (MagicNetworkMonitoring = {}));
 //# sourceMappingURL=magic-network-monitoring.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/mtls-certificates/associations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/mtls-certificates/associations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Associations extends APIResource {
@@ -53627,7 +52001,7 @@ class Associations extends APIResource {
 (function (Associations) {
 })(Associations || (Associations = {}));
 //# sourceMappingURL=associations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/mtls-certificates/mtls-certificates.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/mtls-certificates/mtls-certificates.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -53676,7 +52050,7 @@ class MTLSCertificatesSinglePage extends SinglePage {
     MTLSCertificates.Associations = Associations;
 })(MTLSCertificates || (MTLSCertificates = {}));
 //# sourceMappingURL=mtls-certificates.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/pages/projects/domains.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/pages/projects/domains.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -53730,7 +52104,7 @@ class DomainListResponsesSinglePage extends SinglePage {
     Domains.DomainListResponsesSinglePage = DomainListResponsesSinglePage;
 })(projects_domains_Domains || (projects_domains_Domains = {}));
 //# sourceMappingURL=domains.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/pages/projects/deployments/history/logs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/pages/projects/deployments/history/logs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class logs_Logs extends APIResource {
@@ -53745,7 +52119,7 @@ class logs_Logs extends APIResource {
 (function (Logs) {
 })(logs_Logs || (logs_Logs = {}));
 //# sourceMappingURL=logs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/pages/projects/deployments/history/history.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/pages/projects/deployments/history/history.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -53759,7 +52133,7 @@ class history_History extends APIResource {
     History.Logs = logs_Logs;
 })(history_History || (history_History = {}));
 //# sourceMappingURL=history.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/pages/projects/deployments/deployments.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/pages/projects/deployments/deployments.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -53820,7 +52194,7 @@ class deployments_Deployments extends APIResource {
 })(deployments_Deployments || (deployments_Deployments = {}));
 
 //# sourceMappingURL=deployments.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/pages/projects/projects.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/pages/projects/projects.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -53889,7 +52263,7 @@ class DeploymentsSinglePage extends SinglePage {
     Projects.DomainListResponsesSinglePage = DomainListResponsesSinglePage;
 })(Projects || (Projects = {}));
 //# sourceMappingURL=projects.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/pages/pages.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/pages/pages.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -53904,7 +52278,7 @@ class Pages extends APIResource {
     Pages.DeploymentsSinglePage = DeploymentsSinglePage;
 })(Pages || (Pages = {}));
 //# sourceMappingURL=pages.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/pcaps/download.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/pcaps/download.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Download extends APIResource {
@@ -53922,7 +52296,7 @@ class Download extends APIResource {
 (function (Download) {
 })(Download || (Download = {}));
 //# sourceMappingURL=download.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/pcaps/ownership.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/pcaps/ownership.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class OwnershipResource extends APIResource {
@@ -53964,7 +52338,7 @@ class OwnershipResource extends APIResource {
 (function (OwnershipResource) {
 })(OwnershipResource || (OwnershipResource = {}));
 //# sourceMappingURL=ownership.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/pcaps/pcaps.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/pcaps/pcaps.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54005,7 +52379,7 @@ class PCAPListResponsesSinglePage extends SinglePage {
     PCAPs.Download = Download;
 })(PCAPs || (PCAPs = {}));
 //# sourceMappingURL=pcaps.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/registrar/domains.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/registrar/domains.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54042,7 +52416,7 @@ class domains_DomainsSinglePage extends SinglePage {
     Domains.DomainsSinglePage = domains_DomainsSinglePage;
 })(registrar_domains_Domains || (registrar_domains_Domains = {}));
 //# sourceMappingURL=domains.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/registrar/registrar.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/registrar/registrar.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54057,7 +52431,7 @@ class Registrar extends APIResource {
     Registrar.DomainsSinglePage = domains_DomainsSinglePage;
 })(Registrar || (Registrar = {}));
 //# sourceMappingURL=registrar.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/request-tracers/traces.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/request-tracers/traces.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Traces extends APIResource {
@@ -54075,7 +52449,7 @@ class Traces extends APIResource {
 (function (Traces) {
 })(Traces || (Traces = {}));
 //# sourceMappingURL=traces.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/request-tracers/request-tracers.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/request-tracers/request-tracers.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54089,7 +52463,7 @@ class RequestTracers extends APIResource {
     RequestTracers.Traces = Traces;
 })(RequestTracers || (RequestTracers = {}));
 //# sourceMappingURL=request-tracers.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/rules/lists/bulk-operations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/rules/lists/bulk-operations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class BulkOperations extends APIResource {
@@ -54107,7 +52481,7 @@ class BulkOperations extends APIResource {
 (function (BulkOperations) {
 })(BulkOperations || (BulkOperations = {}));
 //# sourceMappingURL=bulk-operations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/rules/lists/items.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/rules/lists/items.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54173,7 +52547,7 @@ class ItemListResponsesCursorPagination extends CursorPagination {
     Items.ItemListResponsesCursorPagination = ItemListResponsesCursorPagination;
 })(Items || (Items = {}));
 //# sourceMappingURL=items.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/rules/lists/lists.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/rules/lists/lists.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54234,7 +52608,7 @@ class ListsListsSinglePage extends SinglePage {
     Lists.ItemListResponsesCursorPagination = ItemListResponsesCursorPagination;
 })(Lists || (Lists = {}));
 //# sourceMappingURL=lists.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/rules/rules.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/rules/rules.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54249,7 +52623,7 @@ class resources_rules_rules_Rules extends APIResource {
     Rules.ListsListsSinglePage = ListsListsSinglePage;
 })(resources_rules_rules_Rules || (resources_rules_rules_Rules = {}));
 //# sourceMappingURL=rules.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/storage/analytics.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/storage/analytics.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class storage_analytics_Analytics extends APIResource {
@@ -54277,7 +52651,7 @@ class storage_analytics_Analytics extends APIResource {
 (function (Analytics) {
 })(storage_analytics_Analytics || (storage_analytics_Analytics = {}));
 //# sourceMappingURL=analytics.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/storage/storage.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/storage/storage.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54291,7 +52665,7 @@ class Storage extends APIResource {
     Storage.Analytics = storage_analytics_Analytics;
 })(Storage || (Storage = {}));
 //# sourceMappingURL=storage.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/audio-tracks.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/audio-tracks.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class AudioTracks extends APIResource {
@@ -54337,7 +52711,7 @@ class AudioTracks extends APIResource {
 (function (AudioTracks) {
 })(AudioTracks || (AudioTracks = {}));
 //# sourceMappingURL=audio-tracks.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/clip.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/clip.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class ClipResource extends APIResource {
@@ -54352,7 +52726,7 @@ class ClipResource extends APIResource {
 (function (ClipResource) {
 })(ClipResource || (ClipResource = {}));
 //# sourceMappingURL=clip.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/copy.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/copy.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Copy extends APIResource {
@@ -54375,7 +52749,7 @@ class Copy extends APIResource {
 (function (Copy) {
 })(Copy || (Copy = {}));
 //# sourceMappingURL=copy.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/direct-upload.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/direct-upload.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class DirectUpload extends APIResource {
@@ -54397,7 +52771,7 @@ class DirectUpload extends APIResource {
 (function (DirectUpload) {
 })(DirectUpload || (DirectUpload = {}));
 //# sourceMappingURL=direct-upload.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/downloads.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/downloads.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class downloads_Downloads extends APIResource {
@@ -54429,7 +52803,7 @@ class downloads_Downloads extends APIResource {
 (function (Downloads) {
 })(downloads_Downloads || (downloads_Downloads = {}));
 //# sourceMappingURL=downloads.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/embed.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/embed.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Embed extends APIResource {
@@ -54449,7 +52823,7 @@ class Embed extends APIResource {
 (function (Embed) {
 })(Embed || (Embed = {}));
 //# sourceMappingURL=embed.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/keys.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/keys.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54485,7 +52859,7 @@ class stream_keys_Keys extends APIResource {
     Keys.Keys = stream_keys_Keys;
 })(stream_keys_Keys || (stream_keys_Keys = {}));
 //# sourceMappingURL=keys.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/token.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/token.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Token extends APIResource {
@@ -54504,7 +52878,7 @@ class Token extends APIResource {
 (function (Token) {
 })(Token || (Token = {}));
 //# sourceMappingURL=token.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/videos.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/videos.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Videos extends APIResource {
@@ -54522,7 +52896,7 @@ class Videos extends APIResource {
 (function (Videos) {
 })(Videos || (Videos = {}));
 //# sourceMappingURL=videos.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/watermarks.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/watermarks.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54565,7 +52939,7 @@ class WatermarksSinglePage extends SinglePage {
     Watermarks.WatermarksSinglePage = WatermarksSinglePage;
 })(Watermarks || (Watermarks = {}));
 //# sourceMappingURL=watermarks.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/webhooks.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/webhooks.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Webhooks extends APIResource {
@@ -54594,7 +52968,7 @@ class Webhooks extends APIResource {
 (function (Webhooks) {
 })(Webhooks || (Webhooks = {}));
 //# sourceMappingURL=webhooks.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/captions/language/vtt.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/captions/language/vtt.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Vtt extends APIResource {
@@ -54612,7 +52986,7 @@ class Vtt extends APIResource {
 (function (Vtt) {
 })(Vtt || (Vtt = {}));
 //# sourceMappingURL=vtt.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/captions/language/language.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/captions/language/language.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54621,6 +52995,13 @@ class Language extends APIResource {
     constructor() {
         super(...arguments);
         this.vtt = new Vtt(this._client);
+    }
+    /**
+     * Generate captions or subtitles for provided language via AI.
+     */
+    create(identifier, language, params, options) {
+        const { account_id } = params;
+        return this._client.post(`/accounts/${account_id}/stream/${identifier}/captions/${language}/generate`, options)._thenUnwrap((obj) => obj.result);
     }
     /**
      * Uploads the caption or subtitle file to the endpoint for a specific BCP47
@@ -54649,7 +53030,7 @@ class Language extends APIResource {
     Language.Vtt = Vtt;
 })(Language || (Language = {}));
 //# sourceMappingURL=language.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/captions/captions.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/captions/captions.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54670,7 +53051,7 @@ class Captions extends APIResource {
     Captions.Language = Language;
 })(Captions || (Captions = {}));
 //# sourceMappingURL=captions.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/live-inputs/outputs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/live-inputs/outputs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54716,7 +53097,7 @@ class OutputsSinglePage extends SinglePage {
     Outputs.OutputsSinglePage = OutputsSinglePage;
 })(Outputs || (Outputs = {}));
 //# sourceMappingURL=outputs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/live-inputs/live-inputs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/live-inputs/live-inputs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54781,7 +53162,7 @@ class LiveInputs extends APIResource {
     LiveInputs.OutputsSinglePage = OutputsSinglePage;
 })(LiveInputs || (LiveInputs = {}));
 //# sourceMappingURL=live-inputs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/stream/stream.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/stream/stream.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54881,7 +53262,7 @@ class VideosSinglePage extends SinglePage {
     Stream.Token = Token;
 })(Stream || (Stream = {}));
 //# sourceMappingURL=stream.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/alerting/available-alerts.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/alerting/available-alerts.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class AvailableAlerts extends APIResource {
@@ -54896,7 +53277,7 @@ class AvailableAlerts extends APIResource {
 (function (AvailableAlerts) {
 })(AvailableAlerts || (AvailableAlerts = {}));
 //# sourceMappingURL=available-alerts.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/alerting/history.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/alerting/history.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54918,7 +53299,7 @@ class HistoriesV4PagePaginationArray extends V4PagePaginationArray {
     HistoryResource.HistoriesV4PagePaginationArray = HistoriesV4PagePaginationArray;
 })(HistoryResource || (HistoryResource = {}));
 //# sourceMappingURL=history.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/alerting/policies.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/alerting/policies.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -54972,7 +53353,7 @@ class PoliciesSinglePage extends SinglePage {
     Policies.PoliciesSinglePage = PoliciesSinglePage;
 })(policies_Policies || (policies_Policies = {}));
 //# sourceMappingURL=policies.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/alerting/destinations/eligible.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/alerting/destinations/eligible.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Eligible extends APIResource {
@@ -54987,7 +53368,7 @@ class Eligible extends APIResource {
 (function (Eligible) {
 })(Eligible || (Eligible = {}));
 //# sourceMappingURL=eligible.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/alerting/destinations/pagerduty.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/alerting/destinations/pagerduty.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class PagerdutyResource extends APIResource {
@@ -55023,7 +53404,7 @@ class PagerdutyResource extends APIResource {
 (function (PagerdutyResource) {
 })(PagerdutyResource || (PagerdutyResource = {}));
 //# sourceMappingURL=pagerduty.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/alerting/destinations/webhooks.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/alerting/destinations/webhooks.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55078,7 +53459,7 @@ class WebhooksSinglePage extends SinglePage {
     Webhooks.WebhooksSinglePage = WebhooksSinglePage;
 })(webhooks_Webhooks || (webhooks_Webhooks = {}));
 //# sourceMappingURL=webhooks.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/alerting/destinations/destinations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/alerting/destinations/destinations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55099,7 +53480,7 @@ class Destinations extends APIResource {
     Destinations.WebhooksSinglePage = WebhooksSinglePage;
 })(Destinations || (Destinations = {}));
 //# sourceMappingURL=destinations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/alerting/alerting.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/alerting/alerting.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55124,7 +53505,7 @@ class Alerting extends APIResource {
     Alerting.PoliciesSinglePage = PoliciesSinglePage;
 })(Alerting || (Alerting = {}));
 //# sourceMappingURL=alerting.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/d1/database.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/d1/database.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55186,7 +53567,7 @@ class DatabaseListResponsesV4PagePaginationArray extends V4PagePaginationArray {
     Database.DatabaseListResponsesV4PagePaginationArray = DatabaseListResponsesV4PagePaginationArray;
 })(Database || (Database = {}));
 //# sourceMappingURL=database.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/d1/d1.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/d1/d1.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55201,7 +53582,7 @@ class D1Resource extends APIResource {
     D1Resource.DatabaseListResponsesV4PagePaginationArray = DatabaseListResponsesV4PagePaginationArray;
 })(D1Resource || (D1Resource = {}));
 //# sourceMappingURL=d1.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/r2/buckets.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/r2/buckets.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55245,7 +53626,7 @@ class BucketsCursorPagination extends CursorPagination {
     Buckets.BucketsCursorPagination = BucketsCursorPagination;
 })(Buckets || (Buckets = {}));
 //# sourceMappingURL=buckets.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/r2/sippy.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/r2/sippy.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class SippyResource extends APIResource {
@@ -55277,7 +53658,7 @@ class SippyResource extends APIResource {
 (function (SippyResource) {
 })(SippyResource || (SippyResource = {}));
 //# sourceMappingURL=sippy.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/r2/temporary-credentials.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/r2/temporary-credentials.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class TemporaryCredentials extends APIResource {
@@ -55296,7 +53677,7 @@ class TemporaryCredentials extends APIResource {
 (function (TemporaryCredentials) {
 })(TemporaryCredentials || (TemporaryCredentials = {}));
 //# sourceMappingURL=temporary-credentials.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/r2/r2.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/r2/r2.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55317,7 +53698,7 @@ class R2 extends APIResource {
     R2.TemporaryCredentials = TemporaryCredentials;
 })(R2 || (R2 = {}));
 //# sourceMappingURL=r2.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/warp-connector.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/warp-connector.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55372,7 +53753,7 @@ class WARPConnector extends APIResource {
 class WARPConnectorListResponsesV4PagePaginationArray extends V4PagePaginationArray {
 }
 //# sourceMappingURL=warp-connector.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/namespaces/scripts/bindings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/namespaces/scripts/bindings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class bindings_Bindings extends APIResource {
@@ -55388,7 +53769,7 @@ class bindings_Bindings extends APIResource {
 (function (Bindings) {
 })(bindings_Bindings || (bindings_Bindings = {}));
 //# sourceMappingURL=bindings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/namespaces/scripts/content.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/namespaces/scripts/content.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55422,7 +53803,7 @@ class content_Content extends APIResource {
 (function (Content) {
 })(content_Content || (content_Content = {}));
 //# sourceMappingURL=content.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/namespaces/scripts/secrets.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/namespaces/scripts/secrets.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55449,7 +53830,7 @@ class SecretListResponsesSinglePage extends SinglePage {
     Secrets.SecretListResponsesSinglePage = SecretListResponsesSinglePage;
 })(Secrets || (Secrets = {}));
 //# sourceMappingURL=secrets.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/namespaces/scripts/settings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/namespaces/scripts/settings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55472,7 +53853,7 @@ class namespaces_scripts_settings_Settings extends APIResource {
 (function (Settings) {
 })(namespaces_scripts_settings_Settings || (namespaces_scripts_settings_Settings = {}));
 //# sourceMappingURL=settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/namespaces/scripts/tags.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/namespaces/scripts/tags.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55506,7 +53887,7 @@ class TagListResponsesSinglePage extends SinglePage {
     Tags.TagListResponsesSinglePage = TagListResponsesSinglePage;
 })(Tags || (Tags = {}));
 //# sourceMappingURL=tags.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/namespaces/scripts/scripts.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/namespaces/scripts/scripts.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55563,7 +53944,7 @@ class scripts_scripts_Scripts extends APIResource {
     Scripts.TagListResponsesSinglePage = TagListResponsesSinglePage;
 })(scripts_scripts_Scripts || (scripts_scripts_Scripts = {}));
 //# sourceMappingURL=scripts.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/namespaces/namespaces.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/namespaces/namespaces.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55613,7 +53994,7 @@ class NamespaceListResponsesSinglePage extends SinglePage {
     Namespaces.Scripts = scripts_scripts_Scripts;
 })(namespaces_namespaces_Namespaces || (namespaces_namespaces_Namespaces = {}));
 //# sourceMappingURL=namespaces.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/dispatch.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers-for-platforms/dispatch/dispatch.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55628,7 +54009,7 @@ class Dispatch extends APIResource {
     Dispatch.NamespaceListResponsesSinglePage = NamespaceListResponsesSinglePage;
 })(Dispatch || (Dispatch = {}));
 //# sourceMappingURL=dispatch.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/workers-for-platforms/workers-for-platforms.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/workers-for-platforms/workers-for-platforms.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55642,7 +54023,7 @@ class WorkersForPlatforms extends APIResource {
     WorkersForPlatforms.Dispatch = Dispatch;
 })(WorkersForPlatforms || (WorkersForPlatforms = {}));
 //# sourceMappingURL=workers-for-platforms.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/connectivity-settings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/connectivity-settings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class ConnectivitySettings extends APIResource {
@@ -55667,7 +54048,7 @@ class ConnectivitySettings extends APIResource {
 (function (ConnectivitySettings) {
 })(ConnectivitySettings || (ConnectivitySettings = {}));
 //# sourceMappingURL=connectivity-settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/identity-providers.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/identity-providers.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55795,7 +54176,7 @@ class IdentityProviderListResponsesSinglePage extends SinglePage {
     IdentityProviders.IdentityProviderListResponsesSinglePage = IdentityProviderListResponsesSinglePage;
 })(IdentityProviders || (IdentityProviders = {}));
 //# sourceMappingURL=identity-providers.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/organizations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/organizations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55902,7 +54283,7 @@ class organizations_Organizations extends APIResource {
 (function (Organizations) {
 })(organizations_Organizations || (organizations_Organizations = {}));
 //# sourceMappingURL=organizations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/seats.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/seats.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Seats extends APIResource {
@@ -55921,7 +54302,7 @@ class Seats extends APIResource {
 (function (Seats) {
 })(Seats || (Seats = {}));
 //# sourceMappingURL=seats.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/bookmarks.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/bookmarks.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -55975,7 +54356,7 @@ class BookmarksSinglePage extends SinglePage {
     Bookmarks.BookmarksSinglePage = BookmarksSinglePage;
 })(Bookmarks || (Bookmarks = {}));
 //# sourceMappingURL=bookmarks.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/custom-pages.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/custom-pages.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -56029,7 +54410,7 @@ class CustomPageWithoutHTMLsSinglePage extends SinglePage {
     CustomPages.CustomPageWithoutHTMLsSinglePage = CustomPageWithoutHTMLsSinglePage;
 })(CustomPages || (CustomPages = {}));
 //# sourceMappingURL=custom-pages.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/groups.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/groups.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -56160,7 +54541,7 @@ class ZeroTrustGroupsSinglePage extends SinglePage {
     Groups.ZeroTrustGroupsSinglePage = ZeroTrustGroupsSinglePage;
 })(groups_Groups || (groups_Groups = {}));
 //# sourceMappingURL=groups.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/keys.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/keys.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class access_keys_Keys extends APIResource {
@@ -56189,7 +54570,7 @@ class access_keys_Keys extends APIResource {
 (function (Keys) {
 })(access_keys_Keys || (access_keys_Keys = {}));
 //# sourceMappingURL=keys.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/policies.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/policies.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -56240,7 +54621,7 @@ class policies_PolicyListResponsesSinglePage extends SinglePage {
     Policies.PolicyListResponsesSinglePage = policies_PolicyListResponsesSinglePage;
 })(access_policies_Policies || (access_policies_Policies = {}));
 //# sourceMappingURL=policies.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/service-tokens.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/service-tokens.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -56387,7 +54768,7 @@ class ServiceTokensSinglePage extends SinglePage {
     ServiceTokens.ServiceTokensSinglePage = ServiceTokensSinglePage;
 })(ServiceTokens || (ServiceTokens = {}));
 //# sourceMappingURL=service-tokens.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/tags.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/tags.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -56438,7 +54819,7 @@ class TagsSinglePage extends SinglePage {
     Tags.TagsSinglePage = TagsSinglePage;
 })(tags_Tags || (tags_Tags = {}));
 //# sourceMappingURL=tags.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/applications/cas.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/applications/cas.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -56541,7 +54922,7 @@ class CAsSinglePage extends SinglePage {
     CAs.CAsSinglePage = CAsSinglePage;
 })(CAs || (CAs = {}));
 //# sourceMappingURL=cas.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/applications/policies.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/applications/policies.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -56676,7 +55057,7 @@ class applications_policies_PolicyListResponsesSinglePage extends SinglePage {
     Policies.PolicyListResponsesSinglePage = applications_policies_PolicyListResponsesSinglePage;
 })(applications_policies_Policies || (applications_policies_Policies = {}));
 //# sourceMappingURL=policies.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/applications/user-policy-checks.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/applications/user-policy-checks.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -56708,7 +55089,7 @@ class UserPolicyChecks extends APIResource {
 (function (UserPolicyChecks) {
 })(UserPolicyChecks || (UserPolicyChecks = {}));
 //# sourceMappingURL=user-policy-checks.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/applications/applications.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/applications/applications.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -56875,7 +55256,7 @@ class ApplicationListResponsesSinglePage extends SinglePage {
     Applications.PolicyListResponsesSinglePage = applications_policies_PolicyListResponsesSinglePage;
 })(Applications || (Applications = {}));
 //# sourceMappingURL=applications.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/certificates/settings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/certificates/settings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -56932,7 +55313,7 @@ class certificates_settings_Settings extends APIResource {
 (function (Settings) {
 })(certificates_settings_Settings || (certificates_settings_Settings = {}));
 //# sourceMappingURL=settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/certificates/certificates.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/certificates/certificates.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57069,7 +55450,7 @@ class CertificatesSinglePage extends SinglePage {
     Certificates.Settings = certificates_settings_Settings;
 })(certificates_Certificates || (certificates_Certificates = {}));
 //# sourceMappingURL=certificates.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/logs/access-requests.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/logs/access-requests.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57089,7 +55470,7 @@ class access_requests_AccessRequests extends APIResource {
     AccessRequests.AccessRequests = access_requests_AccessRequests;
 })(access_requests_AccessRequests || (access_requests_AccessRequests = {}));
 //# sourceMappingURL=access-requests.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/logs/logs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/logs/logs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57103,7 +55484,7 @@ class logs_logs_Logs extends APIResource {
     Logs.AccessRequests = access_requests_AccessRequests;
 })(logs_logs_Logs || (logs_logs_Logs = {}));
 //# sourceMappingURL=logs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/users/active-sessions.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/users/active-sessions.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57130,7 +55511,7 @@ class ActiveSessionListResponsesSinglePage extends SinglePage {
     ActiveSessions.ActiveSessionListResponsesSinglePage = ActiveSessionListResponsesSinglePage;
 })(ActiveSessions || (ActiveSessions = {}));
 //# sourceMappingURL=active-sessions.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/users/failed-logins.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/users/failed-logins.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57150,7 +55531,7 @@ class FailedLoginListResponsesSinglePage extends SinglePage {
     FailedLogins.FailedLoginListResponsesSinglePage = FailedLoginListResponsesSinglePage;
 })(FailedLogins || (FailedLogins = {}));
 //# sourceMappingURL=failed-logins.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/users/last-seen-identity.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/users/last-seen-identity.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class LastSeenIdentity extends APIResource {
@@ -57165,7 +55546,7 @@ class LastSeenIdentity extends APIResource {
 (function (LastSeenIdentity) {
 })(LastSeenIdentity || (LastSeenIdentity = {}));
 //# sourceMappingURL=last-seen-identity.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/users/users.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/users/users.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57199,7 +55580,7 @@ class AccessUsersSinglePage extends SinglePage {
     Users.FailedLoginListResponsesSinglePage = FailedLoginListResponsesSinglePage;
 })(Users || (Users = {}));
 //# sourceMappingURL=users.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/access/access.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/access/access.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57252,7 +55633,7 @@ class Access extends APIResource {
     Access.PolicyListResponsesSinglePage = policies_PolicyListResponsesSinglePage;
 })(Access || (Access = {}));
 //# sourceMappingURL=access.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/devices/dex-tests.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/devices/dex-tests.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57307,7 +55688,7 @@ class SchemaHTTPSSinglePage extends SinglePage {
     DEXTests.SchemaHTTPSSinglePage = SchemaHTTPSSinglePage;
 })(DEXTests || (DEXTests = {}));
 //# sourceMappingURL=dex-tests.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/devices/networks.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/devices/networks.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57359,7 +55740,7 @@ class DeviceNetworksSinglePage extends SinglePage {
     Networks.DeviceNetworksSinglePage = DeviceNetworksSinglePage;
 })(Networks || (Networks = {}));
 //# sourceMappingURL=networks.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/devices/override-codes.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/devices/override-codes.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class OverrideCodes extends APIResource {
@@ -57375,7 +55756,7 @@ class OverrideCodes extends APIResource {
 (function (OverrideCodes) {
 })(OverrideCodes || (OverrideCodes = {}));
 //# sourceMappingURL=override-codes.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/devices/revoke.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/devices/revoke.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Revoke extends APIResource {
@@ -57393,7 +55774,7 @@ class Revoke extends APIResource {
 (function (Revoke) {
 })(Revoke || (Revoke = {}));
 //# sourceMappingURL=revoke.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/devices/settings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/devices/settings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class devices_settings_Settings extends APIResource {
@@ -57415,7 +55796,7 @@ class devices_settings_Settings extends APIResource {
 (function (Settings) {
 })(devices_settings_Settings || (devices_settings_Settings = {}));
 //# sourceMappingURL=settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/devices/unrevoke.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/devices/unrevoke.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Unrevoke extends APIResource {
@@ -57433,7 +55814,7 @@ class Unrevoke extends APIResource {
 (function (Unrevoke) {
 })(Unrevoke || (Unrevoke = {}));
 //# sourceMappingURL=unrevoke.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/devices/policies/default-policy.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/devices/policies/default-policy.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class DefaultPolicy extends APIResource {
@@ -57448,7 +55829,7 @@ class DefaultPolicy extends APIResource {
 (function (DefaultPolicy) {
 })(DefaultPolicy || (DefaultPolicy = {}));
 //# sourceMappingURL=default-policy.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/devices/policies/excludes.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/devices/policies/excludes.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57486,7 +55867,7 @@ class SplitTunnelExcludesSinglePage extends SinglePage {
     Excludes.SplitTunnelExcludesSinglePage = SplitTunnelExcludesSinglePage;
 })(Excludes || (Excludes = {}));
 //# sourceMappingURL=excludes.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/devices/policies/fallback-domains.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/devices/policies/fallback-domains.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57528,7 +55909,7 @@ class FallbackDomainsSinglePage extends SinglePage {
     FallbackDomains.FallbackDomainsSinglePage = FallbackDomainsSinglePage;
 })(FallbackDomains || (FallbackDomains = {}));
 //# sourceMappingURL=fallback-domains.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/devices/policies/includes.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/devices/policies/includes.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57566,7 +55947,7 @@ class SplitTunnelIncludesSinglePage extends SinglePage {
     Includes.SplitTunnelIncludesSinglePage = SplitTunnelIncludesSinglePage;
 })(Includes || (Includes = {}));
 //# sourceMappingURL=includes.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/devices/policies/policies.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/devices/policies/policies.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57637,7 +56018,7 @@ class SettingsPoliciesSinglePage extends SinglePage {
     Policies.SplitTunnelIncludesSinglePage = SplitTunnelIncludesSinglePage;
 })(policies_policies_Policies || (policies_policies_Policies = {}));
 //# sourceMappingURL=policies.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/devices/posture/integrations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/devices/posture/integrations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57691,7 +56072,7 @@ class IntegrationsSinglePage extends SinglePage {
     Integrations.IntegrationsSinglePage = IntegrationsSinglePage;
 })(Integrations || (Integrations = {}));
 //# sourceMappingURL=integrations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/devices/posture/posture.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/devices/posture/posture.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57749,7 +56130,7 @@ class DevicePostureRulesSinglePage extends SinglePage {
     Posture.IntegrationsSinglePage = IntegrationsSinglePage;
 })(Posture || (Posture = {}));
 //# sourceMappingURL=posture.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/devices/devices.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/devices/devices.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57807,7 +56188,7 @@ class DevicesSinglePage extends SinglePage {
     Devices.OverrideCodes = OverrideCodes;
 })(Devices || (Devices = {}));
 //# sourceMappingURL=devices.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dex/colos.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dex/colos.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57832,7 +56213,7 @@ class ColoListResponsesSinglePage extends SinglePage {
     Colos.ColoListResponsesSinglePage = ColoListResponsesSinglePage;
 })(Colos || (Colos = {}));
 //# sourceMappingURL=colos.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dex/traceroute-tests.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dex/traceroute-tests.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class TracerouteTests extends APIResource {
@@ -57872,7 +56253,7 @@ class TracerouteTests extends APIResource {
 (function (TracerouteTests) {
 })(TracerouteTests || (TracerouteTests = {}));
 //# sourceMappingURL=traceroute-tests.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dex/fleet-status/devices.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dex/fleet-status/devices.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57892,7 +56273,7 @@ class DeviceListResponsesV4PagePaginationArray extends V4PagePaginationArray {
     Devices.DeviceListResponsesV4PagePaginationArray = DeviceListResponsesV4PagePaginationArray;
 })(devices_Devices || (devices_Devices = {}));
 //# sourceMappingURL=devices.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dex/fleet-status/fleet-status.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dex/fleet-status/fleet-status.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57928,7 +56309,7 @@ class FleetStatus extends APIResource {
     FleetStatus.DeviceListResponsesV4PagePaginationArray = DeviceListResponsesV4PagePaginationArray;
 })(FleetStatus || (FleetStatus = {}));
 //# sourceMappingURL=fleet-status.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dex/http-tests/percentiles.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dex/http-tests/percentiles.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Percentiles extends APIResource {
@@ -57947,7 +56328,7 @@ class Percentiles extends APIResource {
 (function (Percentiles) {
 })(Percentiles || (Percentiles = {}));
 //# sourceMappingURL=percentiles.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dex/http-tests/http-tests.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dex/http-tests/http-tests.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57972,7 +56353,7 @@ class HTTPTests extends APIResource {
     HTTPTests.Percentiles = Percentiles;
 })(HTTPTests || (HTTPTests = {}));
 //# sourceMappingURL=http-tests.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dex/tests/unique-devices.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dex/tests/unique-devices.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -57993,7 +56374,7 @@ class unique_devices_UniqueDevices extends APIResource {
     UniqueDevices.UniqueDevices = unique_devices_UniqueDevices;
 })(unique_devices_UniqueDevices || (unique_devices_UniqueDevices = {}));
 //# sourceMappingURL=unique-devices.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dex/tests/tests.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dex/tests/tests.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58023,7 +56404,7 @@ class TestListResponsesV4PagePagination extends V4PagePagination {
     Tests.UniqueDevices = unique_devices_UniqueDevices;
 })(tests_Tests || (tests_Tests = {}));
 //# sourceMappingURL=tests.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dex/traceroute-test-results/network-path.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dex/traceroute-test-results/network-path.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class NetworkPath extends APIResource {
@@ -58039,7 +56420,7 @@ class NetworkPath extends APIResource {
 (function (NetworkPath) {
 })(NetworkPath || (NetworkPath = {}));
 //# sourceMappingURL=network-path.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dex/traceroute-test-results/traceroute-test-results.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dex/traceroute-test-results/traceroute-test-results.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58053,7 +56434,7 @@ class TracerouteTestResults extends APIResource {
     TracerouteTestResults.NetworkPath = NetworkPath;
 })(TracerouteTestResults || (TracerouteTestResults = {}));
 //# sourceMappingURL=traceroute-test-results.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dex/dex.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dex/dex.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58084,7 +56465,7 @@ class DEX extends APIResource {
     DEX.TracerouteTests = TracerouteTests;
 })(DEX || (DEX = {}));
 //# sourceMappingURL=dex.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dlp/patterns.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dlp/patterns.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Patterns extends APIResource {
@@ -58105,7 +56486,7 @@ class Patterns extends APIResource {
 (function (Patterns) {
 })(Patterns || (Patterns = {}));
 //# sourceMappingURL=patterns.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dlp/payload-logs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dlp/payload-logs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class PayloadLogs extends APIResource {
@@ -58127,7 +56508,7 @@ class PayloadLogs extends APIResource {
 (function (PayloadLogs) {
 })(PayloadLogs || (PayloadLogs = {}));
 //# sourceMappingURL=payload-logs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dlp/datasets/upload.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dlp/datasets/upload.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Upload extends APIResource {
@@ -58154,7 +56535,7 @@ class Upload extends APIResource {
 (function (Upload) {
 })(Upload || (Upload = {}));
 //# sourceMappingURL=upload.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dlp/datasets/datasets.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dlp/datasets/datasets.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58216,7 +56597,7 @@ class DatasetsSinglePage extends SinglePage {
     Datasets.Upload = Upload;
 })(datasets_Datasets || (datasets_Datasets = {}));
 //# sourceMappingURL=datasets.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dlp/profiles/custom.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dlp/profiles/custom.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Custom extends APIResource {
@@ -58255,7 +56636,7 @@ class Custom extends APIResource {
 (function (Custom) {
 })(Custom || (Custom = {}));
 //# sourceMappingURL=custom.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dlp/profiles/predefined.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dlp/profiles/predefined.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Predefined extends APIResource {
@@ -58280,7 +56661,7 @@ class Predefined extends APIResource {
 (function (Predefined) {
 })(Predefined || (Predefined = {}));
 //# sourceMappingURL=predefined.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dlp/profiles/profiles.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dlp/profiles/profiles.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58316,7 +56697,7 @@ class ProfilesSinglePage extends SinglePage {
     Profiles.Predefined = Predefined;
 })(profiles_Profiles || (profiles_Profiles = {}));
 //# sourceMappingURL=profiles.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/dlp/dlp.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/dlp/dlp.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58341,7 +56722,7 @@ class DLP extends APIResource {
     DLP.ProfilesSinglePage = ProfilesSinglePage;
 })(DLP || (DLP = {}));
 //# sourceMappingURL=dlp.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/gateway/app-types.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/gateway/app-types.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58361,7 +56742,7 @@ class AppTypesSinglePage extends SinglePage {
     AppTypes.AppTypesSinglePage = AppTypesSinglePage;
 })(AppTypes || (AppTypes = {}));
 //# sourceMappingURL=app-types.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/gateway/audit-ssh-settings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/gateway/audit-ssh-settings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class AuditSSHSettings extends APIResource {
@@ -58386,7 +56767,7 @@ class AuditSSHSettings extends APIResource {
 (function (AuditSSHSettings) {
 })(AuditSSHSettings || (AuditSSHSettings = {}));
 //# sourceMappingURL=audit-ssh-settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/gateway/categories.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/gateway/categories.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58406,7 +56787,51 @@ class CategoriesSinglePage extends SinglePage {
     Categories.CategoriesSinglePage = CategoriesSinglePage;
 })(Categories || (Categories = {}));
 //# sourceMappingURL=categories.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/gateway/configurations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/gateway/certificates.mjs
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+
+
+class gateway_certificates_Certificates extends APIResource {
+    /**
+     * Creates a new Zero Trust certificate.
+     */
+    create(params, options) {
+        const { account_id, ...body } = params;
+        return this._client.post(`/accounts/${account_id}/gateway/certificates`, {
+            body,
+            ...options,
+        })._thenUnwrap((obj) => obj.result);
+    }
+    /**
+     * Fetches all Zero Trust certificates for an account.
+     */
+    list(params, options) {
+        const { account_id } = params;
+        return this._client.getAPIList(`/accounts/${account_id}/gateway/certificates`, CertificateListResponsesSinglePage, options);
+    }
+    /**
+     * Deletes a gateway-managed Zero Trust certificate.
+     */
+    delete(certificateId, params, options) {
+        const { account_id } = params;
+        return this._client.delete(`/accounts/${account_id}/gateway/certificates/${certificateId}`, options)._thenUnwrap((obj) => obj.result);
+    }
+    /**
+     * Fetches a single Zero Trust certificate.
+     */
+    get(certificateId, params, options) {
+        const { account_id } = params;
+        return this._client.get(`/accounts/${account_id}/gateway/certificates/${certificateId}`, options)._thenUnwrap((obj) => obj.result);
+    }
+}
+class CertificateListResponsesSinglePage extends SinglePage {
+}
+(function (Certificates) {
+    Certificates.CertificateListResponsesSinglePage = CertificateListResponsesSinglePage;
+})(gateway_certificates_Certificates || (gateway_certificates_Certificates = {}));
+//# sourceMappingURL=certificates.mjs.map
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/gateway/configurations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class configurations_Configurations extends APIResource {
@@ -58445,7 +56870,7 @@ class configurations_Configurations extends APIResource {
 (function (Configurations) {
 })(configurations_Configurations || (configurations_Configurations = {}));
 //# sourceMappingURL=configurations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/gateway/locations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/gateway/locations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58499,7 +56924,7 @@ class LocationsSinglePage extends SinglePage {
     Locations.LocationsSinglePage = LocationsSinglePage;
 })(Locations || (Locations = {}));
 //# sourceMappingURL=locations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/gateway/logging.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/gateway/logging.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Logging extends APIResource {
@@ -58521,7 +56946,7 @@ class Logging extends APIResource {
 (function (Logging) {
 })(Logging || (Logging = {}));
 //# sourceMappingURL=logging.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/gateway/proxy-endpoints.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/gateway/proxy-endpoints.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class ProxyEndpoints extends APIResource {
@@ -58570,7 +56995,7 @@ class ProxyEndpoints extends APIResource {
 (function (ProxyEndpoints) {
 })(ProxyEndpoints || (ProxyEndpoints = {}));
 //# sourceMappingURL=proxy-endpoints.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/gateway/rules.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/gateway/rules.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58621,7 +57046,7 @@ class GatewayRulesSinglePage extends SinglePage {
     Rules.GatewayRulesSinglePage = GatewayRulesSinglePage;
 })(gateway_rules_Rules || (gateway_rules_Rules = {}));
 //# sourceMappingURL=rules.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/gateway/lists/items.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/gateway/lists/items.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58641,7 +57066,7 @@ class ItemListResponsesSinglePage extends SinglePage {
     Items.ItemListResponsesSinglePage = ItemListResponsesSinglePage;
 })(items_Items || (items_Items = {}));
 //# sourceMappingURL=items.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/gateway/lists/lists.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/gateway/lists/lists.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58712,8 +57137,9 @@ class GatewayListsSinglePage extends SinglePage {
     Lists.ItemListResponsesSinglePage = ItemListResponsesSinglePage;
 })(lists_Lists || (lists_Lists = {}));
 //# sourceMappingURL=lists.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/gateway/gateway.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/gateway/gateway.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
 
 
 
@@ -58736,6 +57162,7 @@ class Gateway extends APIResource {
         this.logging = new Logging(this._client);
         this.proxyEndpoints = new ProxyEndpoints(this._client);
         this.rules = new gateway_rules_Rules(this._client);
+        this.certificates = new gateway_certificates_Certificates(this._client);
     }
     /**
      * Creates a Zero Trust account with an existing Cloudflare account.
@@ -58767,9 +57194,11 @@ class Gateway extends APIResource {
     Gateway.ProxyEndpoints = ProxyEndpoints;
     Gateway.Rules = gateway_rules_Rules;
     Gateway.GatewayRulesSinglePage = GatewayRulesSinglePage;
+    Gateway.Certificates = gateway_certificates_Certificates;
+    Gateway.CertificateListResponsesSinglePage = CertificateListResponsesSinglePage;
 })(Gateway || (Gateway = {}));
 //# sourceMappingURL=gateway.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/networks/virtual-networks.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/networks/virtual-networks.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58816,7 +57245,7 @@ class VirtualNetworksSinglePage extends SinglePage {
     VirtualNetworks.VirtualNetworksSinglePage = VirtualNetworksSinglePage;
 })(VirtualNetworks || (VirtualNetworks = {}));
 //# sourceMappingURL=virtual-networks.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/networks/routes/ips.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/networks/routes/ips.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class routes_ips_IPs extends APIResource {
@@ -58834,7 +57263,7 @@ class routes_ips_IPs extends APIResource {
 (function (IPs) {
 })(routes_ips_IPs || (routes_ips_IPs = {}));
 //# sourceMappingURL=ips.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/networks/routes/networks.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/networks/routes/networks.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class networks_Networks extends APIResource {
@@ -58877,7 +57306,7 @@ class networks_Networks extends APIResource {
 (function (Networks) {
 })(networks_Networks || (networks_Networks = {}));
 //# sourceMappingURL=networks.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/networks/routes/routes.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/networks/routes/routes.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58934,7 +57363,7 @@ class TeamnetsV4PagePaginationArray extends V4PagePaginationArray {
     Routes.Networks = networks_Networks;
 })(routes_Routes || (routes_Routes = {}));
 //# sourceMappingURL=routes.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/networks/networks.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/networks/networks.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58953,7 +57382,7 @@ class networks_networks_Networks extends APIResource {
     Networks.VirtualNetworksSinglePage = VirtualNetworksSinglePage;
 })(networks_networks_Networks || (networks_networks_Networks = {}));
 //# sourceMappingURL=networks.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/risk-scoring/behaviours.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/risk-scoring/behaviours.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Behaviours extends APIResource {
@@ -58976,7 +57405,7 @@ class Behaviours extends APIResource {
 (function (Behaviours) {
 })(Behaviours || (Behaviours = {}));
 //# sourceMappingURL=behaviours.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/risk-scoring/summary.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/risk-scoring/summary.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -58994,7 +57423,7 @@ class Summary extends APIResource {
 (function (Summary) {
 })(Summary || (Summary = {}));
 //# sourceMappingURL=summary.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/risk-scoring/integrations/references.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/risk-scoring/integrations/references.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class integrations_references_References extends APIResource {
@@ -59009,7 +57438,7 @@ class integrations_references_References extends APIResource {
 (function (References) {
 })(integrations_references_References || (integrations_references_References = {}));
 //# sourceMappingURL=references.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/risk-scoring/integrations/integrations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/risk-scoring/integrations/integrations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59071,7 +57500,7 @@ class IntegrationListResponsesSinglePage extends SinglePage {
     Integrations.References = integrations_references_References;
 })(integrations_Integrations || (integrations_Integrations = {}));
 //# sourceMappingURL=integrations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/risk-scoring/risk-scoring.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/risk-scoring/risk-scoring.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59108,7 +57537,7 @@ class RiskScoring extends APIResource {
     RiskScoring.IntegrationListResponsesSinglePage = IntegrationListResponsesSinglePage;
 })(RiskScoring || (RiskScoring = {}));
 //# sourceMappingURL=risk-scoring.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/tunnels/configurations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/tunnels/configurations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class tunnels_configurations_Configurations extends APIResource {
@@ -59133,7 +57562,7 @@ class tunnels_configurations_Configurations extends APIResource {
 (function (Configurations) {
 })(tunnels_configurations_Configurations || (tunnels_configurations_Configurations = {}));
 //# sourceMappingURL=configurations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/tunnels/connections.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/tunnels/connections.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class connections_Connections extends APIResource {
@@ -59156,7 +57585,7 @@ class connections_Connections extends APIResource {
 (function (Connections) {
 })(connections_Connections || (connections_Connections = {}));
 //# sourceMappingURL=connections.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/tunnels/connectors.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/tunnels/connectors.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class connectors_Connectors extends APIResource {
@@ -59171,7 +57600,7 @@ class connectors_Connectors extends APIResource {
 (function (Connectors) {
 })(connectors_Connectors || (connectors_Connectors = {}));
 //# sourceMappingURL=connectors.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/tunnels/management.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/tunnels/management.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Management extends APIResource {
@@ -59190,7 +57619,7 @@ class Management extends APIResource {
 (function (Management) {
 })(Management || (Management = {}));
 //# sourceMappingURL=management.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/tunnels/token.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/tunnels/token.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class token_Token extends APIResource {
@@ -59205,7 +57634,7 @@ class token_Token extends APIResource {
 (function (Token) {
 })(token_Token || (token_Token = {}));
 //# sourceMappingURL=token.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/tunnels/tunnels.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/tunnels/tunnels.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59274,7 +57703,7 @@ class TunnelListResponsesV4PagePaginationArray extends V4PagePaginationArray {
     Tunnels.Management = Management;
 })(Tunnels || (Tunnels = {}));
 //# sourceMappingURL=tunnels.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/zero-trust/zero-trust.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/zero-trust/zero-trust.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59324,7 +57753,7 @@ class ZeroTrust extends APIResource {
     ZeroTrust.RiskScoring = RiskScoring;
 })(ZeroTrust || (ZeroTrust = {}));
 //# sourceMappingURL=zero-trust.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/challenges/widgets.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/challenges/widgets.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59392,7 +57821,7 @@ class WidgetListResponsesV4PagePaginationArray extends V4PagePaginationArray {
     Widgets.WidgetListResponsesV4PagePaginationArray = WidgetListResponsesV4PagePaginationArray;
 })(Widgets || (Widgets = {}));
 //# sourceMappingURL=widgets.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/challenges/challenges.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/challenges/challenges.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59407,7 +57836,7 @@ class Challenges extends APIResource {
     Challenges.WidgetListResponsesV4PagePaginationArray = WidgetListResponsesV4PagePaginationArray;
 })(Challenges || (Challenges = {}));
 //# sourceMappingURL=challenges.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/hyperdrive/configs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/hyperdrive/configs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59469,7 +57898,7 @@ class configs_Configs extends APIResource {
 })(configs_Configs || (configs_Configs = {}));
 
 //# sourceMappingURL=configs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/hyperdrive/hyperdrive.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/hyperdrive/hyperdrive.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59486,7 +57915,7 @@ class HyperdrivesSinglePage extends SinglePage {
     HyperdriveResource.Configs = configs_Configs;
 })(HyperdriveResource || (HyperdriveResource = {}));
 //# sourceMappingURL=hyperdrive.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/rum/rules.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/rum/rules.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class rum_rules_Rules extends APIResource {
@@ -59528,7 +57957,7 @@ class rum_rules_Rules extends APIResource {
 (function (Rules) {
 })(rum_rules_Rules || (rum_rules_Rules = {}));
 //# sourceMappingURL=rules.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/rum/site-info.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/rum/site-info.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59582,7 +58011,7 @@ class SitesV4PagePaginationArray extends V4PagePaginationArray {
     SiteInfo.SitesV4PagePaginationArray = SitesV4PagePaginationArray;
 })(SiteInfo || (SiteInfo = {}));
 //# sourceMappingURL=site-info.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/rum/rum.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/rum/rum.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59600,7 +58029,7 @@ class RUM extends APIResource {
     RUM.Rules = rum_rules_Rules;
 })(RUM || (RUM = {}));
 //# sourceMappingURL=rum.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/vectorize/indexes.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/vectorize/indexes.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59710,7 +58139,7 @@ class CreateIndicesSinglePage extends SinglePage {
     Indexes.CreateIndicesSinglePage = CreateIndicesSinglePage;
 })(Indexes || (Indexes = {}));
 //# sourceMappingURL=indexes.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/vectorize/vectorize.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/vectorize/vectorize.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59725,7 +58154,7 @@ class Vectorize extends APIResource {
     Vectorize.CreateIndicesSinglePage = CreateIndicesSinglePage;
 })(Vectorize || (Vectorize = {}));
 //# sourceMappingURL=vectorize.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/url-scanner/scans.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/url-scanner/scans.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59738,11 +58167,14 @@ class Scans extends APIResource {
     create(accountId, body, options) {
         return this._client.post(`/accounts/${accountId}/urlscanner/scan`, { body, ...options })._thenUnwrap((obj) => obj.result);
     }
-    /**
-     * Get URL scan by uuid
-     */
-    get(accountId, scanId, options) {
-        return this._client.get(`/accounts/${accountId}/urlscanner/scan/${scanId}`, options)._thenUnwrap((obj) => obj.result);
+    get(accountId, scanId, query = {}, options) {
+        if (isRequestOptions(query)) {
+            return this.get(accountId, scanId, {}, query);
+        }
+        return this._client.get(`/accounts/${accountId}/urlscanner/scan/${scanId}`, {
+            query,
+            ...options,
+        })._thenUnwrap((obj) => obj.result);
     }
     /**
      * Get a URL scan's HAR file. See HAR spec at
@@ -59765,7 +58197,7 @@ class Scans extends APIResource {
 (function (Scans) {
 })(Scans || (Scans = {}));
 //# sourceMappingURL=scans.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/url-scanner/url-scanner.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/url-scanner/url-scanner.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59786,31 +58218,7 @@ class URLScanner extends APIResource {
     URLScanner.Scans = Scans;
 })(URLScanner || (URLScanner = {}));
 //# sourceMappingURL=url-scanner.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/connection-tampering.mjs
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
-
-
-class ConnectionTampering extends APIResource {
-    summary(query = {}, options) {
-        if (isRequestOptions(query)) {
-            return this.summary({}, query);
-        }
-        return this._client.get('/radar/connection_tampering/summary', { query, ...options })._thenUnwrap((obj) => obj.result);
-    }
-    timeseriesGroups(query = {}, options) {
-        if (isRequestOptions(query)) {
-            return this.timeseriesGroups({}, query);
-        }
-        return this._client.get('/radar/connection_tampering/timeseries_groups', {
-            query,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
-    }
-}
-(function (ConnectionTampering) {
-})(ConnectionTampering || (ConnectionTampering = {}));
-//# sourceMappingURL=connection-tampering.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/datasets.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/datasets.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59847,7 +58255,7 @@ class radar_datasets_Datasets extends APIResource {
 (function (Datasets) {
 })(radar_datasets_Datasets || (radar_datasets_Datasets = {}));
 //# sourceMappingURL=datasets.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/search.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/search.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Search extends APIResource {
@@ -59861,7 +58269,31 @@ class Search extends APIResource {
 (function (Search) {
 })(Search || (Search = {}));
 //# sourceMappingURL=search.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/annotations/outages.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/tcp-resets-timeouts.mjs
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+
+class TCPResetsTimeouts extends APIResource {
+    summary(query = {}, options) {
+        if (isRequestOptions(query)) {
+            return this.summary({}, query);
+        }
+        return this._client.get('/radar/tcp_resets_timeouts/summary', { query, ...options })._thenUnwrap((obj) => obj.result);
+    }
+    timeseriesGroups(query = {}, options) {
+        if (isRequestOptions(query)) {
+            return this.timeseriesGroups({}, query);
+        }
+        return this._client.get('/radar/tcp_resets_timeouts/timeseries_groups', {
+            query,
+            ...options,
+        })._thenUnwrap((obj) => obj.result);
+    }
+}
+(function (TCPResetsTimeouts) {
+})(TCPResetsTimeouts || (TCPResetsTimeouts = {}));
+//# sourceMappingURL=tcp-resets-timeouts.mjs.map
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/annotations/outages.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59882,7 +58314,7 @@ class Outages extends APIResource {
 (function (Outages) {
 })(Outages || (Outages = {}));
 //# sourceMappingURL=outages.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/annotations/annotations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/annotations/annotations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59896,7 +58328,7 @@ class Annotations extends APIResource {
     Annotations.Outages = Outages;
 })(Annotations || (Annotations = {}));
 //# sourceMappingURL=annotations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/as112/summary.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/as112/summary.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59941,7 +58373,7 @@ class summary_Summary extends APIResource {
 (function (Summary) {
 })(summary_Summary || (summary_Summary = {}));
 //# sourceMappingURL=summary.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/as112/timeseries-groups.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/as112/timeseries-groups.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -59995,7 +58427,7 @@ class TimeseriesGroups extends APIResource {
 (function (TimeseriesGroups) {
 })(TimeseriesGroups || (TimeseriesGroups = {}));
 //# sourceMappingURL=timeseries-groups.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/as112/top.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/as112/top.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60034,7 +58466,7 @@ class Top extends APIResource {
 (function (Top) {
 })(Top || (Top = {}));
 //# sourceMappingURL=top.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/as112/as112.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/as112/as112.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60061,7 +58493,7 @@ class AS112 extends APIResource {
     AS112.Top = Top;
 })(AS112 || (AS112 = {}));
 //# sourceMappingURL=as112.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/attacks/layer3/summary.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/attacks/layer3/summary.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60106,7 +58538,7 @@ class layer3_summary_Summary extends APIResource {
 (function (Summary) {
 })(layer3_summary_Summary || (layer3_summary_Summary = {}));
 //# sourceMappingURL=summary.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/attacks/layer3/timeseries-groups.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/attacks/layer3/timeseries-groups.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60184,7 +58616,7 @@ class timeseries_groups_TimeseriesGroups extends APIResource {
 (function (TimeseriesGroups) {
 })(timeseries_groups_TimeseriesGroups || (timeseries_groups_TimeseriesGroups = {}));
 //# sourceMappingURL=timeseries-groups.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/attacks/layer3/top/locations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/attacks/layer3/top/locations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60211,7 +58643,7 @@ class locations_Locations extends APIResource {
 (function (Locations) {
 })(locations_Locations || (locations_Locations = {}));
 //# sourceMappingURL=locations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/attacks/layer3/top/top.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/attacks/layer3/top/top.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60244,7 +58676,7 @@ class top_Top extends APIResource {
     Top.Locations = locations_Locations;
 })(top_Top || (top_Top = {}));
 //# sourceMappingURL=top.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/attacks/layer3/layer3.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/attacks/layer3/layer3.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60271,7 +58703,7 @@ class Layer3 extends APIResource {
     Layer3.Top = top_Top;
 })(Layer3 || (Layer3 = {}));
 //# sourceMappingURL=layer3.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/attacks/layer7/summary.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/attacks/layer7/summary.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60328,7 +58760,7 @@ class layer7_summary_Summary extends APIResource {
 (function (Summary) {
 })(layer7_summary_Summary || (layer7_summary_Summary = {}));
 //# sourceMappingURL=summary.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/attacks/layer7/timeseries-groups.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/attacks/layer7/timeseries-groups.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60406,7 +58838,7 @@ class layer7_timeseries_groups_TimeseriesGroups extends APIResource {
 (function (TimeseriesGroups) {
 })(layer7_timeseries_groups_TimeseriesGroups || (layer7_timeseries_groups_TimeseriesGroups = {}));
 //# sourceMappingURL=timeseries-groups.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/attacks/layer7/top/ases.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/attacks/layer7/top/ases.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60421,7 +58853,7 @@ class Ases extends APIResource {
 (function (Ases) {
 })(Ases || (Ases = {}));
 //# sourceMappingURL=ases.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/attacks/layer7/top/locations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/attacks/layer7/top/locations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60448,7 +58880,7 @@ class top_locations_Locations extends APIResource {
 (function (Locations) {
 })(top_locations_Locations || (top_locations_Locations = {}));
 //# sourceMappingURL=locations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/attacks/layer7/top/top.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/attacks/layer7/top/top.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60484,7 +58916,7 @@ class top_top_Top extends APIResource {
     Top.Ases = Ases;
 })(top_top_Top || (top_top_Top = {}));
 //# sourceMappingURL=top.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/attacks/layer7/layer7.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/attacks/layer7/layer7.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60511,7 +58943,7 @@ class Layer7 extends APIResource {
     Layer7.Top = top_top_Top;
 })(Layer7 || (Layer7 = {}));
 //# sourceMappingURL=layer7.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/attacks/attacks.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/attacks/attacks.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60528,7 +58960,7 @@ class Attacks extends APIResource {
     Attacks.Layer7 = Layer7;
 })(Attacks || (Attacks = {}));
 //# sourceMappingURL=attacks.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/bgp/ips.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/bgp/ips.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60543,7 +58975,7 @@ class bgp_ips_IPs extends APIResource {
 (function (IPs) {
 })(bgp_ips_IPs || (bgp_ips_IPs = {}));
 //# sourceMappingURL=ips.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/bgp/routes.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/bgp/routes.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60576,7 +59008,7 @@ class bgp_routes_Routes extends APIResource {
 (function (Routes) {
 })(bgp_routes_Routes || (bgp_routes_Routes = {}));
 //# sourceMappingURL=routes.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/bgp/hijacks/events.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/bgp/hijacks/events.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60599,7 +59031,7 @@ class EventListResponsesV4PagePagination extends V4PagePagination {
     Events.EventListResponsesV4PagePagination = EventListResponsesV4PagePagination;
 })(hijacks_events_Events || (hijacks_events_Events = {}));
 //# sourceMappingURL=events.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/bgp/hijacks/hijacks.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/bgp/hijacks/hijacks.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60614,7 +59046,7 @@ class Hijacks extends APIResource {
     Hijacks.EventListResponsesV4PagePagination = EventListResponsesV4PagePagination;
 })(Hijacks || (Hijacks = {}));
 //# sourceMappingURL=hijacks.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/bgp/leaks/events.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/bgp/leaks/events.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60637,7 +59069,7 @@ class events_EventListResponsesV4PagePagination extends V4PagePagination {
     Events.EventListResponsesV4PagePagination = events_EventListResponsesV4PagePagination;
 })(leaks_events_Events || (leaks_events_Events = {}));
 //# sourceMappingURL=events.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/bgp/leaks/leaks.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/bgp/leaks/leaks.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60652,7 +59084,7 @@ class Leaks extends APIResource {
     Leaks.EventListResponsesV4PagePagination = events_EventListResponsesV4PagePagination;
 })(Leaks || (Leaks = {}));
 //# sourceMappingURL=leaks.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/bgp/top/ases.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/bgp/top/ases.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60673,7 +59105,7 @@ class ases_Ases extends APIResource {
 (function (Ases) {
 })(ases_Ases || (ases_Ases = {}));
 //# sourceMappingURL=ases.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/bgp/top/top.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/bgp/top/top.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60694,7 +59126,7 @@ class bgp_top_top_Top extends APIResource {
     Top.Ases = ases_Ases;
 })(bgp_top_top_Top || (bgp_top_top_Top = {}));
 //# sourceMappingURL=top.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/bgp/bgp.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/bgp/bgp.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60727,7 +59159,7 @@ class bgp_BGP extends APIResource {
     BGP.IPs = bgp_ips_IPs;
 })(bgp_BGP || (bgp_BGP = {}));
 //# sourceMappingURL=bgp.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/dns/top.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/dns/top.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class dns_top_Top extends APIResource {
@@ -60748,7 +59180,7 @@ class dns_top_Top extends APIResource {
 (function (Top) {
 })(dns_top_Top || (dns_top_Top = {}));
 //# sourceMappingURL=top.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/dns/dns.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/dns/dns.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60762,7 +59194,7 @@ class dns_dns_DNS extends APIResource {
     DNS.Top = dns_top_Top;
 })(dns_dns_DNS || (dns_dns_DNS = {}));
 //# sourceMappingURL=dns.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/email/routing/summary.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/email/routing/summary.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60807,7 +59239,7 @@ class routing_summary_Summary extends APIResource {
 (function (Summary) {
 })(routing_summary_Summary || (routing_summary_Summary = {}));
 //# sourceMappingURL=summary.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/email/routing/timeseries-groups.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/email/routing/timeseries-groups.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60870,7 +59302,7 @@ class routing_timeseries_groups_TimeseriesGroups extends APIResource {
 (function (TimeseriesGroups) {
 })(routing_timeseries_groups_TimeseriesGroups || (routing_timeseries_groups_TimeseriesGroups = {}));
 //# sourceMappingURL=timeseries-groups.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/email/routing/routing.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/email/routing/routing.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60887,7 +59319,7 @@ class Routing extends APIResource {
     Routing.TimeseriesGroups = routing_timeseries_groups_TimeseriesGroups;
 })(Routing || (Routing = {}));
 //# sourceMappingURL=routing.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/email/security/summary.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/email/security/summary.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -60956,7 +59388,7 @@ class security_summary_Summary extends APIResource {
 (function (Summary) {
 })(security_summary_Summary || (security_summary_Summary = {}));
 //# sourceMappingURL=summary.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/email/security/timeseries-groups.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/email/security/timeseries-groups.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61046,7 +59478,7 @@ class security_timeseries_groups_TimeseriesGroups extends APIResource {
 (function (TimeseriesGroups) {
 })(security_timeseries_groups_TimeseriesGroups || (security_timeseries_groups_TimeseriesGroups = {}));
 //# sourceMappingURL=timeseries-groups.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/email/security/top/tlds/malicious.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/email/security/top/tlds/malicious.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61064,7 +59496,7 @@ class Malicious extends APIResource {
 (function (Malicious) {
 })(Malicious || (Malicious = {}));
 //# sourceMappingURL=malicious.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/email/security/top/tlds/spam.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/email/security/top/tlds/spam.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61082,7 +59514,7 @@ class Spam extends APIResource {
 (function (Spam) {
 })(Spam || (Spam = {}));
 //# sourceMappingURL=spam.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/email/security/top/tlds/spoof.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/email/security/top/tlds/spoof.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61100,7 +59532,7 @@ class Spoof extends APIResource {
 (function (Spoof) {
 })(Spoof || (Spoof = {}));
 //# sourceMappingURL=spoof.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/email/security/top/tlds/tlds.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/email/security/top/tlds/tlds.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61127,7 +59559,7 @@ class Tlds extends APIResource {
     Tlds.Spoof = Spoof;
 })(Tlds || (Tlds = {}));
 //# sourceMappingURL=tlds.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/email/security/top/top.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/email/security/top/top.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61141,7 +59573,7 @@ class security_top_top_Top extends APIResource {
     Top.Tlds = Tlds;
 })(security_top_top_Top || (security_top_top_Top = {}));
 //# sourceMappingURL=top.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/email/security/security.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/email/security/security.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61161,7 +59593,7 @@ class Security extends APIResource {
     Security.TimeseriesGroups = security_timeseries_groups_TimeseriesGroups;
 })(Security || (Security = {}));
 //# sourceMappingURL=security.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/email/email.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/email/email.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61178,7 +59610,7 @@ class Email extends APIResource {
     Email.Security = Security;
 })(Email || (Email = {}));
 //# sourceMappingURL=email.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/entities/asns.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/entities/asns.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61212,7 +59644,7 @@ class ASNs extends APIResource {
 (function (ASNs) {
 })(ASNs || (ASNs = {}));
 //# sourceMappingURL=asns.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/entities/locations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/entities/locations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61233,7 +59665,7 @@ class entities_locations_Locations extends APIResource {
 (function (Locations) {
 })(entities_locations_Locations || (entities_locations_Locations = {}));
 //# sourceMappingURL=locations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/entities/entities.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/entities/entities.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61256,7 +59688,7 @@ class Entities extends APIResource {
     Entities.Locations = entities_locations_Locations;
 })(Entities || (Entities = {}));
 //# sourceMappingURL=entities.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/summary.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/summary.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61313,7 +59745,7 @@ class http_summary_Summary extends APIResource {
 (function (Summary) {
 })(http_summary_Summary || (http_summary_Summary = {}));
 //# sourceMappingURL=summary.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/timeseries-groups.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/timeseries-groups.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61400,7 +59832,7 @@ class http_timeseries_groups_TimeseriesGroups extends APIResource {
 (function (TimeseriesGroups) {
 })(http_timeseries_groups_TimeseriesGroups || (http_timeseries_groups_TimeseriesGroups = {}));
 //# sourceMappingURL=timeseries-groups.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/top.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/top.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61421,7 +59853,7 @@ class http_top_Top extends APIResource {
 (function (Top) {
 })(http_top_Top || (http_top_Top = {}));
 //# sourceMappingURL=top.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/ases/bot-class.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/ases/bot-class.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61439,7 +59871,7 @@ class BotClass extends APIResource {
 (function (BotClass) {
 })(BotClass || (BotClass = {}));
 //# sourceMappingURL=bot-class.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/ases/browser-family.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/ases/browser-family.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61457,7 +59889,7 @@ class BrowserFamily extends APIResource {
 (function (BrowserFamily) {
 })(BrowserFamily || (BrowserFamily = {}));
 //# sourceMappingURL=browser-family.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/ases/device-type.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/ases/device-type.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61475,7 +59907,7 @@ class DeviceType extends APIResource {
 (function (DeviceType) {
 })(DeviceType || (DeviceType = {}));
 //# sourceMappingURL=device-type.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/ases/http-method.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/ases/http-method.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61493,7 +59925,7 @@ class HTTPMethod extends APIResource {
 (function (HTTPMethod) {
 })(HTTPMethod || (HTTPMethod = {}));
 //# sourceMappingURL=http-method.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/ases/http-protocol.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/ases/http-protocol.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61511,7 +59943,7 @@ class HTTPProtocol extends APIResource {
 (function (HTTPProtocol) {
 })(HTTPProtocol || (HTTPProtocol = {}));
 //# sourceMappingURL=http-protocol.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/ases/ip-version.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/ases/ip-version.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61529,7 +59961,7 @@ class IPVersion extends APIResource {
 (function (IPVersion) {
 })(IPVersion || (IPVersion = {}));
 //# sourceMappingURL=ip-version.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/ases/os.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/ases/os.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61544,7 +59976,7 @@ class OS extends APIResource {
 (function (OS) {
 })(OS || (OS = {}));
 //# sourceMappingURL=os.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/ases/tls-version.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/ases/tls-version.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61562,7 +59994,7 @@ class TLSVersion extends APIResource {
 (function (TLSVersion) {
 })(TLSVersion || (TLSVersion = {}));
 //# sourceMappingURL=tls-version.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/ases/ases.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/ases/ases.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61604,7 +60036,7 @@ class ases_ases_Ases extends APIResource {
     Ases.BrowserFamily = BrowserFamily;
 })(ases_ases_Ases || (ases_ases_Ases = {}));
 //# sourceMappingURL=ases.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/locations/bot-class.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/locations/bot-class.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61622,7 +60054,7 @@ class bot_class_BotClass extends APIResource {
 (function (BotClass) {
 })(bot_class_BotClass || (bot_class_BotClass = {}));
 //# sourceMappingURL=bot-class.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/locations/browser-family.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/locations/browser-family.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61640,7 +60072,7 @@ class browser_family_BrowserFamily extends APIResource {
 (function (BrowserFamily) {
 })(browser_family_BrowserFamily || (browser_family_BrowserFamily = {}));
 //# sourceMappingURL=browser-family.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/locations/device-type.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/locations/device-type.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61658,7 +60090,7 @@ class device_type_DeviceType extends APIResource {
 (function (DeviceType) {
 })(device_type_DeviceType || (device_type_DeviceType = {}));
 //# sourceMappingURL=device-type.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/locations/http-method.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/locations/http-method.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61676,7 +60108,7 @@ class http_method_HTTPMethod extends APIResource {
 (function (HTTPMethod) {
 })(http_method_HTTPMethod || (http_method_HTTPMethod = {}));
 //# sourceMappingURL=http-method.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/locations/http-protocol.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/locations/http-protocol.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61694,7 +60126,7 @@ class http_protocol_HTTPProtocol extends APIResource {
 (function (HTTPProtocol) {
 })(http_protocol_HTTPProtocol || (http_protocol_HTTPProtocol = {}));
 //# sourceMappingURL=http-protocol.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/locations/ip-version.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/locations/ip-version.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61712,7 +60144,7 @@ class ip_version_IPVersion extends APIResource {
 (function (IPVersion) {
 })(ip_version_IPVersion || (ip_version_IPVersion = {}));
 //# sourceMappingURL=ip-version.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/locations/os.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/locations/os.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61727,7 +60159,7 @@ class os_OS extends APIResource {
 (function (OS) {
 })(os_OS || (os_OS = {}));
 //# sourceMappingURL=os.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/locations/tls-version.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/locations/tls-version.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61745,7 +60177,7 @@ class tls_version_TLSVersion extends APIResource {
 (function (TLSVersion) {
 })(tls_version_TLSVersion || (tls_version_TLSVersion = {}));
 //# sourceMappingURL=tls-version.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/locations/locations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/locations/locations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61787,7 +60219,7 @@ class locations_locations_Locations extends APIResource {
     Locations.BrowserFamily = browser_family_BrowserFamily;
 })(locations_locations_Locations || (locations_locations_Locations = {}));
 //# sourceMappingURL=locations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/http/http.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/http/http.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61820,7 +60252,7 @@ class HTTP extends APIResource {
     HTTP.TimeseriesGroups = http_timeseries_groups_TimeseriesGroups;
 })(HTTP || (HTTP = {}));
 //# sourceMappingURL=http.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/netflows/top.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/netflows/top.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61841,7 +60273,7 @@ class netflows_top_Top extends APIResource {
 (function (Top) {
 })(netflows_top_Top || (netflows_top_Top = {}));
 //# sourceMappingURL=top.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/netflows/netflows.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/netflows/netflows.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61862,7 +60294,7 @@ class Netflows extends APIResource {
     Netflows.Top = netflows_top_Top;
 })(Netflows || (Netflows = {}));
 //# sourceMappingURL=netflows.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/quality/iqi.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/quality/iqi.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class IQI extends APIResource {
@@ -61884,7 +60316,7 @@ class IQI extends APIResource {
 (function (IQI) {
 })(IQI || (IQI = {}));
 //# sourceMappingURL=iqi.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/quality/speed/top.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/quality/speed/top.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61905,7 +60337,7 @@ class speed_top_Top extends APIResource {
 (function (Top) {
 })(speed_top_Top || (speed_top_Top = {}));
 //# sourceMappingURL=top.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/quality/speed/speed.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/quality/speed/speed.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61932,7 +60364,7 @@ class Speed extends APIResource {
     Speed.Top = speed_top_Top;
 })(Speed || (Speed = {}));
 //# sourceMappingURL=speed.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/quality/quality.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/quality/quality.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61949,7 +60381,7 @@ class Quality extends APIResource {
     Quality.Speed = Speed;
 })(Quality || (Quality = {}));
 //# sourceMappingURL=quality.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/ranking/domain.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/ranking/domain.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61964,7 +60396,7 @@ class Domain extends APIResource {
 (function (Domain) {
 })(Domain || (Domain = {}));
 //# sourceMappingURL=domain.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/ranking/ranking.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/ranking/ranking.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -61991,7 +60423,7 @@ class Ranking extends APIResource {
     Ranking.Domain = Domain;
 })(Ranking || (Ranking = {}));
 //# sourceMappingURL=ranking.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/traffic-anomalies/locations.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/traffic-anomalies/locations.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62006,7 +60438,7 @@ class traffic_anomalies_locations_Locations extends APIResource {
 (function (Locations) {
 })(traffic_anomalies_locations_Locations || (traffic_anomalies_locations_Locations = {}));
 //# sourceMappingURL=locations.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/traffic-anomalies/traffic-anomalies.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/traffic-anomalies/traffic-anomalies.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62027,7 +60459,7 @@ class TrafficAnomalies extends APIResource {
     TrafficAnomalies.Locations = traffic_anomalies_locations_Locations;
 })(TrafficAnomalies || (TrafficAnomalies = {}));
 //# sourceMappingURL=traffic-anomalies.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/verified-bots/top.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/verified-bots/top.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62048,7 +60480,7 @@ class verified_bots_top_Top extends APIResource {
 (function (Top) {
 })(verified_bots_top_Top || (verified_bots_top_Top = {}));
 //# sourceMappingURL=top.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/verified-bots/verified-bots.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/verified-bots/verified-bots.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62062,7 +60494,7 @@ class VerifiedBots extends APIResource {
     VerifiedBots.Top = verified_bots_top_Top;
 })(VerifiedBots || (VerifiedBots = {}));
 //# sourceMappingURL=verified-bots.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/radar/radar.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/radar/radar.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62092,7 +60524,6 @@ class Radar extends APIResource {
         this.search = new Search(this._client);
         this.verifiedBots = new VerifiedBots(this._client);
         this.as112 = new AS112(this._client);
-        this.connectionTampering = new ConnectionTampering(this._client);
         this.email = new Email(this._client);
         this.attacks = new Attacks(this._client);
         this.entities = new Entities(this._client);
@@ -62100,6 +60531,7 @@ class Radar extends APIResource {
         this.quality = new Quality(this._client);
         this.ranking = new Ranking(this._client);
         this.trafficAnomalies = new TrafficAnomalies(this._client);
+        this.tcpResetsTimeouts = new TCPResetsTimeouts(this._client);
     }
 }
 (function (Radar) {
@@ -62111,7 +60543,6 @@ class Radar extends APIResource {
     Radar.Search = Search;
     Radar.VerifiedBots = VerifiedBots;
     Radar.AS112 = AS112;
-    Radar.ConnectionTampering = ConnectionTampering;
     Radar.Email = Email;
     Radar.Attacks = Attacks;
     Radar.Entities = Entities;
@@ -62119,9 +60550,10 @@ class Radar extends APIResource {
     Radar.Quality = Quality;
     Radar.Ranking = Ranking;
     Radar.TrafficAnomalies = TrafficAnomalies;
+    Radar.TCPResetsTimeouts = TCPResetsTimeouts;
 })(Radar || (Radar = {}));
 //# sourceMappingURL=radar.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/bot-management.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/bot-management.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class BotManagement extends APIResource {
@@ -62150,7 +60582,7 @@ class BotManagement extends APIResource {
     }
 }
 //# sourceMappingURL=bot-management.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/origin-post-quantum-encryption.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/origin-post-quantum-encryption.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class OriginPostQuantumEncryption extends APIResource {
@@ -62183,7 +60615,7 @@ class OriginPostQuantumEncryption extends APIResource {
     }
 }
 //# sourceMappingURL=origin-post-quantum-encryption.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/speed/availabilities.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/speed/availabilities.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Availabilities extends APIResource {
@@ -62198,7 +60630,7 @@ class Availabilities extends APIResource {
 (function (Availabilities) {
 })(Availabilities || (Availabilities = {}));
 //# sourceMappingURL=availabilities.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/speed/schedule.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/speed/schedule.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class ScheduleResource extends APIResource {
@@ -62236,7 +60668,7 @@ class ScheduleResource extends APIResource {
 (function (ScheduleResource) {
 })(ScheduleResource || (ScheduleResource = {}));
 //# sourceMappingURL=schedule.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/speed/pages/tests.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/speed/pages/tests.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class Tests extends APIResource {
@@ -62279,7 +60711,7 @@ class Tests extends APIResource {
 (function (Tests) {
 })(Tests || (Tests = {}));
 //# sourceMappingURL=tests.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/speed/pages/pages.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/speed/pages/pages.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62315,7 +60747,7 @@ class PageListResponsesSinglePage extends SinglePage {
     Pages.Tests = Tests;
 })(pages_Pages || (pages_Pages = {}));
 //# sourceMappingURL=pages.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/speed/speed.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/speed/speed.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62336,7 +60768,7 @@ class speed_Speed extends APIResource {
     Speed.PageListResponsesSinglePage = PageListResponsesSinglePage;
 })(speed_Speed || (speed_Speed = {}));
 //# sourceMappingURL=speed.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/dcv-delegation.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/dcv-delegation.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class DCVDelegation extends APIResource {
@@ -62350,7 +60782,7 @@ class DCVDelegation extends APIResource {
     }
 }
 //# sourceMappingURL=dcv-delegation.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/hostnames/settings/tls.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/hostnames/settings/tls.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class TLS extends APIResource {
@@ -62382,7 +60814,7 @@ class TLS extends APIResource {
 (function (TLS) {
 })(TLS || (TLS = {}));
 //# sourceMappingURL=tls.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/hostnames/settings/settings.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/hostnames/settings/settings.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62396,7 +60828,7 @@ class hostnames_settings_settings_Settings extends APIResource {
     Settings.TLS = TLS;
 })(hostnames_settings_settings_Settings || (hostnames_settings_settings_Settings = {}));
 //# sourceMappingURL=settings.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/hostnames/hostnames.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/hostnames/hostnames.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62410,7 +60842,7 @@ class hostnames_hostnames_Hostnames extends APIResource {
     Hostnames.Settings = hostnames_settings_settings_Settings;
 })(hostnames_hostnames_Hostnames || (hostnames_hostnames_Hostnames = {}));
 //# sourceMappingURL=hostnames.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/snippets/content.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/snippets/content.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class snippets_content_Content extends APIResource {
@@ -62428,7 +60860,7 @@ class snippets_content_Content extends APIResource {
 (function (Content) {
 })(snippets_content_Content || (snippets_content_Content = {}));
 //# sourceMappingURL=content.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/snippets/rules.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/snippets/rules.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62455,7 +60887,7 @@ class RuleListResponsesSinglePage extends SinglePage {
     Rules.RuleListResponsesSinglePage = RuleListResponsesSinglePage;
 })(snippets_rules_Rules || (snippets_rules_Rules = {}));
 //# sourceMappingURL=rules.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/snippets/snippets.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/snippets/snippets.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62505,7 +60937,7 @@ class SnippetsSinglePage extends SinglePage {
     Snippets.RuleListResponsesSinglePage = RuleListResponsesSinglePage;
 })(Snippets || (Snippets = {}));
 //# sourceMappingURL=snippets.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/calls/turn/keys.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/calls/turn/keys.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62556,7 +60988,7 @@ class KeyListResponsesSinglePage extends SinglePage {
     Keys.KeyListResponsesSinglePage = KeyListResponsesSinglePage;
 })(turn_keys_Keys || (turn_keys_Keys = {}));
 //# sourceMappingURL=keys.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/calls/turn/turn.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/calls/turn/turn.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62571,7 +61003,7 @@ class TURN extends APIResource {
     TURN.KeyListResponsesSinglePage = KeyListResponsesSinglePage;
 })(TURN || (TURN = {}));
 //# sourceMappingURL=turn.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/calls/calls.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/calls/calls.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62627,7 +61059,7 @@ class CallListResponsesSinglePage extends SinglePage {
     Calls.TURN = TURN;
 })(Calls || (Calls = {}));
 //# sourceMappingURL=calls.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/cloudforce-one/requests/message.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/cloudforce-one/requests/message.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class MessageResource extends APIResource {
@@ -62661,7 +61093,7 @@ class MessageResource extends APIResource {
 (function (MessageResource) {
 })(MessageResource || (MessageResource = {}));
 //# sourceMappingURL=message.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/cloudforce-one/requests/priority.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/cloudforce-one/requests/priority.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class PriorityResource extends APIResource {
@@ -62702,7 +61134,7 @@ class PriorityResource extends APIResource {
 (function (PriorityResource) {
 })(PriorityResource || (PriorityResource = {}));
 //# sourceMappingURL=priority.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/cloudforce-one/requests/requests.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/cloudforce-one/requests/requests.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62782,7 +61214,7 @@ class ListItemsV4PagePaginationArray extends V4PagePaginationArray {
     Requests.PriorityResource = PriorityResource;
 })(Requests || (Requests = {}));
 //# sourceMappingURL=requests.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/cloudforce-one/cloudforce-one.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/cloudforce-one/cloudforce-one.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62797,7 +61229,7 @@ class CloudforceOne extends APIResource {
     CloudforceOne.ListItemsV4PagePaginationArray = ListItemsV4PagePaginationArray;
 })(CloudforceOne || (CloudforceOne = {}));
 //# sourceMappingURL=cloudforce-one.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/event-notifications/r2/configuration/queues.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/event-notifications/r2/configuration/queues.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 class queues_Queues extends APIResource {
@@ -62821,7 +61253,7 @@ class queues_Queues extends APIResource {
 (function (Queues) {
 })(queues_Queues || (queues_Queues = {}));
 //# sourceMappingURL=queues.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/event-notifications/r2/configuration/configuration.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/event-notifications/r2/configuration/configuration.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62843,7 +61275,7 @@ class Configuration extends APIResource {
     Configuration.Queues = queues_Queues;
 })(Configuration || (Configuration = {}));
 //# sourceMappingURL=configuration.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/event-notifications/r2/r2.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/event-notifications/r2/r2.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62857,7 +61289,7 @@ class r2_R2 extends APIResource {
     R2.Configuration = Configuration;
 })(r2_R2 || (r2_R2 = {}));
 //# sourceMappingURL=r2.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/event-notifications/event-notifications.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/event-notifications/event-notifications.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62871,25 +61303,27 @@ class EventNotifications extends APIResource {
     EventNotifications.R2 = r2_R2;
 })(EventNotifications || (EventNotifications = {}));
 //# sourceMappingURL=event-notifications.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/ai-gateway/logs.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/ai-gateway/logs.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+
 
 class ai_gateway_logs_Logs extends APIResource {
     /**
      * List Gateway Logs
      */
-    get(id, params, options) {
+    list(id, params, options) {
         const { account_id, ...query } = params;
-        return this._client.get(`/accounts/${account_id}/ai-gateway/gateways/${id}/logs`, {
-            query,
-            ...options,
-        })._thenUnwrap((obj) => obj.result);
+        return this._client.getAPIList(`/accounts/${account_id}/ai-gateway/gateways/${id}/logs`, LogListResponsesV4PagePaginationArray, { query, ...options });
     }
 }
+class LogListResponsesV4PagePaginationArray extends V4PagePaginationArray {
+}
 (function (Logs) {
+    Logs.LogListResponsesV4PagePaginationArray = LogListResponsesV4PagePaginationArray;
 })(ai_gateway_logs_Logs || (ai_gateway_logs_Logs = {}));
 //# sourceMappingURL=logs.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/ai-gateway/ai-gateway.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/ai-gateway/ai-gateway.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62920,7 +61354,7 @@ class AIGateway extends APIResource {
         })._thenUnwrap((obj) => obj.result);
     }
     /**
-     * List Gateway's
+     * List Gateways
      */
     list(params, options) {
         const { account_id, ...query } = params;
@@ -62945,9 +61379,10 @@ class AIGatewayListResponsesV4PagePaginationArray extends V4PagePaginationArray 
 }
 (function (AIGateway) {
     AIGateway.Logs = ai_gateway_logs_Logs;
+    AIGateway.LogListResponsesV4PagePaginationArray = LogListResponsesV4PagePaginationArray;
 })(AIGateway || (AIGateway = {}));
 //# sourceMappingURL=ai-gateway.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/iam/permission-groups.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/iam/permission-groups.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -62974,7 +61409,7 @@ class PermissionGroupListResponsesV4PagePaginationArray extends V4PagePagination
     PermissionGroups.PermissionGroupListResponsesV4PagePaginationArray = PermissionGroupListResponsesV4PagePaginationArray;
 })(permission_groups_PermissionGroups || (permission_groups_PermissionGroups = {}));
 //# sourceMappingURL=permission-groups.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/iam/resource-groups.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/iam/resource-groups.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -63025,7 +61460,7 @@ class ResourceGroupListResponsesV4PagePaginationArray extends V4PagePaginationAr
     ResourceGroups.ResourceGroupListResponsesV4PagePaginationArray = ResourceGroupListResponsesV4PagePaginationArray;
 })(ResourceGroups || (ResourceGroups = {}));
 //# sourceMappingURL=resource-groups.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/resources/iam/iam.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/iam/iam.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 
@@ -63044,7 +61479,52 @@ class IAM extends APIResource {
     IAM.ResourceGroupListResponsesV4PagePaginationArray = ResourceGroupListResponsesV4PagePaginationArray;
 })(IAM || (IAM = {}));
 //# sourceMappingURL=iam.mjs.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.4.0/node_modules/cloudflare/index.mjs
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/cloud-connector/rules.mjs
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+
+
+class cloud_connector_rules_Rules extends APIResource {
+    /**
+     * Put Rules
+     */
+    update(params, options) {
+        const { zone_id, body } = params;
+        return this._client.put(`/zones/${zone_id}/cloud_connector/rules`, {
+            body: body,
+            ...options,
+        })._thenUnwrap((obj) => obj.result);
+    }
+    /**
+     * Rules
+     */
+    list(params, options) {
+        const { zone_id } = params;
+        return this._client.getAPIList(`/zones/${zone_id}/cloud_connector/rules`, rules_RuleListResponsesSinglePage, options);
+    }
+}
+class rules_RuleListResponsesSinglePage extends SinglePage {
+}
+(function (Rules) {
+    Rules.RuleListResponsesSinglePage = rules_RuleListResponsesSinglePage;
+})(cloud_connector_rules_Rules || (cloud_connector_rules_Rules = {}));
+//# sourceMappingURL=rules.mjs.map
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/resources/cloud-connector/cloud-connector.mjs
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+
+class CloudConnector extends APIResource {
+    constructor() {
+        super(...arguments);
+        this.rules = new cloud_connector_rules_Rules(this._client);
+    }
+}
+(function (CloudConnector) {
+    CloudConnector.Rules = cloud_connector_rules_Rules;
+    CloudConnector.RuleListResponsesSinglePage = rules_RuleListResponsesSinglePage;
+})(CloudConnector || (CloudConnector = {}));
+//# sourceMappingURL=cloud-connector.mjs.map
+;// CONCATENATED MODULE: ./node_modules/.pnpm/cloudflare@3.5.0/node_modules/cloudflare/index.mjs
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 var _a;
 
@@ -63053,7 +61533,9 @@ var _a;
 
 
 
-/** API Client for interfacing with the Cloudflare API. */
+/**
+ * API Client for interfacing with the Cloudflare API.
+ */
 class Cloudflare extends APIClient {
     /**
      * API Client for interfacing with the Cloudflare API.
@@ -63170,6 +61652,7 @@ class Cloudflare extends APIClient {
         this.eventNotifications = new EventNotifications(this);
         this.aiGateway = new AIGateway(this);
         this.iam = new IAM(this);
+        this.cloudConnector = new CloudConnector(this);
         this._options = options;
         this.apiToken = apiToken;
         this.apiKey = apiKey;
@@ -63258,7 +61741,7 @@ class Cloudflare extends APIClient {
         return { 'X-Auth-User-Service-Key': this.userServiceKey };
     }
     stringifyQuery(query) {
-        return qs_lib.stringify(query, { arrayFormat: 'repeat' });
+        return qs_lib.stringify(query, { allowDots: true, arrayFormat: 'repeat' });
     }
 }
 _a = Cloudflare;
@@ -63371,6 +61854,7 @@ var cloudflare_fileFromPath = fileFromPath;
     Cloudflare.EventNotifications = EventNotifications;
     Cloudflare.AIGateway = AIGateway;
     Cloudflare.IAM = IAM;
+    Cloudflare.CloudConnector = CloudConnector;
 })(Cloudflare || (Cloudflare = {}));
 /* harmony default export */ const node_modules_cloudflare = (Cloudflare);
 //# sourceMappingURL=index.mjs.map
@@ -63386,7 +61870,7 @@ function is_plain_obj_isPlainObject(value) {
 
 ;// CONCATENATED MODULE: external "node:url"
 const external_node_url_namespaceObject = require("node:url");
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/arguments/file-url.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/arguments/file-url.js
 
 
 // Allow some arguments/options to be either a file path string or a file URL
@@ -63403,7 +61887,7 @@ const safeNormalizeFileUrl = (file, name) => {
 // Same but also allows other values, e.g. `boolean` for the `shell` option
 const normalizeFileUrl = file => file instanceof URL ? (0,external_node_url_namespaceObject.fileURLToPath)(file) : file;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/methods/parameters.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/methods/parameters.js
 
 
 
@@ -63440,7 +61924,7 @@ const normalizeParameters = (rawFile, rawArguments = [], rawOptions = {}) => {
 const external_node_child_process_namespaceObject = require("node:child_process");
 ;// CONCATENATED MODULE: external "node:string_decoder"
 const external_node_string_decoder_namespaceObject = require("node:string_decoder");
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/utils/uint-array.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/utils/uint-array.js
 
 
 const {toString: objectToString} = Object.prototype;
@@ -63511,7 +61995,7 @@ const getJoinLength = uint8Arrays => {
 	return joinLength;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/methods/template.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/methods/template.js
 
 
 
@@ -63666,7 +62150,7 @@ const getSubprocessResult = ({stdout}) => {
 var external_node_util_ = __nccwpck_require__(7261);
 ;// CONCATENATED MODULE: external "node:process"
 const external_node_process_namespaceObject = require("node:process");
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/utils/standard-stream.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/utils/standard-stream.js
 
 
 const isStandardStream = stream => STANDARD_STREAMS.includes(stream);
@@ -63674,7 +62158,7 @@ const STANDARD_STREAMS = [external_node_process_namespaceObject.stdin, external_
 const STANDARD_STREAMS_ALIASES = ['stdin', 'stdout', 'stderr'];
 const getStreamName = fdNumber => STANDARD_STREAMS_ALIASES[fdNumber] ?? `stdio[${fdNumber}]`;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/arguments/specific.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/arguments/specific.js
 
 
 
@@ -63787,7 +62271,7 @@ const getFdSpecificValue = (optionArray, fdNumber) => fdNumber === 'ipc'
 	? optionArray.at(-1)
 	: optionArray[fdNumber];
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/verbose/values.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/verbose/values.js
 
 
 // The `verbose` option can have different values for `stdout`/`stderr`
@@ -63822,7 +62306,7 @@ const isVerboseFunction = fdVerbose => typeof fdVerbose === 'function';
 
 const VERBOSE_VALUES = ['none', 'short', 'full'];
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/arguments/escape.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/arguments/escape.js
 
 
 
@@ -63863,7 +62347,23 @@ const escapeControlCharacter = character => {
 // Some shells do not even have a way to print those characters in an escaped fashion.
 // Therefore, we prioritize printing those safely, instead of allowing those to be copy-pasted.
 // List of Unicode character categories: https://www.fileformat.info/info/unicode/category/index.htm
-const SPECIAL_CHAR_REGEXP = /\p{Separator}|\p{Other}/gu;
+const getSpecialCharRegExp = () => {
+	try {
+		// This throws when using Node.js without ICU support.
+		// When using a RegExp literal, this would throw at parsing-time, instead of runtime.
+		// eslint-disable-next-line prefer-regex-literals
+		return new RegExp('\\p{Separator}|\\p{Other}', 'gu');
+	} catch {
+		// Similar to the above RegExp, but works even when Node.js has been built without ICU support.
+		// Unlike the above RegExp, it only covers whitespaces and C0/C1 control characters.
+		// It does not cover some edge cases, such as Unicode reserved characters.
+		// See https://github.com/sindresorhus/execa/issues/1143
+		// eslint-disable-next-line no-control-regex
+		return /[\s\u0000-\u001F\u007F-\u009F\u00AD]/g;
+	}
+};
+
+const SPECIAL_CHAR_REGEXP = getSpecialCharRegExp();
 
 // Accepted by $'...' in Bash.
 // Exclude \a \e \v which are accepted in Bash but not in JavaScript (except \v) and JSON.
@@ -64210,12 +62710,13 @@ const replaceSymbols = (string, {useFallback = !shouldUseMain} = {}) => {
 
 ;// CONCATENATED MODULE: external "node:tty"
 const external_node_tty_namespaceObject = require("node:tty");
-;// CONCATENATED MODULE: ./node_modules/.pnpm/yoctocolors@2.1.0/node_modules/yoctocolors/base.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/yoctocolors@2.1.1/node_modules/yoctocolors/base.js
 
 
 // eslint-disable-next-line no-warning-comments
 // TODO: Use a better method when it's added to Node.js (https://github.com/nodejs/node/pull/40240)
-const hasColors = external_node_tty_namespaceObject.WriteStream.prototype.hasColors();
+// Lots of optionals here to support Deno.
+const hasColors = external_node_tty_namespaceObject?.WriteStream?.prototype?.hasColors?.() ?? false;
 
 const format = (open, close) => {
 	if (!hasColors) {
@@ -64300,7 +62801,7 @@ const bgMagentaBright = format(105, 49);
 const bgCyanBright = format(106, 49);
 const bgWhiteBright = format(107, 49);
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/verbose/default.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/verbose/default.js
 
 
 
@@ -64351,7 +62852,7 @@ const COLORS = {
 	duration: () => gray,
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/verbose/custom.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/verbose/custom.js
 
 
 // Apply the `verbose` function on each line
@@ -64379,7 +62880,7 @@ const appendNewline = printedLine => printedLine.endsWith('\n')
 	? printedLine
 	: `${printedLine}\n`;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/verbose/log.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/verbose/log.js
 
 
 
@@ -64430,7 +62931,7 @@ const serializeVerboseMessage = message => {
 // Same as `util.inspect()`
 const TAB_SIZE = 2;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/verbose/start.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/verbose/start.js
 
 
 
@@ -64447,7 +62948,7 @@ const logCommand = (escapedCommand, verboseInfo) => {
 	});
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/verbose/info.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/verbose/info.js
 
 
 // Information computed before spawning, used by the `verbose` option
@@ -64488,7 +62989,7 @@ const validateVerbose = verbose => {
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/return/duration.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/return/duration.js
 
 
 // Start counting time before spawning the subprocess
@@ -64498,7 +62999,7 @@ const getStartTime = () => external_node_process_namespaceObject.hrtime.bigint()
 // Printed by the `verbose` option.
 const getDurationMs = startTime => Number(external_node_process_namespaceObject.hrtime.bigint() - startTime) / 1e6;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/arguments/command.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/arguments/command.js
 
 
 
@@ -64594,7 +63095,7 @@ const npmRunPathEnv = ({env = external_node_process_namespaceObject.env, ...opti
 
 ;// CONCATENATED MODULE: external "node:timers/promises"
 const promises_namespaceObject = require("node:timers/promises");
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/return/final-error.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/return/final-error.js
 // When the subprocess fails, this is the error instance being returned.
 // If another error instance is being thrown, it is kept as `error.cause`.
 const getFinalError = (originalError, message, isSync) => {
@@ -64638,7 +63139,7 @@ setErrorName(ExecaSyncError, ExecaSyncError.name);
 
 ;// CONCATENATED MODULE: external "node:os"
 const external_node_os_namespaceObject = require("node:os");
-;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@7.0.0/node_modules/human-signals/build/src/realtime.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@8.0.0/node_modules/human-signals/build/src/realtime.js
 
 const getRealtimeSignals=()=>{
 const length=SIGRTMAX-SIGRTMIN+1;
@@ -64655,7 +63156,7 @@ standard:"posix"
 
 const SIGRTMIN=34;
 const SIGRTMAX=64;
-;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@7.0.0/node_modules/human-signals/build/src/core.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@8.0.0/node_modules/human-signals/build/src/core.js
 
 
 const SIGNALS=[
@@ -64929,7 +63430,7 @@ action:"terminate",
 description:"Invalid system call",
 standard:"other"
 }];
-;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@7.0.0/node_modules/human-signals/build/src/signals.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@8.0.0/node_modules/human-signals/build/src/signals.js
 
 
 
@@ -64964,7 +63465,7 @@ const supported=constantSignal!==undefined;
 const number=supported?constantSignal:defaultNumber;
 return{name,number,description,supported,action,forced,standard}
 };
-;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@7.0.0/node_modules/human-signals/build/src/main.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@8.0.0/node_modules/human-signals/build/src/main.js
 
 
 
@@ -65035,7 +63536,7 @@ return signals.find((signalA)=>signalA.number===number)
 };
 
 const signalsByNumber=getSignalsByNumber();
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/terminate/signal.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/terminate/signal.js
 
 
 
@@ -65107,7 +63608,7 @@ const getAvailableSignalIntegers = () => [...new Set(Object.values(external_node
 // Human-friendly description of a signal
 const getSignalDescription = signal => signalsByName[signal].description;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/terminate/kill.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/terminate/kill.js
 
 
 
@@ -65204,7 +63705,7 @@ const killOnTimeout = async ({kill, forceKillAfterDelay, context, controllerSign
 
 // EXTERNAL MODULE: external "node:events"
 var external_node_events_ = __nccwpck_require__(5673);
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/utils/abort-signal.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/utils/abort-signal.js
 
 
 // Combines `util.aborted()` and `events.addAbortListener()`: promise-based and cleaned up with a stop signal
@@ -65214,7 +63715,7 @@ const onAbortedSignal = async (mainSignal, stopSignal) => {
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/terminate/cancel.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/terminate/cancel.js
 
 
 // Validate the `cancelSignal` option
@@ -65236,7 +63737,7 @@ const terminateOnCancel = async (subprocess, cancelSignal, context, {signal}) =>
 	throw cancelSignal.reason;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/ipc/validation.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/ipc/validation.js
 // Validate the IPC channel is connected before receiving/sending messages
 const validateIpcMethod = ({methodName, isSubprocess, ipc, isConnected}) => {
 	validateIpcOption(methodName, isSubprocess, ipc);
@@ -65349,7 +63850,7 @@ const disconnect = anyProcess => {
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/utils/deferred.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/utils/deferred.js
 const createDeferred = () => {
 	const methods = {};
 	const promise = new Promise((resolve, reject) => {
@@ -65358,7 +63859,7 @@ const createDeferred = () => {
 	return Object.assign(promise, methods);
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/arguments/fd-options.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/arguments/fd-options.js
 
 
 // Retrieve stream targeted by the `to` option
@@ -65468,7 +63969,7 @@ const serializeOptionValue = value => {
 	return typeof value === 'number' ? `${value}` : 'Stream';
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/utils/max-listeners.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/utils/max-listeners.js
 
 
 // Temporarily increase the maximum number of listeners on an eventEmitter
@@ -65484,7 +63985,7 @@ const incrementMaxListeners = (eventEmitter, maxListenersIncrement, signal) => {
 	});
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/ipc/reference.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/ipc/reference.js
 // By default, Node.js keeps the subprocess alive while it has a `message` or `disconnect` listener.
 // We replicate the same logic for the events that we proxy.
 // This ensures the subprocess is kept alive while `getOneMessage()` and `getEachMessage()` are ongoing.
@@ -65530,7 +64031,7 @@ const redoAddedReferences = (channel, isSubprocess) => {
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/ipc/incoming.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/ipc/incoming.js
 
 
 
@@ -65611,7 +64112,7 @@ const onDisconnect = async ({anyProcess, channel, isSubprocess, ipcEmitter, boun
 
 const INCOMING_MESSAGES = new WeakMap();
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/ipc/forward.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/ipc/forward.js
 
 
 
@@ -65669,7 +64170,7 @@ const isConnected = anyProcess => {
 		: ipcEmitter.connected;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/ipc/strict.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/ipc/strict.js
 
 
 
@@ -65784,7 +64285,7 @@ const throwOnDisconnect = async (anyProcess, isSubprocess, {signal}) => {
 const REQUEST_TYPE = 'execa:ipc:request';
 const RESPONSE_TYPE = 'execa:ipc:response';
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/ipc/outgoing.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/ipc/outgoing.js
 
 
 
@@ -65833,7 +64334,7 @@ const getMinListenerCount = anyProcess => SUBPROCESS_OPTIONS.has(anyProcess)
 	? 1
 	: 0;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/ipc/send.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/ipc/send.js
 
 
 
@@ -65921,7 +64422,7 @@ const getSendMethod = anyProcess => {
 
 const PROCESS_SEND_METHODS = new WeakMap();
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/ipc/graceful.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/ipc/graceful.js
 
 
 
@@ -65995,7 +64496,7 @@ const abortOnDisconnect = () => {
 
 const cancelController = new AbortController();
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/terminate/graceful.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/terminate/graceful.js
 
 
 
@@ -66068,7 +64569,7 @@ const getReason = ({reason}) => {
 	return error;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/terminate/timeout.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/terminate/timeout.js
 
 
 
@@ -66091,7 +64592,7 @@ const killAfterTimeout = async (subprocess, timeout, context, {signal}) => {
 	throw new DiscardedError();
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/methods/node.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/methods/node.js
 
 
 
@@ -66121,7 +64622,7 @@ const handleNodeOption = (file, commandArguments, {
 	}
 
 	const normalizedNodePath = safeNormalizeFileUrl(nodePath, 'The "nodePath" option');
-	const resolvedNodePath = (0,external_node_path_namespaceObject.resolve)(cwd, normalizedNodePath);
+	const resolvedNodePath = external_node_path_namespaceObject.resolve(cwd, normalizedNodePath);
 	const newOptions = {
 		...options,
 		nodePath: resolvedNodePath,
@@ -66133,7 +64634,7 @@ const handleNodeOption = (file, commandArguments, {
 		return [file, commandArguments, newOptions];
 	}
 
-	if ((0,external_node_path_namespaceObject.basename)(file, '.exe') === 'node') {
+	if (external_node_path_namespaceObject.basename(file, '.exe') === 'node') {
 		throw new TypeError('When the "node" option is true, the first argument does not need to be "node".');
 	}
 
@@ -66146,7 +64647,7 @@ const handleNodeOption = (file, commandArguments, {
 
 ;// CONCATENATED MODULE: external "node:v8"
 const external_node_v8_namespaceObject = require("node:v8");
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/ipc/ipc-input.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/ipc/ipc-input.js
 
 
 // Validate the `ipcInput` option
@@ -66192,7 +64693,7 @@ const sendIpcInput = async (subprocess, ipcInput) => {
 	await subprocess.sendMessage(ipcInput);
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/arguments/encoding-option.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/arguments/encoding-option.js
 // Validate `encoding` option
 const validateEncoding = ({encoding}) => {
 	if (ENCODINGS.has(encoding)) {
@@ -66244,7 +64745,7 @@ const ENCODING_ALIASES = {
 
 const serializeEncoding = encoding => typeof encoding === 'string' ? `"${encoding}"` : String(encoding);
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/arguments/cwd.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/arguments/cwd.js
 
 
 
@@ -66253,7 +64754,7 @@ const serializeEncoding = encoding => typeof encoding === 'string' ? `"${encodin
 // Normalize `cwd` option
 const normalizeCwd = (cwd = getDefaultCwd()) => {
 	const cwdString = safeNormalizeFileUrl(cwd, 'The "cwd" option');
-	return (0,external_node_path_namespaceObject.resolve)(cwdString);
+	return external_node_path_namespaceObject.resolve(cwdString);
 };
 
 const getDefaultCwd = () => {
@@ -66285,7 +64786,7 @@ const fixCwdError = (originalMessage, cwd) => {
 	return originalMessage;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/arguments/options.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/arguments/options.js
 
 
 
@@ -66323,7 +64824,7 @@ const normalizeOptions = (filePath, rawArguments, rawOptions) => {
 	options.forceKillAfterDelay = normalizeForceKillAfterDelay(options.forceKillAfterDelay);
 	options.lines = options.lines.map((lines, fdNumber) => lines && !BINARY_ENCODINGS.has(options.encoding) && options.buffer[fdNumber]);
 
-	if (external_node_process_namespaceObject.platform === 'win32' && (0,external_node_path_namespaceObject.basename)(file, '.exe') === 'cmd') {
+	if (external_node_process_namespaceObject.platform === 'win32' && external_node_path_namespaceObject.basename(file, '.exe') === 'cmd') {
 		// #116
 		commandArguments.unshift('/q');
 	}
@@ -66734,7 +65235,7 @@ class MaxBufferError extends Error {
 	}
 }
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/io/max-buffer.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/io/max-buffer.js
 
 
 
@@ -66825,7 +65326,7 @@ const truncateMaxBufferSync = (result, isMaxBuffer, maxBuffer) => {
 // `spawnSync()` does not allow differentiating `maxBuffer` per file descriptor, so we always use `stdout`
 const getMaxBufferSync = ([, stdoutMaxBuffer]) => stdoutMaxBuffer;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/return/message.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/return/message.js
 
 
 
@@ -66984,7 +65485,7 @@ const serializeMessageItem = messageItem => {
 	return '';
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/return/result.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/return/result.js
 
 
 
@@ -67219,7 +65720,7 @@ function parseMilliseconds(milliseconds) {
 	throw new TypeError('Expected a finite number or bigint');
 }
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/pretty-ms@9.0.0/node_modules/pretty-ms/index.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/pretty-ms@9.1.0/node_modules/pretty-ms/index.js
 
 
 const isZero = value => value === 0 || value === 0n;
@@ -67235,6 +65736,9 @@ function prettyMilliseconds(milliseconds, options) {
 	}
 
 	options = {...options};
+
+	const sign = milliseconds < 0 ? '-' : '';
+	milliseconds = milliseconds < 0 ? -milliseconds : milliseconds; // Cannot use `Math.abs()` because of BigInt support.
 
 	if (options.colonNotation) {
 		options.compact = false;
@@ -67265,7 +65769,7 @@ function prettyMilliseconds(milliseconds, options) {
 			return;
 		}
 
-		valueString = valueString ?? String(value);
+		valueString ??= String(value);
 		if (options.colonNotation) {
 			const wholeDigits = valueString.includes('.') ? valueString.split('.')[0].length : valueString.length;
 			const minLength = result.length > 0 ? 2 : 1;
@@ -67344,7 +65848,7 @@ function prettyMilliseconds(milliseconds, options) {
 	}
 
 	if (result.length === 0) {
-		return '0' + (options.verbose ? ' milliseconds' : 'ms');
+		return sign + '0' + (options.verbose ? ' milliseconds' : 'ms');
 	}
 
 	const separator = options.colonNotation ? ':' : ' ';
@@ -67352,10 +65856,10 @@ function prettyMilliseconds(milliseconds, options) {
 		result = result.slice(0, Math.max(options.unitCount, 1));
 	}
 
-	return result.join(separator);
+	return sign + result.join(separator);
 }
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/verbose/error.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/verbose/error.js
 
 
 // When `verbose` is `short|full|custom`, print each command's error when it fails
@@ -67370,7 +65874,7 @@ const logError = (result, verboseInfo) => {
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/verbose/complete.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/verbose/complete.js
 
 
 
@@ -67396,7 +65900,7 @@ const logDuration = (result, verboseInfo) => {
 	});
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/return/reject.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/return/reject.js
 
 
 // Applies the `reject` option.
@@ -67411,7 +65915,7 @@ const handleResult = (result, verboseInfo, {reject}) => {
 	return result;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/stdio/type.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/stdio/type.js
 
 
 
@@ -67584,7 +66088,7 @@ const TYPE_TO_MESSAGE = {
 	uint8Array: 'a Uint8Array',
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/transform/object-mode.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/transform/object-mode.js
 
 
 /*
@@ -67627,7 +66131,7 @@ const getFdObjectMode = (stdioItems, direction) => {
 		: lastTransform.value.readableObjectMode;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/transform/normalize.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/transform/normalize.js
 
 
 
@@ -67740,7 +66244,7 @@ const normalizeGenerator = ({stdioItem, stdioItem: {value}, index, newTransforms
 
 const sortTransforms = (newTransforms, direction) => direction === 'input' ? newTransforms.reverse() : newTransforms;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/stdio/direction.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/stdio/direction.js
 
 
 
@@ -67814,13 +66318,13 @@ const getStandardStreamDirection = value => {
 // When the ambiguity remains, we default to `output` since it is the most common use case for additional file descriptors.
 const DEFAULT_DIRECTION = 'output';
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/ipc/array.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/ipc/array.js
 // The `ipc` option adds an `ipc` item to the `stdio` option
 const normalizeIpcStdioArray = (stdioArray, ipc) => ipc && !stdioArray.includes('ipc')
 	? [...stdioArray, 'ipc']
 	: stdioArray;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/stdio/stdio-option.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/stdio/stdio-option.js
 
 
 
@@ -67882,7 +66386,7 @@ const normalizeStdioSync = (stdioArray, buffer, verboseInfo) => stdioArray.map((
 const isOutputPipeOnly = stdioOption => stdioOption === 'pipe'
 	|| (Array.isArray(stdioOption) && stdioOption.every(item => item === 'pipe'));
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/stdio/native.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/stdio/native.js
 
 
 
@@ -67990,7 +66494,7 @@ const getStandardStream = (fdNumber, value, optionName) => {
 	return standardStream;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/stdio/input-option.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/stdio/input-option.js
 
 
 
@@ -68042,7 +66546,7 @@ const getInputFileType = inputFile => {
 	throw new Error('The `inputFile` option must be a file path string or a file URL.');
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/stdio/duplicate.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/stdio/duplicate.js
 
 
 // Duplicates in the same file descriptor is most likely an error.
@@ -68155,7 +66659,7 @@ const throwOnDuplicateStream = (stdioItem, optionName, type) => {
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/stdio/handle.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/stdio/handle.js
 
 
 
@@ -68366,7 +66870,7 @@ const forwardStdio = stdioItems => {
 	return type === 'native' ? value : 'pipe';
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/stdio/handle-sync.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/stdio/handle-sync.js
 
 
 
@@ -68425,7 +66929,7 @@ const addPropertiesSync = {
 	},
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/io/strip-newline.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/io/strip-newline.js
 
 
 // Apply `stripFinalNewline` option, which applies to `result.stdout|stderr|all|stdio[*]`.
@@ -68439,7 +66943,7 @@ const getStripFinalNewline = (stripFinalNewline, fdNumber) => fdNumber === 'all'
 	? stripFinalNewline[1] || stripFinalNewline[2]
 	: stripFinalNewline[fdNumber];
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/transform/split.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/transform/split.js
 // Split chunks line-wise for generators passed to the `std*` options
 const getSplitLinesGenerator = (binary, preserveNewlines, skipped, state) => binary || skipped
 	? undefined
@@ -68553,7 +67057,7 @@ const linesUint8ArrayInfo = {
 
 ;// CONCATENATED MODULE: external "node:buffer"
 const external_node_buffer_namespaceObject = require("node:buffer");
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/transform/validate.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/transform/validate.js
 
 
 
@@ -68598,7 +67102,7 @@ Instead, \`yield\` should either be called with a value, or not be called at all
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/transform/encoding-transform.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/transform/encoding-transform.js
 
 
 
@@ -68651,7 +67155,7 @@ const encodingStringFinal = function * (stringDecoder) {
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/transform/run-async.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/transform/run-async.js
 
 
 // Applies a series of generator functions asynchronously
@@ -68713,7 +67217,7 @@ const identityGenerator = function * (chunk) {
 	yield chunk;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/transform/run-sync.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/transform/run-sync.js
 // Duplicate the code from `run-async.js` but as synchronous functions
 const pushChunksSync = (getChunksSync, getChunksArguments, transformStream, done) => {
 	try {
@@ -68765,7 +67269,7 @@ const run_sync_identityGenerator = function * (chunk) {
 	yield chunk;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/transform/generator.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/transform/generator.js
 
 
 
@@ -68864,7 +67368,7 @@ const addInternalGenerators = (
 	].filter(Boolean);
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/io/input-sync.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/io/input-sync.js
 
 
 
@@ -68910,7 +67414,7 @@ const validateSerializable = newContents => {
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/verbose/output.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/verbose/output.js
 
 
 
@@ -68972,7 +67476,7 @@ const logLine = (line, fdNumber, verboseInfo) => {
 	});
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/io/output-sync.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/io/output-sync.js
 
 
 
@@ -69109,7 +67613,7 @@ const writeToFiles = (serializedResult, stdioItems, outputFiles) => {
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/resolve/all-sync.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/resolve/all-sync.js
 
 
 
@@ -69144,7 +67648,7 @@ const getAllSync = ([, stdout, stderr], options) => {
 	return `${stdout}${stderr}`;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/resolve/exit-async.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/resolve/exit-async.js
 
 
 
@@ -69200,7 +67704,7 @@ const isSubprocessErrorExit = (exitCode, signal) => exitCode === undefined && si
 // When the subprocess fails due to a non-0 exit code or to a signal termination
 const isFailedExit = (exitCode, signal) => exitCode !== 0 || signal !== null;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/resolve/exit-sync.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/resolve/exit-sync.js
 
 
 
@@ -69227,7 +67731,7 @@ const getResultError = (error, exitCode, signal) => {
 	return isFailedExit(exitCode, signal) ? new DiscardedError() : undefined;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/methods/main-sync.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/methods/main-sync.js
 
 
 
@@ -69391,7 +67895,7 @@ const getSyncResult = ({error, exitCode, signal, timedOut, isMaxBuffer, stdio, a
 		isSync: true,
 	});
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/ipc/get-one.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/ipc/get-one.js
 
 
 
@@ -69457,7 +67961,7 @@ const throwOnStrictError = async (ipcEmitter, isSubprocess, {signal}) => {
 	throw getStrictResponseError(error, isSubprocess);
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/ipc/get-each.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/ipc/get-each.js
 
 
 
@@ -69548,7 +68052,7 @@ const throwIfStrictError = ({error}) => {
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/ipc/methods.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/ipc/methods.js
 
 
 
@@ -69599,7 +68103,7 @@ const getIpcMethods = (anyProcess, isSubprocess, ipc) => ({
 	}),
 });
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/return/early-error.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/return/early-error.js
 
 
 
@@ -69656,7 +68160,7 @@ const duplex = () => new external_node_stream_.Duplex({read() {}, write() {}});
 
 const handleDummyPromise = async (error, verboseInfo, options) => handleResult(error, verboseInfo, options);
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/stdio/handle-async.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/stdio/handle-async.js
 
 
 
@@ -69979,7 +68483,7 @@ const PASSTHROUGH_LISTENERS_COUNT = 2;
 //  - once due to `stream.pipe(passThroughStream)`
 const PASSTHROUGH_LISTENERS_PER_STREAM = 1;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/io/pipeline.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/io/pipeline.js
 
 
 
@@ -70029,7 +68533,7 @@ const abortSourceStream = source => {
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/io/output-async.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/io/output-async.js
 
 
 
@@ -70427,7 +68931,7 @@ load,
  */
 unload, } = signalExitWrap(processOk(mjs_process) ? new SignalExit(mjs_process) : new SignalExitFallback());
 //# sourceMappingURL=index.js.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/terminate/cleanup.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/terminate/cleanup.js
 
 
 
@@ -70445,7 +68949,7 @@ const cleanupOnExit = (subprocess, {cleanup, detached}, {signal}) => {
 	});
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/pipe/pipe-arguments.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/pipe/pipe-arguments.js
 
 
 
@@ -70537,7 +69041,7 @@ const getSourceStream = (source, from) => {
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/pipe/throw.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/pipe/throw.js
 
 
 
@@ -70597,7 +69101,7 @@ const createNonCommandError = ({error, fileDescriptors, sourceOptions, startTime
 
 const PIPE_COMMAND_MESSAGE = 'source.pipe(destination)';
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/pipe/sequence.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/pipe/sequence.js
 // Like Bash, we await both subprocesses. This is unlike some other shells which only await the destination subprocess.
 // Like Bash with the `pipefail` option, if either subprocess fails, the whole pipe fails.
 // Like Bash, if both subprocesses fail, we return the failure of the destination.
@@ -70623,7 +69127,7 @@ const waitForBothSubprocesses = async subprocessPromises => {
 	return destinationResult;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/pipe/streaming.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/pipe/streaming.js
 
 
 
@@ -70676,7 +69180,7 @@ const SOURCE_LISTENERS_PER_PIPE = 2;
 // Those are added by `finished()` in `cleanupMergedStreamsMap()`
 const DESTINATION_LISTENERS_PER_PIPE = 1;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/pipe/abort.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/pipe/abort.js
 
 
 
@@ -70698,7 +69202,7 @@ const unpipeOnSignalAbort = async (unpipeSignal, {sourceStream, mergedStream, fi
 	});
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/pipe/setup.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/pipe/setup.js
 
 
 
@@ -70943,7 +69447,7 @@ const stringMethods = {
 	finalize: getContentsProperty,
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/io/iterate.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/io/iterate.js
 
 
 
@@ -71055,7 +69559,7 @@ const getGenerators = ({binary, shouldEncode, encoding, shouldSplit, preserveNew
 	getSplitLinesGenerator(binary, preserveNewlines, !shouldSplit, {}),
 ].filter(Boolean);
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/io/contents.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/io/contents.js
 
 
 
@@ -71173,7 +69677,7 @@ const handleBufferedData = ({bufferedData}) => isArrayBuffer(bufferedData)
 	? new Uint8Array(bufferedData)
 	: bufferedData;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/resolve/wait-stream.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/resolve/wait-stream.js
 
 
 // Wraps `finished(stream)` to handle the following case:
@@ -71271,7 +69775,7 @@ const isStreamAbort = error => error?.code === 'ERR_STREAM_PREMATURE_CLOSE';
 // Therefore, we ignore this error on writable streams.
 const isStreamEpipe = error => error?.code === 'EPIPE';
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/resolve/stdio.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/resolve/stdio.js
 
 
 
@@ -71320,7 +69824,7 @@ const waitForSubprocessStream = async ({stream, fdNumber, encoding, buffer, maxB
 	return output;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/resolve/all-async.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/resolve/all-async.js
 
 
 
@@ -71368,7 +69872,7 @@ const getAllMixed = ({all, stdout, stderr}) => all
 	&& stderr
 	&& stdout.readableObjectMode !== stderr.readableObjectMode;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/verbose/ipc.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/verbose/ipc.js
 
 
 
@@ -71385,7 +69889,7 @@ const logIpcOutput = (message, verboseInfo) => {
 	});
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/ipc/buffer-messages.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/ipc/buffer-messages.js
 
 
 
@@ -71434,7 +69938,7 @@ const getBufferedIpcOutput = async (ipcOutputPromise, ipcOutput) => {
 	return ipcOutput;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/resolve/wait-subprocess.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/resolve/wait-subprocess.js
 
 
 
@@ -71582,7 +70086,7 @@ const throwOnSubprocessError = async (subprocess, {signal}) => {
 	throw error;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/convert/concurrent.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/convert/concurrent.js
 
 
 // When using multiple `.readable()`/`.writable()`/`.duplex()`, `final` and `destroy` should wait for other streams
@@ -71617,7 +70121,7 @@ const waitForConcurrentStreams = async ({resolve, promises}, subprocess) => {
 	return !isSubprocessExit;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/convert/shared.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/convert/shared.js
 
 
 
@@ -71665,7 +70169,7 @@ const destroyOtherStream = (stream, isOpen, error) => {
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/convert/readable.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/convert/readable.js
 
 
 
@@ -71775,7 +70279,7 @@ const destroyOtherReadable = (stream, error) => {
 	destroyOtherStream(stream, stream.readable, error);
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/convert/writable.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/convert/writable.js
 
 
 
@@ -71862,7 +70366,7 @@ const destroyOtherWritable = (stream, error) => {
 	destroyOtherStream(stream, stream.writable, error);
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/convert/duplex.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/convert/duplex.js
 
 
 
@@ -71922,7 +70426,7 @@ const onDuplexDestroy = async ({subprocessStdout, subprocessStdin, subprocess, w
 	]);
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/convert/iterable.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/convert/iterable.js
 
 
 
@@ -71958,7 +70462,7 @@ const iterateOnStdoutData = async function * (onStdoutData, subprocessStdout, su
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/convert/add.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/convert/add.js
 
 
 
@@ -71975,7 +70479,7 @@ const addConvertedStreams = (subprocess, {encoding}) => {
 	subprocess[Symbol.asyncIterator] = createIterable.bind(undefined, subprocess, encoding, {});
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/methods/promise.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/methods/promise.js
 // The return value is a mixin of `subprocess` and `Promise`
 const mergePromise = (subprocess, promise) => {
 	for (const [property, descriptor] of descriptors) {
@@ -71992,7 +70496,7 @@ const descriptors = ['then', 'catch', 'finally'].map(property => [
 	Reflect.getOwnPropertyDescriptor(nativePromisePrototype, property),
 ]);
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/methods/main-async.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/methods/main-async.js
 
 
 
@@ -72187,7 +70691,7 @@ const getAsyncResult = ({errorInfo, exitCode, signal, stdio, all, ipcOutput, con
 		startTime,
 	});
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/methods/bind.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/methods/bind.js
 
 
 
@@ -72212,7 +70716,7 @@ const mergeOption = (optionName, boundOptionValue, optionValue) => {
 
 const DEEP_OPTIONS = new Set(['env', ...FD_SPECIFIC_OPTIONS]);
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/methods/create.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/methods/create.js
 
 
 
@@ -72279,7 +70783,7 @@ const parseArguments = ({mapArguments, firstArgument, nextArguments, deepOptions
 	};
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/methods/command.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/methods/command.js
 // Main logic for `execaCommand()`
 const mapCommandAsync = ({file, commandArguments}) => parseCommand(file, commandArguments);
 
@@ -72324,7 +70828,7 @@ const parseCommandString = command => {
 
 const SPACES_REGEXP = / +/g;
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/lib/methods/script.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/lib/methods/script.js
 // Sets `$.sync` and `$.s`
 const setScriptSync = (boundExeca, createNested, boundOptions) => {
 	boundExeca.sync = createNested(mapScriptSync, boundOptions);
@@ -72348,7 +70852,7 @@ const getScriptStdinOption = ({input, inputFile, stdio}) => input === undefined 
 // However, some options (like `stdin: 'inherit'`) would create issues with piping, i.e. cannot be deep.
 const deepScriptOptions = {preferLocal: true};
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.0/node_modules/execa/index.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@9.3.1/node_modules/execa/index.js
 
 
 
@@ -72390,7 +70894,7 @@ async function createRecord(cf, name, cid, zoneId) {
     content: `dnslink=/ipfs/${cid}`,
     type: 'TXT',
     name,
-    path_zone_id: zoneId,
+    zone_id: zoneId,
   })
 
   return result
@@ -72417,7 +70921,7 @@ async function upsertRecord(cf, name, cid, zoneId) {
     if (found?.id) {
       const content = `dnslink=/ipfs/${cid}`
 
-      // Skip if record already exists
+      // Skip if record content already exists
       if (found.content === content) {
         return
       }
@@ -72426,7 +70930,7 @@ async function upsertRecord(cf, name, cid, zoneId) {
         content,
         name,
         type: 'TXT',
-        path_zone_id: zoneId,
+        zone_id: zoneId,
       })
     } else {
       await createRecord(cf, name, cid, zoneId)
@@ -72465,9 +70969,10 @@ async function run() {
         },
       }
     )
+    console.log(upload.stdout)
 
     try {
-      const jsonOut = JSON.parse(upload.stdout)
+      const jsonOut = {} //JSON.parse(upload.stdout)
       if (jsonOut.root?.['/']) {
         const cid = jsonOut.root['/']
         await upsertRecord(
